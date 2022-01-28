@@ -34,5 +34,6 @@ fun ProductEntity.toProduct() = Product(
     summary = this.summary,
     description = this.description,
     thumbnail = this.thumbnail?.toPictureSummary(),
-    pictures = this.pictures.filter { !it.isDeleted }.map { it.toPictureSummary() }
+    pictures = this.pictures.filter { !it.isDeleted }.map { it.toPictureSummary() },
+    visible = this.visible,
 )

@@ -14,6 +14,7 @@ public data class Product(
     public val price: Double? = null,
     public val comparablePrice: Double? = null,
     public val currency: String = "",
+    public val visible: Boolean = false,
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     public val created: OffsetDateTime = OffsetDateTime.now(),
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")

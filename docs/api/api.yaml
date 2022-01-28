@@ -1,0 +1,453 @@
+openapi: "3.0.0"
+info:
+  title: "Wutsi Catalog API"
+  description: |
+    API for managing product catalog
+  version: "1.0.0"
+
+servers:
+  - url: https://wutsi-catalog-server-test.herokuapp.com
+    description: Sandbox
+  - url: https://wutsi-catalog-server-prod.herokuapp.com
+    description: Production
+
+paths:
+  /v1/products:
+    post:
+      operationId: "create-product"
+      description: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProductResponse'
+        403:
+          description: The caller is not authorized to call this endpoint
+        409:
+          description: Error
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+  /v1/products/search:
+    post:
+      operationId: "search-product"
+      description: Search Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchProductRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchProductResponse'
+        403:
+          description: The caller is not authorized to call this endpoint
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-read' ]
+
+  /v1/products/{id}:
+    get:
+      operationId: "get-product"
+      description: Return information about an product
+      parameters:
+        - in: path
+          name: id
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductResponse'
+        403:
+          description: The caller is not authorized to call this endpoint
+        404:
+          description: The product not found
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-read' ]
+
+    delete:
+      operationId: "delete-product"
+      description: Delete an product
+      parameters:
+        - in: path
+          name: id
+          description: ID of the product to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not the owner of the product
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+
+  /v1/products/{id}/attributes/{name}:
+    post:
+      operationId: "update-product-attribute"
+      description: Update an product attribute
+      parameters:
+        - in: path
+          name: id
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: name
+          description: Name of the attribute to update
+          required: true
+          schema:
+            type: string
+            enum:
+              - title
+              - summary
+              - description
+              - price
+              - comparable-price
+              - category-id
+              - visible
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductAttributeRequest'
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not the owner of the product
+        404:
+          description: The product not found
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+
+  /v1/products/{id}/pictures:
+    post:
+      operationId: "add-picture"
+      description: Add a picture to a product
+      parameters:
+        - in: path
+          name: id
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPictureRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddPictureResponse'
+        403:
+          description: The caller is not the owner of the product
+        404:
+          description: The product not found
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+  /v1/products/pictures/{id}:
+    delete:
+      operationId: "delete-picture"
+      description: Delete a picture
+      parameters:
+        - in: path
+          name: id
+          description: ID of the picture
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  schemas:
+    CreateProductRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Product title
+        summary:
+          type: string
+          description: Product summary
+        description:
+          type: string
+          description: Product long description
+          nullable: true
+        categoryId:
+          type: integer
+          format: int64
+          description: Category of the product
+          nullable: true
+        price:
+          type: number
+          format: double
+          description: Price of the product
+          nullable: true
+        comparablePrice:
+          type: number
+          format: double
+          description: Comparable Price
+          nullable: true
+      required:
+        - title
+        - summary
+
+    CreateProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the product created
+
+    UpdateProductRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Product title
+        summary:
+          type: string
+          description: Product summary
+        description:
+          type: string
+          description: Product long description
+          nullable: true
+        categoryId:
+          type: integer
+          format: int64
+          description: Category of the product
+        price:
+          type: number
+          format: double
+          description: Price of the product
+          nullable: true
+        comparablePrice:
+          type: number
+          format: double
+          description: Comparable Price
+          nullable: true
+      required:
+        - title
+        - summary
+
+    UpdateProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the product updated
+
+    GetProductResponse:
+      type: object
+      properties:
+        product:
+          type: object
+          $ref: "#/components/schemas/Product"
+
+    SearchProductRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+        visible:
+          type: boolean
+          nullable: true
+        limit:
+          type: integer
+          default: 30
+        offset:
+          type: integer
+          default: 0
+
+    SearchProductResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductSummary"
+
+    PictureSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the product
+        url:
+          type: string
+          format: url
+          description: URL of picture
+          nullable: true
+
+    ProductSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the product
+        pictureUrl:
+          type: string
+          format: url
+          nullable: true
+        title:
+          type: string
+          description: Product title
+        price:
+          type: number
+          format: double
+          description: Price of the product
+          nullable: true
+        comparablePrice:
+          type: number
+          format: double
+          description: Comparable Price
+          nullable: true
+        currency:
+          type: string
+          description: Product's country
+        created:
+          type: string
+          format: date-time
+          description: Creation Date/Time
+        updated:
+          type: string
+          format: date-time
+          description: Last modification Date/Time
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the product
+        pictures:
+          type: array
+          items:
+            $ref: "#/components/schemas/PictureSummary"
+            description: URL of the images
+        title:
+          type: string
+          description: Product title
+        summary:
+          type: string
+          description: Product summary
+          nullable: true
+        categoryId:
+          type: integer
+          format: int64
+          description: Category of the product
+          nullable: true
+        price:
+          type: number
+          format: double
+          description: Price of the product
+          nullable: true
+        comparablePrice:
+          type: number
+          format: double
+          description: Comparable Price
+          nullable: true
+        currency:
+          type: string
+          description: Product's currency
+        created:
+          type: string
+          format: date-time
+          description: Creation Date/Time
+        updated:
+          type: string
+          format: date-time
+          description: Last modification Date/Time
+
+    AddPictureRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          format: url
+          description: URL of the picture
+      required:
+        - url
+
+    AddPictureResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the picture created
+
+    UpdateProductAttributeRequest:
+      type: object
+      properties:
+        value:
+          type: string
+          description: Value of the
+          nullable: true

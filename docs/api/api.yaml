@@ -313,7 +313,6 @@ components:
           type: string
           format: url
           description: URL of picture
-          nullable: true
 
     ProductSummary:
       type: object

@@ -137,6 +137,7 @@ paths:
               - price
               - comparable-price
               - category-id
+              - thumbnail-id
               - visible
       requestBody:
         required: true
@@ -259,45 +260,6 @@ components:
           format: int64
           description: ID of the product created
 
-    UpdateProductRequest:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Product title
-        summary:
-          type: string
-          description: Product summary
-        description:
-          type: string
-          description: Product long description
-          nullable: true
-        categoryId:
-          type: integer
-          format: int64
-          description: Category of the product
-        price:
-          type: number
-          format: double
-          description: Price of the product
-          nullable: true
-        comparablePrice:
-          type: number
-          format: double
-          description: Comparable Price
-          nullable: true
-      required:
-        - title
-        - summary
-
-    UpdateProductResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: ID of the product updated
-
     GetProductResponse:
       type: object
       properties:
@@ -308,13 +270,22 @@ components:
     SearchProductRequest:
       type: object
       properties:
-        ids:
+        productIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        categoryIds:
           type: array
           items:
             type: integer
             format: int64
         visible:
           type: boolean
+          nullable: true
+        accountId:
+          type: integer
+          format: int64
           nullable: true
         limit:
           type: integer
@@ -351,9 +322,9 @@ components:
           type: integer
           format: int64
           description: Unique identifier of the product
-        pictureUrl:
-          type: string
-          format: url
+        thumbnail:
+          type: object
+          $ref: "#/components/schemas/PictureSummary"
           nullable: true
         title:
           type: string
@@ -387,6 +358,10 @@ components:
           type: integer
           format: int64
           description: Unique identifier of the product
+        thumbnail:
+          type: object
+          $ref: "#/components/schemas/PictureSummary"
+          nullable: true
         pictures:
           type: array
           items:
@@ -398,6 +373,10 @@ components:
         summary:
           type: string
           description: Product summary
+          nullable: true
+        description:
+          type: string
+          description: Product long description
           nullable: true
         categoryId:
           type: integer

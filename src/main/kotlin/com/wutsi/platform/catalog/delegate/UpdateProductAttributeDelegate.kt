@@ -28,7 +28,7 @@ class UpdateProductAttributeDelegate(
             "description" -> product.description = request.value
             "category-id" -> product.categoryId = request.value?.toLong()
             "visible" -> product.visible = request.value?.toBoolean() ?: false
-            "price" -> product.price = request.value?.toDouble()
+            "price" -> product.price = if (request.value.isNullOrEmpty()) null else request.value.toDouble()
             "comparable-price" -> product.comparablePrice = request.value?.toDouble()
             else -> throw BadRequestException(
                 error = Error(

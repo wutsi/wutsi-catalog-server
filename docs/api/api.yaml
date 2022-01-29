@@ -226,9 +226,11 @@ components:
         title:
           type: string
           description: Product title
+          maxLength: 100
         summary:
           type: string
           description: Product summary
+          maxLength: 160
         description:
           type: string
           description: Product long description

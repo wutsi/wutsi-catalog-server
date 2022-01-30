@@ -231,6 +231,7 @@ components:
           type: string
           description: Product summary
           maxLength: 160
+          nullable: true
         description:
           type: string
           description: Product long description
@@ -252,7 +253,6 @@ components:
           nullable: true
       required:
         - title
-        - summary
 
     CreateProductResponse:
       type: object

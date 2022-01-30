@@ -10,9 +10,8 @@ public data class CreateProductRequest(
     @get:NotBlank
     @get:Size(max = 100)
     public val title: String = "",
-    @get:NotBlank
     @get:Size(max = 160)
-    public val summary: String = "",
+    public val summary: String? = null,
     public val description: String? = null,
     public val categoryId: Long? = null,
     public val price: Double? = null,

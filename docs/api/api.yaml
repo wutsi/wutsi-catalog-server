@@ -330,6 +330,10 @@ components:
         title:
           type: string
           description: Product title
+        summary:
+          type: string
+          description: Product summary
+          nullable: true
         price:
           type: number
           format: double

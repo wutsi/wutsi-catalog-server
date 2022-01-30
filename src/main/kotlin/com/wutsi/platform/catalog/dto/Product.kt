@@ -1,7 +1,12 @@
 package com.wutsi.platform.catalog.dto
 
-import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.format.`annotation`.DateTimeFormat
 import java.time.OffsetDateTime
+import kotlin.Boolean
+import kotlin.Double
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
 
 public data class Product(
     public val id: Long = 0,

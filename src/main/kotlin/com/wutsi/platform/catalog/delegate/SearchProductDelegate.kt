@@ -32,7 +32,7 @@ public class SearchProductDelegate(
         return if (where.isNullOrEmpty())
             select
         else
-            "$select WHERE $where"
+            "$select WHERE $where ORDER BY a.id"
     }
 
     private fun select(): String =

@@ -33,7 +33,7 @@ class UpdateProductAttributeDelegate(
             "category-id" -> product.categoryId = toLong(request.value)
             "visible" -> product.visible = request.value?.toBoolean() ?: false
             "price" -> product.price = toDouble(request.value)
-            "comparable-price" -> toDouble(request.value)
+            "comparable-price" -> product.comparablePrice = toDouble(request.value)
             "thumbnail-id" -> product.thumbnail = toPicture(product, request.value)
             else -> throw BadRequestException(
                 error = Error(

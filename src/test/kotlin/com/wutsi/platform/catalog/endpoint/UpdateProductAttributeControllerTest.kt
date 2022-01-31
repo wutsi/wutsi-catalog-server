@@ -97,7 +97,7 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
 
     @Test
     fun comparablePrice() {
-        val request = UpdateProductAttributeRequest("15000")
+        val request = UpdateProductAttributeRequest("55555")
         val response = rest.postForEntity(url("comparable-price"), request, Any::class.java)
 
         assertEquals(200, response.statusCodeValue)

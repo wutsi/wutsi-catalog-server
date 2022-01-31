@@ -32,8 +32,8 @@ class UpdateProductAttributeDelegate(
             "description" -> product.description = request.value
             "category-id" -> product.categoryId = toLong(request.value)
             "visible" -> product.visible = request.value?.toBoolean() ?: false
-            "price" -> product.price = if (request.value.isNullOrEmpty()) null else request.value.toDouble()
-            "comparable-price" -> product.comparablePrice = request.value?.toDouble()
+            "price" -> product.price = toDouble(request.value)
+            "comparable-price" -> toDouble(request.value)
             "thumbnail-id" -> product.thumbnail = toPicture(product, request.value)
             else -> throw BadRequestException(
                 error = Error(
@@ -54,6 +54,12 @@ class UpdateProductAttributeDelegate(
             null
         else
             value.toLong()
+
+    private fun toDouble(value: String?): Double? =
+        if (value.isNullOrEmpty())
+            null
+        else
+            value.toDouble()
 
     private fun toPicture(product: ProductEntity, value: String?): PictureEntity? {
         val pictureId = toLong(value)

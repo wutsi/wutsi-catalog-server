@@ -14,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.web.client.HttpStatusCodeException
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/UpdateProductAttributeController.sql"])
@@ -103,6 +104,28 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
 
         val product = dao.findById(PRODUCT_ID).get()
         assertEquals(request.value?.toDouble(), product.comparablePrice)
+    }
+
+    @Test
+    fun thumbnailId() {
+        val request = UpdateProductAttributeRequest("102")
+        val response = rest.postForEntity(url("thumbnail-id"), request, Any::class.java)
+
+        assertEquals(200, response.statusCodeValue)
+
+        val product = dao.findById(PRODUCT_ID).get()
+        assertEquals(request.value?.toLong(), product.thumbnail?.id)
+    }
+
+    @Test
+    fun resetThumbnailId() {
+        val request = UpdateProductAttributeRequest("")
+        val response = rest.postForEntity(url("thumbnail-id"), request, Any::class.java)
+
+        assertEquals(200, response.statusCodeValue)
+
+        val product = dao.findById(PRODUCT_ID).get()
+        assertNull(product.thumbnail)
     }
 
     @Test

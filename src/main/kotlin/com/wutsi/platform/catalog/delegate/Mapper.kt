@@ -13,6 +13,7 @@ fun PictureEntity.toPictureSummary() = PictureSummary(
 
 fun ProductEntity.toProductSummary() = ProductSummary(
     id = this.id ?: -1,
+    accountId = this.accountId,
     title = this.title,
     summary = this.summary,
     price = this.price,
@@ -25,6 +26,7 @@ fun ProductEntity.toProductSummary() = ProductSummary(
 
 fun ProductEntity.toProduct() = Product(
     id = this.id ?: -1,
+    accountId = this.accountId,
     title = this.title,
     price = this.price,
     comparablePrice = this.comparablePrice,

@@ -8,6 +8,7 @@ import kotlin.String
 
 public data class ProductSummary(
     public val id: Long = 0,
+    public val accountId: Long = 0,
     public val thumbnail: PictureSummary? = null,
     public val title: String = "",
     public val summary: String? = null,

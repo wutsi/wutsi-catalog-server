@@ -323,6 +323,10 @@ components:
           type: integer
           format: int64
           description: Unique identifier of the product
+        accountId:
+          type: integer
+          format: int64
+          description: ID of the merchant account
         thumbnail:
           type: object
           $ref: "#/components/schemas/PictureSummary"
@@ -363,6 +367,10 @@ components:
           type: integer
           format: int64
           description: Unique identifier of the product
+        accountId:
+          type: integer
+          format: int64
+          description: ID of the merchant account
         thumbnail:
           type: object
           $ref: "#/components/schemas/PictureSummary"

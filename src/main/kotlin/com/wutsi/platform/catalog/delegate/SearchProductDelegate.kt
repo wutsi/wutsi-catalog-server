@@ -62,7 +62,7 @@ public class SearchProductDelegate(
         query.setParameter("tenant_id", securityManager.tenantId())
 
         if (request.accountId != null)
-            query.setParameter("account_id", securityManager.accountId())
+            query.setParameter("account_id", request.accountId)
 
         if (request.visible != null)
             query.setParameter("visible", request.visible)

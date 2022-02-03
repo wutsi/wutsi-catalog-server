@@ -27,9 +27,9 @@ class UpdateProductAttributeDelegate(
         val product = getProduct(id)
 
         when (name.lowercase()) {
-            "title" -> product.title = request.value ?: "NO TITLE"
-            "summary" -> product.summary = request.value
-            "description" -> product.description = request.value
+            "title" -> product.title = toString(request.value) ?: "NO TITLE"
+            "summary" -> product.summary = toString(request.value)
+            "description" -> product.description = toString(request.value)
             "category-id" -> product.categoryId = toLong(request.value)
             "visible" -> product.visible = request.value?.toBoolean() ?: false
             "price" -> product.price = toDouble(request.value)
@@ -48,6 +48,12 @@ class UpdateProductAttributeDelegate(
         }
         dao.save(product)
     }
+
+    private fun toString(value: String?): String? =
+        if (value.isNullOrEmpty())
+            null
+        else
+            value
 
     private fun toLong(value: String?): Long? =
         if (value.isNullOrEmpty())

@@ -29,7 +29,6 @@ public class CreateProductDelegate(
                 title = request.title,
                 summary = request.summary,
                 description = request.description,
-                categoryId = request.categoryId,
                 comparablePrice = request.comparablePrice,
                 price = request.price,
                 visible = true,

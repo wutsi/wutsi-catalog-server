@@ -31,7 +31,6 @@ class GetProductControllerTest : AbstractSecuredController() {
         assertEquals("Yo", product.title)
         assertEquals("Man", product.summary)
         assertEquals("This is the description", product.description)
-        assertEquals(101L, product.categoryId)
         assertEquals(1000.0, product.price)
         assertEquals(1500.0, product.comparablePrice)
         assertEquals("XAF", product.currency)

@@ -70,7 +70,7 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         // THEN
         assertEquals(200, response.statusCodeValue)
 
-        val products = response.body!!.products
+        val products = response.body!!.products.sortedBy { it.id }
         assertEquals(3, products.size)
         assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 200)))
     }

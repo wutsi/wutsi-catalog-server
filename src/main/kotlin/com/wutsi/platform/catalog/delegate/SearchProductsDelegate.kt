@@ -27,7 +27,7 @@ public class SearchProductsDelegate(
     }
 
     private fun sql(request: SearchProductRequest): String {
-        val select = select()
+        val select = select(request)
         val where = where(request)
         return if (where.isNullOrEmpty())
             select
@@ -35,8 +35,11 @@ public class SearchProductsDelegate(
             "$select WHERE $where ORDER BY a.id"
     }
 
-    private fun select(): String =
-        "SELECT a FROM ProductEntity a"
+    private fun select(request: SearchProductRequest): String =
+        if (request.categoryIds.isEmpty())
+            "SELECT a FROM ProductEntity a"
+        else
+            "SELECT a FROM ProductEntity a JOIN a.categories c"
 
     private fun where(request: SearchProductRequest): String {
         val criteria = mutableListOf("a.isDeleted=:is_deleted")
@@ -52,7 +55,7 @@ public class SearchProductsDelegate(
             criteria.add("a.id IN :product_ids")
 
         if (request.categoryIds.isNotEmpty())
-            criteria.add("a.categoryId IN :category_ids")
+            criteria.add("c.id IN :category_ids")
 
         return criteria.joinToString(separator = " AND ")
     }

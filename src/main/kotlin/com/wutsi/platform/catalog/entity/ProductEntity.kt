@@ -22,7 +22,6 @@ data class ProductEntity(
 
     val tenantId: Long = -1,
     val accountId: Long = -1,
-    var categoryId: Long? = null,
     var title: String = "",
     var summary: String? = null,
     var description: String? = null,

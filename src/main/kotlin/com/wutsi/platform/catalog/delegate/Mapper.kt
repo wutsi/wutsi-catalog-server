@@ -36,7 +36,6 @@ fun ProductEntity.toProduct() = Product(
     currency = this.currency,
     created = this.created,
     updated = this.updated,
-    categoryId = this.categoryId,
     summary = this.summary,
     description = this.description,
     thumbnail = this.thumbnail?.toPictureSummary(),

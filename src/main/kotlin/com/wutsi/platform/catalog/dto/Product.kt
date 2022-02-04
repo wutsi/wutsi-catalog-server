@@ -12,7 +12,6 @@ public data class Product(
     public val title: String = "",
     public val summary: String? = null,
     public val description: String? = null,
-    public val categoryId: Long? = null,
     public val price: Double? = null,
     public val comparablePrice: Double? = null,
     public val currency: String = "",

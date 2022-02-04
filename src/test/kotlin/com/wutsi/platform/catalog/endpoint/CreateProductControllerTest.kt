@@ -39,7 +39,6 @@ public class CreateProductControllerTest : AbstractSecuredController() {
             description = "This is the long description of the product",
             price = 15000.0,
             comparablePrice = 20000.0,
-            categoryId = 100,
         )
         val response = rest.postForEntity(url, request, CreateProductResponse::class.java)
 
@@ -55,7 +54,6 @@ public class CreateProductControllerTest : AbstractSecuredController() {
         assertEquals(request.price, product.price)
         assertEquals(request.comparablePrice, product.comparablePrice)
         assertEquals("XAF", product.currency)
-        assertEquals(request.categoryId, product.categoryId)
         assertTrue(product.visible)
         assertFalse(product.isDeleted)
         assertNull(product.deleted)

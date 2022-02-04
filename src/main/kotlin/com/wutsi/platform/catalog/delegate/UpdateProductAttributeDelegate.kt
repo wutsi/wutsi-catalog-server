@@ -30,7 +30,6 @@ class UpdateProductAttributeDelegate(
             "title" -> product.title = toString(request.value) ?: "NO TITLE"
             "summary" -> product.summary = toString(request.value)
             "description" -> product.description = toString(request.value)
-            "category-id" -> product.categoryId = toLong(request.value)
             "visible" -> product.visible = request.value?.toBoolean() ?: false
             "price" -> product.price = toDouble(request.value)
             "comparable-price" -> product.comparablePrice = toDouble(request.value)

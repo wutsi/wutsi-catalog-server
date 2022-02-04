@@ -74,17 +74,6 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
     }
 
     @Test
-    fun categoryId() {
-        val request = UpdateProductAttributeRequest("555")
-        val response = rest.postForEntity(url("category-id"), request, Any::class.java)
-
-        assertEquals(200, response.statusCodeValue)
-
-        val product = dao.findById(PRODUCT_ID).get()
-        assertEquals(request.value?.toLong(), product.categoryId)
-    }
-
-    @Test
     fun price() {
         val request = UpdateProductAttributeRequest("10000")
         val response = rest.postForEntity(url("price"), request, Any::class.java)

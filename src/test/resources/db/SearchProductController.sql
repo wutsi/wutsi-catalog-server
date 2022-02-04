@@ -1,17 +1,26 @@
-INSERT INTO T_PRODUCT(id, tenant_id, account_id, category_id, title, summary, description, price, comparable_price, currency, visible, is_deleted)
+INSERT INTO T_CATEGORY(id, tenant_id, account_id, title, is_deleted)
     VALUES
-        (100, 1, 1, 100, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
-        (101, 1, 1, 101, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
-        (109, 1, 1, 100, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
+        (100, 1, 1,  'Yo',  false),
+        (101, 1, 1,  'Man', false),
+        (200, 1, 1,  'x',   false),
+        (300, 1, 1,  'xXx', false),
+        (900, 1, 1,  'XXX', true)
+;
 
-        (200, 1, 2, 100, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
+INSERT INTO T_PRODUCT(id, tenant_id, account_id, title, summary, description, price, comparable_price, currency, visible, is_deleted)
+    VALUES
+        (100, 1, 1, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
+        (101, 1, 1, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
+        (109, 1, 1, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
 
-        (300, 1, 3, 100, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', false, false),
+        (200, 1, 2, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
 
-        (900, 1, 9, null, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
+        (300, 1, 3, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', false, false),
 
-        (2100, 2, 10, 101, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
-        (2200, 2, 10, 101, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true)
+        (900, 1, 9, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
+
+        (2100, 2, 10, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
+        (2200, 2, 10, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true)
 ;
 
 INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
@@ -20,4 +29,12 @@ INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
         (101, 100, 'https://img.com/2.png', false, null),
         (102, 100, 'https://img.com/3.png', true, now());
 
-UPDATE T_PRODUCT SET thumbnail_fk=100
+UPDATE T_PRODUCT SET thumbnail_fk=100;
+
+INSERT INTO T_PRODUCT_CATEGORY(product_fk, category_fk)
+    VALUES
+        (100, 100),
+        (101, 101),
+        (200, 200),
+        (200, 101),
+        (101, 300);

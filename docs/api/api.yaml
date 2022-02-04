@@ -276,7 +276,6 @@ paths:
               - description
               - price
               - comparable-price
-              - category-id
               - thumbnail-id
               - visible
       requestBody:
@@ -432,11 +431,6 @@ components:
           type: string
           description: Product long description
           nullable: true
-        categoryId:
-          type: integer
-          format: int64
-          description: Category of the product
-          nullable: true
         price:
           type: number
           format: double
@@ -589,11 +583,6 @@ components:
         description:
           type: string
           description: Product long description
-          nullable: true
-        categoryId:
-          type: integer
-          format: int64
-          description: Category of the product
           nullable: true
         price:
           type: number

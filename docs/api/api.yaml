@@ -676,7 +676,6 @@ components:
           type: string
         visible:
           type: boolean
-          nullable: true
 
     GetCategoryResponse:
       type: object

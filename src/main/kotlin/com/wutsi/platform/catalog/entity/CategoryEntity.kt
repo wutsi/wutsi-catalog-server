@@ -17,7 +17,7 @@ data class CategoryEntity(
     val tenantId: Long = -1,
     val accountId: Long = -1,
     var title: String = "",
-    var sortOrder: Int = 0,
+    var visible: Boolean = true,
     var isDeleted: Boolean = false,
     val created: OffsetDateTime = OffsetDateTime.now(),
     val updated: OffsetDateTime = OffsetDateTime.now(),

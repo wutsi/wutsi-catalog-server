@@ -1,8 +1,11 @@
 package com.wutsi.platform.catalog.delegate
 
+import com.wutsi.platform.catalog.dto.Category
+import com.wutsi.platform.catalog.dto.CategorySummary
 import com.wutsi.platform.catalog.dto.PictureSummary
 import com.wutsi.platform.catalog.dto.Product
 import com.wutsi.platform.catalog.dto.ProductSummary
+import com.wutsi.platform.catalog.entity.CategoryEntity
 import com.wutsi.platform.catalog.entity.PictureEntity
 import com.wutsi.platform.catalog.entity.ProductEntity
 
@@ -39,4 +42,15 @@ fun ProductEntity.toProduct() = Product(
     thumbnail = this.thumbnail?.toPictureSummary(),
     pictures = this.pictures.filter { !it.isDeleted }.map { it.toPictureSummary() },
     visible = this.visible,
+    categories = this.categories.filter { !it.isDeleted }.map { it.toCategorySummary() },
+)
+
+fun CategoryEntity.toCategory() = Category(
+    id = this.id ?: -1,
+    title = this.title
+)
+
+fun CategoryEntity.toCategorySummary() = CategorySummary(
+    id = this.id ?: -1,
+    title = this.title
 )

@@ -14,7 +14,7 @@ class AddPictureDelegate(
     dao: ProductRepository,
     securityManager: SecurityManager,
     private val pictureDao: PictureRepository
-) : AbstractDelegate(dao, securityManager) {
+) : AbstractProductDelegate(dao, securityManager) {
     @Transactional
     fun invoke(id: Long, request: AddPictureRequest): AddPictureResponse {
         val product = getProduct(id)

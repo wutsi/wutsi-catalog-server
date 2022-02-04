@@ -18,7 +18,7 @@ class UpdateProductAttributeDelegate(
     dao: ProductRepository,
     securityManager: SecurityManager,
     private val pictureDao: PictureRepository,
-) : AbstractDelegate(dao, securityManager) {
+) : AbstractProductDelegate(dao, securityManager) {
     fun invoke(
         id: Long,
         name: String,

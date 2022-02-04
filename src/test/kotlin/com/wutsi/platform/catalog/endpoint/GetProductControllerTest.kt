@@ -44,6 +44,11 @@ class GetProductControllerTest : AbstractSecuredController() {
         assertEquals(2, pictures.size)
         assertEquals("https://img.com/1.png", pictures[0].url)
         assertEquals("https://img.com/2.png", pictures[1].url)
+
+        val categories = product.categories
+        assertEquals(2, categories.size)
+        assertEquals("Yo", categories[0].title)
+        assertEquals("Man", categories[1].title)
     }
 
     @Test

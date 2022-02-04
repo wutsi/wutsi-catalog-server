@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 class DeleteProductDelegate(
     dao: ProductRepository,
     securityManager: SecurityManager,
-) : AbstractDelegate(dao, securityManager) {
+) : AbstractProductDelegate(dao, securityManager) {
     @Transactional
     fun invoke(id: Long) {
         val product = getProduct(id)

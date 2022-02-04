@@ -8,6 +8,7 @@ public data class Product(
     public val accountId: Long = 0,
     public val thumbnail: PictureSummary? = null,
     public val pictures: List<PictureSummary> = emptyList(),
+    public val categories: List<CategorySummary> = emptyList(),
     public val title: String = "",
     public val summary: String? = null,
     public val description: String? = null,
@@ -19,5 +20,5 @@ public data class Product(
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     public val created: OffsetDateTime = OffsetDateTime.now(),
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
-    public val updated: OffsetDateTime = OffsetDateTime.now()
+    public val updated: OffsetDateTime = OffsetDateTime.now(),
 )

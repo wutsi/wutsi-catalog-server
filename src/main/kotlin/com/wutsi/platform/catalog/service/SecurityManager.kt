@@ -1,5 +1,6 @@
 package com.wutsi.platform.catalog.service
 
+import com.wutsi.platform.catalog.entity.CategoryEntity
 import com.wutsi.platform.catalog.entity.PictureEntity
 import com.wutsi.platform.catalog.entity.ProductEntity
 import com.wutsi.platform.catalog.error.ErrorURN
@@ -27,7 +28,16 @@ class SecurityManager(
         if (picture.product.accountId != accountId())
             throw ForbiddenException(
                 error = Error(
-                    code = ErrorURN.ILLEGAL_PRODUCT_ACCESS.urn
+                    code = ErrorURN.ILLEGAL_PICTURE_ACCESS.urn
+                )
+            )
+    }
+
+    fun checkOwnership(category: CategoryEntity) {
+        if (category.accountId != accountId())
+            throw ForbiddenException(
+                error = Error(
+                    code = ErrorURN.ILLEGAL_CATEGORY_ACCESS.urn
                 )
             )
     }

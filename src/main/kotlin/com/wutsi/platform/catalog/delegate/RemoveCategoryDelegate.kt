@@ -1,21 +1,22 @@
 package com.wutsi.platform.catalog.`delegate`
 
+import com.wutsi.platform.catalog.dao.CategoryRepository
 import com.wutsi.platform.catalog.dao.ProductRepository
-import com.wutsi.platform.catalog.dto.GetProductResponse
 import com.wutsi.platform.catalog.service.SecurityManager
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
+import javax.transaction.Transactional
 
 @Service
-class GetProductDelegate(
+public class RemoveCategoryDelegate(
     dao: ProductRepository,
     securityManager: SecurityManager,
+    private val categoryDao: CategoryRepository
 ) : AbstractProductDelegate(dao, securityManager) {
     @Transactional
-    fun invoke(id: Long): GetProductResponse {
+    public fun invoke(id: Long, categoryId: Long) {
         val product = getProduct(id)
-        return GetProductResponse(
-            product = product.toProduct()
-        )
+        val category = categoryDao.findById(categoryId).get()
+        if (product.categories.remove(category))
+            dao.save(product)
     }
 }

@@ -1,15 +1,12 @@
 package com.wutsi.platform.catalog.dto
 
-import org.springframework.format.`annotation`.DateTimeFormat
+import org.springframework.format.annotation.DateTimeFormat
 import java.time.OffsetDateTime
-import kotlin.Double
-import kotlin.Long
-import kotlin.String
 
 public data class ProductSummary(
     public val id: Long = 0,
     public val accountId: Long = 0,
-    public val thumbnail: PictureSummary = PictureSummary(),
+    public val thumbnail: PictureSummary? = null,
     public val title: String = "",
     public val summary: String? = null,
     public val price: Double? = null,

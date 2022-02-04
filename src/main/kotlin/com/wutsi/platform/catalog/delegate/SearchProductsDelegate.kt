@@ -9,7 +9,7 @@ import javax.persistence.EntityManager
 import javax.persistence.Query
 
 @Service
-public class SearchProductDelegate(
+public class SearchProductsDelegate(
     private val securityManager: SecurityManager,
     private val em: EntityManager,
 ) {

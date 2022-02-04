@@ -181,7 +181,7 @@ paths:
 
   /v1/products/search:
     post:
-      operationId: "search-product"
+      operationId: "search-products"
       description: Search Product
       requestBody:
         required: true

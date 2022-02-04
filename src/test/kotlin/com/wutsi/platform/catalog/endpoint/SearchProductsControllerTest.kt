@@ -12,7 +12,7 @@ import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/SearchProductController.sql"])
-class SearchProductControllerTest : AbstractSecuredController() {
+class SearchProductsControllerTest : AbstractSecuredController() {
     @LocalServerPort
     val port: Int = 0
 

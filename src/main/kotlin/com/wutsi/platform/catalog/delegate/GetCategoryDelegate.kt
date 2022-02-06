@@ -12,6 +12,6 @@ public class GetCategoryDelegate(
 ) : AbstractCategoryDelegate(dao, securityManager) {
     public fun invoke(id: Long): GetCategoryResponse =
         GetCategoryResponse(
-            category = getCategory(id).toCategory()
+            category = getCategory(id, false).toCategory()
         )
 }

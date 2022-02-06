@@ -15,7 +15,7 @@ class AbstractProductDelegate(
     protected val dao: ProductRepository,
     protected val securityManager: SecurityManager,
 ) {
-    fun getProduct(id: Long): ProductEntity {
+    fun getProduct(id: Long, checkOwnership: Boolean = true): ProductEntity {
         val product = dao.findById(id)
             .orElseThrow {
                 notFound(id)
@@ -24,7 +24,8 @@ class AbstractProductDelegate(
         if (product.isDeleted)
             throw notFound(id)
 
-        securityManager.checkOwnership(product)
+        if (checkOwnership)
+            securityManager.checkOwnership(product)
 
         return product
     }

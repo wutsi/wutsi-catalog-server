@@ -13,7 +13,7 @@ class GetProductDelegate(
 ) : AbstractProductDelegate(dao, securityManager) {
     @Transactional
     fun invoke(id: Long): GetProductResponse {
-        val product = getProduct(id)
+        val product = getProduct(id, false)
         return GetProductResponse(
             product = product.toProduct()
         )

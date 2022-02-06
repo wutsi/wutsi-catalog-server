@@ -15,7 +15,7 @@ class AbstractCategoryDelegate(
     protected val dao: CategoryRepository,
     protected val securityManager: SecurityManager,
 ) {
-    fun getCategory(id: Long): CategoryEntity {
+    fun getCategory(id: Long, checkOwnership: Boolean = true): CategoryEntity {
         val category = dao.findById(id)
             .orElseThrow {
                 notFound(id)
@@ -24,7 +24,8 @@ class AbstractCategoryDelegate(
         if (category.isDeleted)
             throw notFound(id)
 
-        securityManager.checkOwnership(category)
+        if (checkOwnership)
+            securityManager.checkOwnership(category)
 
         return category
     }

@@ -37,21 +37,6 @@ public class GetCategoryControllerTest : AbstractSecuredController() {
     }
 
     @Test
-    public fun illegalCategory() {
-        // WHEN
-        val url = "http://localhost:$port/v1/categories/200"
-        val ex = assertThrows<HttpClientErrorException> {
-            rest.getForEntity(url, GetCategoryResponse::class.java)
-        }
-
-        // THEN
-        assertEquals(403, ex.rawStatusCode)
-
-        val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
-        assertEquals(ErrorURN.ILLEGAL_CATEGORY_ACCESS.urn, response.error.code)
-    }
-
-    @Test
     public fun notFound() {
         // WHEN
         val url = "http://localhost:$port/v1/categories/999999"

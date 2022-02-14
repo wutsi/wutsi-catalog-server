@@ -32,7 +32,6 @@ public class GetCategoryControllerTest : AbstractSecuredController() {
         val category = response.body!!.category
         assertEquals("Electronic", category.title)
         assertNull(category.parentId)
-        assertEquals(0, category.attributes.size)
     }
 
     @Test
@@ -47,7 +46,6 @@ public class GetCategoryControllerTest : AbstractSecuredController() {
         val category = response.body!!.category
         assertEquals("Cell Phone", category.title)
         assertEquals(100, category.parentId)
-        assertEquals(0, category.attributes.size)
     }
 
     @Test

@@ -191,7 +191,6 @@ paths:
               - comparable-price
               - thumbnail-id
               - visible
-              - category-id
               - sub-category-id
       requestBody:
         required: true
@@ -517,10 +516,6 @@ components:
           format: int64
           description: ID of the parent category
           nullable: true
-        attributes:
-          type: array
-          items:
-            $ref: "#/components/schemas/AttributeType"
 
     GetCategoryResponse:
       type: object
@@ -559,21 +554,3 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CategorySummary"
-
-    AttributeType:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-        title:
-          type: string
-        type:
-          type: string
-          enum:
-            - TEXT
-            - NUMERIC
-            - BOOLEAN
-            - DATE

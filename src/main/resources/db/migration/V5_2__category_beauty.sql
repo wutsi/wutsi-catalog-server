@@ -8,7 +8,7 @@ INSERT INTO T_CATEGORY(id, parent_fk, title, title_french)
         (1230, 1200, 'Skin Care', 'Soins de Peau'),
         (1240, 1200, 'Hair Care', 'Soins de Cheveux'),
         (1241, 1200, 'Wigs', 'Perruques'),
-        (1242, 1200, 'Hair Extensions', 'Extensions de Cheuveux'),
+        (1242, 1200, 'Hair Extensions', 'Extensions de Cheveux'),
         (1250, 1200, 'Oral Care', 'Soins de Bouche'),
         (1260, 1200, 'Fragrance', 'Fragrance')
     ;

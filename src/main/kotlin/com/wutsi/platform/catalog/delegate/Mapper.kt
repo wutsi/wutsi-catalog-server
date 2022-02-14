@@ -8,6 +8,7 @@ import com.wutsi.platform.catalog.dto.ProductSummary
 import com.wutsi.platform.catalog.entity.CategoryEntity
 import com.wutsi.platform.catalog.entity.PictureEntity
 import com.wutsi.platform.catalog.entity.ProductEntity
+import javax.servlet.http.HttpServletRequest
 
 fun PictureEntity.toPictureSummary() = PictureSummary(
     id = this.id ?: -1,
@@ -27,7 +28,7 @@ fun ProductEntity.toProductSummary() = ProductSummary(
     thumbnail = this.thumbnail?.toPictureSummary()
 )
 
-fun ProductEntity.toProduct() = Product(
+fun ProductEntity.toProduct(request: HttpServletRequest) = Product(
     id = this.id ?: -1,
     accountId = this.accountId,
     title = this.title,
@@ -41,15 +42,24 @@ fun ProductEntity.toProduct() = Product(
     thumbnail = this.thumbnail?.toPictureSummary(),
     pictures = this.pictures.filter { !it.isDeleted }.map { it.toPictureSummary() },
     visible = this.visible,
-    categories = this.categories.filter { !it.isDeleted }.map { it.toCategorySummary() },
+    category = this.category.toCategorySummary(request),
+    subCategory = this.subCategory.toCategorySummary(request),
 )
 
-fun CategoryEntity.toCategory() = Category(
+fun CategoryEntity.toCategory(request: HttpServletRequest) = Category(
     id = this.id ?: -1,
-    title = this.title
+    parentId = this.parentId,
+    title = this.toTitle(request)
 )
 
-fun CategoryEntity.toCategorySummary() = CategorySummary(
+fun CategoryEntity.toCategorySummary(request: HttpServletRequest) = CategorySummary(
     id = this.id ?: -1,
-    title = this.title
+    parentId = this.parentId,
+    title = this.toTitle(request)
 )
+
+fun CategoryEntity.toTitle(request: HttpServletRequest): String =
+    if (request.locale.language == "fr")
+        this.titleFrench
+    else
+        this.title

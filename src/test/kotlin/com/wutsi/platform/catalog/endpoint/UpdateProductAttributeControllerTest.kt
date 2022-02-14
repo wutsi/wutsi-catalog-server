@@ -52,6 +52,17 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
     }
 
     @Test
+    fun summaryEmpty() {
+        val request = UpdateProductAttributeRequest("")
+        val response = rest.postForEntity(url("summary"), request, Any::class.java)
+
+        assertEquals(200, response.statusCodeValue)
+
+        val product = dao.findById(PRODUCT_ID).get()
+        assertNull(product.summary)
+    }
+
+    @Test
     fun description() {
         val request = UpdateProductAttributeRequest("THIS IS THE VALUE")
         val response = rest.postForEntity(url("description"), request, Any::class.java)
@@ -108,13 +119,63 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
 
     @Test
     fun resetThumbnailId() {
-        val request = UpdateProductAttributeRequest("")
+        val request = UpdateProductAttributeRequest(null)
         val response = rest.postForEntity(url("thumbnail-id"), request, Any::class.java)
 
         assertEquals(200, response.statusCodeValue)
 
         val product = dao.findById(PRODUCT_ID).get()
         assertNull(product.thumbnail)
+    }
+
+    @Test
+    fun invalidThumbnailId() {
+        val request = UpdateProductAttributeRequest("99999")
+        val ex = assertThrows<HttpStatusCodeException> {
+            rest.postForEntity(url("thumbnail-id"), request, Any::class.java)
+        }
+
+        assertEquals(400, ex.rawStatusCode)
+
+        val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
+        assertEquals(ErrorURN.PICTURE_NOT_FOUND.urn, response.error.code)
+    }
+
+    @Test
+    fun subCategoryId() {
+        val request = UpdateProductAttributeRequest("102")
+        val response = rest.postForEntity(url("sub-category-id"), request, Any::class.java)
+
+        assertEquals(200, response.statusCodeValue)
+
+        val product = dao.findById(PRODUCT_ID).get()
+        assertEquals(request.value?.toLong(), product.subCategory?.id)
+    }
+
+    @Test
+    fun invalidSubCategoryId() {
+        val request = UpdateProductAttributeRequest("201")
+        val ex = assertThrows<HttpStatusCodeException> {
+            rest.postForEntity(url("sub-category-id"), request, Any::class.java)
+        }
+
+        assertEquals(400, ex.rawStatusCode)
+
+        val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
+        assertEquals(ErrorURN.INVALID_SUB_CATEGORY.urn, response.error.code)
+    }
+
+    @Test
+    fun noSubCategoryId() {
+        val request = UpdateProductAttributeRequest("")
+        val ex = assertThrows<HttpStatusCodeException> {
+            rest.postForEntity(url("sub-category-id"), request, Any::class.java)
+        }
+
+        assertEquals(400, ex.rawStatusCode)
+
+        val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
+        assertEquals(ErrorURN.INVALID_SUB_CATEGORY.urn, response.error.code)
     }
 
     @Test
@@ -154,6 +215,19 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
 
         val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
         assertEquals(ErrorURN.PRODUCT_NOT_FOUND.urn, response.error.code)
+    }
+
+    @Test
+    fun badAttribute() {
+        val request = UpdateProductAttributeRequest("15000")
+        val ex = assertThrows<HttpStatusCodeException> {
+            rest.postForEntity(url("xxxxx", 100), request, Any::class.java)
+        }
+
+        assertEquals(400, ex.rawStatusCode)
+
+        val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
+        assertEquals(ErrorURN.INVALID_ATTRIBUTE.urn, response.error.code)
     }
 
     private fun url(name: String, productId: Long = PRODUCT_ID) =

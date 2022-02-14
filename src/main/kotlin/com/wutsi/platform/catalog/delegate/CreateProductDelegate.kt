@@ -1,10 +1,8 @@
 package com.wutsi.platform.catalog.`delegate`
 
-import com.wutsi.platform.catalog.dao.ProductRepository
 import com.wutsi.platform.catalog.dto.CreateProductRequest
 import com.wutsi.platform.catalog.dto.CreateProductResponse
 import com.wutsi.platform.catalog.entity.ProductEntity
-import com.wutsi.platform.catalog.service.SecurityManager
 import com.wutsi.platform.tenant.WutsiTenantApi
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,10 +10,8 @@ import java.time.OffsetDateTime
 
 @Service
 public class CreateProductDelegate(
-    private val dao: ProductRepository,
-    private val securityManager: SecurityManager,
     private val tenantApi: WutsiTenantApi
-) {
+) : AbstractProductDelegate() {
     @Transactional
     public fun invoke(request: CreateProductRequest): CreateProductResponse {
         val tenantId = securityManager.tenantId()
@@ -34,6 +30,8 @@ public class CreateProductDelegate(
                 visible = true,
                 created = OffsetDateTime.now(),
                 updated = OffsetDateTime.now(),
+                category = getCategory(request.categoryId),
+                subCategory = getCategory(request.subCategoryId)
             )
         )
 

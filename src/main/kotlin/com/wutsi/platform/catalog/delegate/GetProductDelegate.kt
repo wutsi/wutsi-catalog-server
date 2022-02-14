@@ -1,21 +1,19 @@
 package com.wutsi.platform.catalog.`delegate`
 
-import com.wutsi.platform.catalog.dao.ProductRepository
 import com.wutsi.platform.catalog.dto.GetProductResponse
-import com.wutsi.platform.catalog.service.SecurityManager
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import javax.servlet.http.HttpServletRequest
 
 @Service
 class GetProductDelegate(
-    dao: ProductRepository,
-    securityManager: SecurityManager,
-) : AbstractProductDelegate(dao, securityManager) {
+    private val request: HttpServletRequest
+) : AbstractProductDelegate() {
     @Transactional
     fun invoke(id: Long): GetProductResponse {
         val product = getProduct(id, false)
         return GetProductResponse(
-            product = product.toProduct()
+            product = product.toProduct(request)
         )
     }
 }

@@ -1,7 +1,9 @@
-INSERT INTO T_CATEGORY(id, tenant_id, account_id, title, is_deleted)
+INSERT INTO T_CATEGORY(id, parent_fk, title, title_french)
     VALUES
-        (100, 1, 1,  'Yo', false),
-        (110, 1, 1,  'Man', false),
-        (200, 1, 2,  'Another user', false),
-        (900, 1, 1,  'XXX', true)
+        (100, null, 'Electronic', 'Électronique'),
+        (101, 100, 'Cell Phone', 'Téléphone portable'),
+        (102, 100, 'TV', 'TV'),
+        (103, 100, 'Camera', 'Appareil Photo'),
+
+        (110, null, 'Home', 'Maison')
 ;

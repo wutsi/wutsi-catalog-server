@@ -53,8 +53,8 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val products = response.body!!.products
-        assertEquals(3, products.size)
-        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 200)))
+        assertEquals(4, products.size)
+        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 200, 201)))
     }
 
     @Test
@@ -62,8 +62,8 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         // WHEN
         val request = SearchProductRequest(
             visible = true,
-            categoryIds = listOf(100, 101),
-            productIds = listOf(100, 101, 102, 103, 104, 900, 200, 300)
+            categoryIds = listOf(102, 200),
+            productIds = listOf(100, 101, 102, 200, 201, 202, 203)
         )
         val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
 
@@ -72,6 +72,6 @@ class SearchProductsControllerTest : AbstractSecuredController() {
 
         val products = response.body!!.products.sortedBy { it.id }
         assertEquals(3, products.size)
-        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 200)))
+        assertTrue(products.map { it.id }.containsAll(listOf(101L, 200L, 201L)))
     }
 }

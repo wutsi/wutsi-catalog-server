@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CategoryRepository : CrudRepository<CategoryEntity, Long> {
-    fun findByAccountId(accountId: Long): List<CategoryEntity>
+    fun findByParentId(parentId: Long?): List<CategoryEntity>
 }

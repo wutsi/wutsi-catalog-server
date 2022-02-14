@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.test.context.jdbc.Sql
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(value = ["/db/clean.sql", "/db/CreateProductController.sql"])
 public class CreateProductControllerTest : AbstractSecuredController() {
     @LocalServerPort
     public val port: Int = 0
@@ -39,6 +41,8 @@ public class CreateProductControllerTest : AbstractSecuredController() {
             description = "This is the long description of the product",
             price = 15000.0,
             comparablePrice = 20000.0,
+            categoryId = 100L,
+            subCategoryId = 101L,
         )
         val response = rest.postForEntity(url, request, CreateProductResponse::class.java)
 
@@ -54,6 +58,8 @@ public class CreateProductControllerTest : AbstractSecuredController() {
         assertEquals(request.price, product.price)
         assertEquals(request.comparablePrice, product.comparablePrice)
         assertEquals("XAF", product.currency)
+        assertEquals(request.categoryId, product.category.id)
+        assertEquals(request.subCategoryId, product.subCategory.id)
         assertTrue(product.visible)
         assertFalse(product.isDeleted)
         assertNull(product.deleted)

@@ -7,8 +7,6 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.JoinTable
-import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
@@ -41,11 +39,11 @@ data class ProductEntity(
     @JoinColumn(name = "thumbnail_fk")
     var thumbnail: PictureEntity? = null,
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "T_PRODUCT_CATEGORY",
-        joinColumns = arrayOf(JoinColumn(name = "product_fk")),
-        inverseJoinColumns = arrayOf(JoinColumn(name = "category_fk"))
-    )
-    var categories: MutableList<CategoryEntity> = mutableListOf()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_fk")
+    var category: CategoryEntity = CategoryEntity(),
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_category_fk")
+    var subCategory: CategoryEntity = CategoryEntity(),
 )

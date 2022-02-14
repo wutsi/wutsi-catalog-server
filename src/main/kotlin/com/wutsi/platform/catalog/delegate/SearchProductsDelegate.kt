@@ -27,35 +27,32 @@ public class SearchProductsDelegate(
     }
 
     private fun sql(request: SearchProductRequest): String {
-        val select = select(request)
+        val select = select()
         val where = where(request)
         return if (where.isNullOrEmpty())
             select
         else
-            "$select WHERE $where ORDER BY a.id"
+            "$select WHERE $where ORDER BY P.id"
     }
 
-    private fun select(request: SearchProductRequest): String =
-        if (request.categoryIds.isEmpty())
-            "SELECT a FROM ProductEntity a"
-        else
-            "SELECT a FROM ProductEntity a JOIN a.categories c"
+    private fun select(): String =
+        "SELECT P FROM ProductEntity P"
 
     private fun where(request: SearchProductRequest): String {
-        val criteria = mutableListOf("a.isDeleted=:is_deleted")
+        val criteria = mutableListOf("P.isDeleted=:is_deleted")
 
-        criteria.add("a.tenantId = :tenant_id")
+        criteria.add("P.tenantId = :tenant_id")
         if (request.accountId != null)
-            criteria.add("a.accountId = :account_id")
+            criteria.add("P.accountId = :account_id")
 
         if (request.visible != null)
-            criteria.add("a.visible = :visible")
+            criteria.add("P.visible = :visible")
 
         if (request.productIds.isNotEmpty())
-            criteria.add("a.id IN :product_ids")
+            criteria.add("P.id IN :product_ids")
 
         if (request.categoryIds.isNotEmpty())
-            criteria.add("c.id IN :category_ids")
+            criteria.add("(P.category.id IN :category_ids OR P.subCategory.id IN :category_ids)")
 
         return criteria.joinToString(separator = " AND ")
     }

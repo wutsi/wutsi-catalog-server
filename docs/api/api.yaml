@@ -12,32 +12,6 @@ servers:
     description: Production
 
 paths:
-  /v1/categories:
-    post:
-      operationId: "create-category"
-      description: Create a new category
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateCategoryRequest'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateCategoryResponse'
-        403:
-          description: The caller is not authorized to call this endpoint
-        409:
-          description: Error
-      tags:
-        - Category
-      security:
-        - api_key: [ 'catalog-manage' ]
-
   /v1/categories/search:
     post:
       operationId: "search-categories"
@@ -67,7 +41,7 @@ paths:
   /v1/categories/{id}:
     get:
       operationId: "get-category"
-      description: Return information about an category
+      description: Return information about a category
       parameters:
         - in: path
           name: id
@@ -86,72 +60,11 @@ paths:
         403:
           description: The caller is not authorized to call this endpoint
         404:
-          description: The product not found
+          description: The category not found
       tags:
         - Product
       security:
         - api_key: [ 'catalog-read' ]
-
-    delete:
-      operationId: "delete-category"
-      description: Delete an category
-      parameters:
-        - in: path
-          name: id
-          description: ID of the category to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Success
-        403:
-          description: The caller is not authorized to call this endpoint
-      tags:
-        - Category
-      security:
-        - api_key: [ 'catalog-manage' ]
-
-  /v1/categories/{id}/attributes/{name}:
-    post:
-      operationId: "update-category-attribute"
-      description: Update a category attribute
-      parameters:
-        - in: path
-          name: id
-          description: ID of the category
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - in: path
-          name: name
-          description: Name of the attribute to update
-          required: true
-          schema:
-            type: string
-            enum:
-              - title
-              - visible
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateCategoryAttributeRequest'
-      responses:
-        200:
-          description: Success
-        403:
-          description: The caller is not the owner of the category
-        404:
-          description: The product not found
-      tags:
-        - Product
-      security:
-        - api_key: [ 'catalog-manage' ]
-
 
   /v1/products:
     post:
@@ -278,6 +191,8 @@ paths:
               - comparable-price
               - thumbnail-id
               - visible
+              - category-id
+              - sub-category-id
       requestBody:
         required: true
         content:
@@ -350,62 +265,6 @@ paths:
       security:
         - api_key: [ 'catalog-manage' ]
 
-  /v1/products/{id}/categories:
-    post:
-      operationId: "add-category"
-      description: Add a category to a product
-      parameters:
-        - in: path
-          name: id
-          description: ID of the product
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddCategoryRequest'
-      responses:
-        200:
-          description: Success
-        403:
-          description: The caller is not the owner of the product or category
-        404:
-          description: The product not found
-      tags:
-        - Product
-      security:
-        - api_key: [ 'catalog-manage' ]
-
-  /v1/products/{id}/categories/{category-id}:
-    delete:
-      operationId: "remove-category"
-      description: Remove a category from a product
-      parameters:
-        - in: path
-          name: id
-          description: ID of the product
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - in: path
-          name: category-id
-          description: ID of the category
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Success
-      tags:
-        - Product
-      security:
-        - api_key: [ 'catalog-manage' ]
 
 components:
   securitySchemes:
@@ -441,6 +300,12 @@ components:
           format: double
           description: Comparable Price
           nullable: true
+        categoryId:
+          type: integer
+          format: int64
+        subCategoryId:
+          type: integer
+          format: int64
       required:
         - title
 
@@ -569,10 +434,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PictureSummary"
-        categories:
-          type: array
-          items:
-            $ref: "#/components/schemas/CategorySummary"
+        category:
+          type: object
+          $ref: "#/components/schemas/CategorySummary"
+        subCategory:
+          type: object
+          $ref: "#/components/schemas/CategorySummary"
         title:
           type: string
           description: Product title
@@ -636,24 +503,6 @@ components:
           nullable: true
 
 
-    CreateCategoryRequest:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Category title
-          maxLength: 100
-      required:
-        - title
-
-    CreateCategoryResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          description: ID of the category created
-
     Category:
       type: object
       properties:
@@ -663,8 +512,15 @@ components:
           description: ID of the category
         title:
           type: string
-        visible:
-          type: boolean
+        parentId:
+          type: integer
+          format: int64
+          description: ID of the parent category
+          nullable: true
+        attributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttributeType"
 
     GetCategoryResponse:
       type: object
@@ -682,13 +538,19 @@ components:
           description: ID of the category
         title:
           type: string
+        parentId:
+          type: integer
+          format: int64
+          description: ID of the parent category
+          nullable: true
 
     SearchCategoryRequest:
       type: object
       properties:
-        accountId:
+        parentId:
           type: integer
           format: int64
+          nullable: true
 
     SearchCategoryResponse:
       type: object
@@ -698,18 +560,20 @@ components:
           items:
             $ref: "#/components/schemas/CategorySummary"
 
-    AddCategoryRequest:
+    AttributeType:
       type: object
       properties:
-        categoryId:
+        id:
           type: integer
           format: int64
-          description: ID of the category
-
-    UpdateCategoryAttributeRequest:
-      type: object
-      properties:
-        value:
+        name:
           type: string
-          description: Value of the
-          nullable: true
+        title:
+          type: string
+        type:
+          type: string
+          enum:
+            - TEXT
+            - NUMERIC
+            - BOOLEAN
+            - DATE

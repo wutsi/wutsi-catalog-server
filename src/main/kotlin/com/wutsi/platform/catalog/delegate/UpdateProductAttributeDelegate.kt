@@ -1,12 +1,11 @@
 package com.wutsi.platform.catalog.`delegate`
 
 import com.wutsi.platform.catalog.dao.PictureRepository
-import com.wutsi.platform.catalog.dao.ProductRepository
 import com.wutsi.platform.catalog.dto.UpdateProductAttributeRequest
+import com.wutsi.platform.catalog.entity.CategoryEntity
 import com.wutsi.platform.catalog.entity.PictureEntity
 import com.wutsi.platform.catalog.entity.ProductEntity
 import com.wutsi.platform.catalog.error.ErrorURN
-import com.wutsi.platform.catalog.service.SecurityManager
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
 import com.wutsi.platform.core.error.ParameterType
@@ -14,11 +13,7 @@ import com.wutsi.platform.core.error.exception.BadRequestException
 import org.springframework.stereotype.Service
 
 @Service
-class UpdateProductAttributeDelegate(
-    dao: ProductRepository,
-    securityManager: SecurityManager,
-    private val pictureDao: PictureRepository,
-) : AbstractProductDelegate(dao, securityManager) {
+class UpdateProductAttributeDelegate(private val pictureDao: PictureRepository) : AbstractProductDelegate() {
     fun invoke(
         id: Long,
         name: String,
@@ -34,6 +29,7 @@ class UpdateProductAttributeDelegate(
             "price" -> product.price = toDouble(request.value)
             "comparable-price" -> product.comparablePrice = toDouble(request.value)
             "thumbnail-id" -> product.thumbnail = toPicture(product, request.value)
+            "sub-category-id" -> product.subCategory = toSubCategory(product, request.value)
             else -> throw BadRequestException(
                 error = Error(
                     code = ErrorURN.INVALID_ATTRIBUTE.urn,
@@ -46,6 +42,25 @@ class UpdateProductAttributeDelegate(
             )
         }
         dao.save(product)
+    }
+
+    private fun toSubCategory(product: ProductEntity, value: String?): CategoryEntity {
+        val id = toLong(value)
+            ?: throw BadRequestException(
+                error = Error(
+                    code = ErrorURN.INVALID_SUB_CATEGORY.urn,
+                )
+            )
+
+        val category = getCategory(id)
+        if (category.parentId != product.category.id)
+            throw BadRequestException(
+                error = Error(
+                    code = ErrorURN.INVALID_SUB_CATEGORY.urn,
+                )
+            )
+
+        return category
     }
 
     private fun toString(value: String?): String? =

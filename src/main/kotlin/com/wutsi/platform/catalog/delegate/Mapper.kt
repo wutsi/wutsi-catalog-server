@@ -8,7 +8,7 @@ import com.wutsi.platform.catalog.dto.ProductSummary
 import com.wutsi.platform.catalog.entity.CategoryEntity
 import com.wutsi.platform.catalog.entity.PictureEntity
 import com.wutsi.platform.catalog.entity.ProductEntity
-import javax.servlet.http.HttpServletRequest
+import org.springframework.context.i18n.LocaleContextHolder
 
 fun PictureEntity.toPictureSummary() = PictureSummary(
     id = this.id ?: -1,
@@ -28,7 +28,7 @@ fun ProductEntity.toProductSummary() = ProductSummary(
     thumbnail = this.thumbnail?.toPictureSummary()
 )
 
-fun ProductEntity.toProduct(request: HttpServletRequest) = Product(
+fun ProductEntity.toProduct() = Product(
     id = this.id ?: -1,
     accountId = this.accountId,
     title = this.title,
@@ -42,24 +42,26 @@ fun ProductEntity.toProduct(request: HttpServletRequest) = Product(
     thumbnail = this.thumbnail?.toPictureSummary(),
     pictures = this.pictures.filter { !it.isDeleted }.map { it.toPictureSummary() },
     visible = this.visible,
-    category = this.category.toCategorySummary(request),
-    subCategory = this.subCategory.toCategorySummary(request),
+    category = this.category.toCategorySummary(),
+    subCategory = this.subCategory.toCategorySummary(),
 )
 
-fun CategoryEntity.toCategory(request: HttpServletRequest) = Category(
+fun CategoryEntity.toCategory() = Category(
     id = this.id ?: -1,
     parentId = this.parentId,
-    title = this.toTitle(request)
+    title = this.toTitle()
 )
 
-fun CategoryEntity.toCategorySummary(request: HttpServletRequest) = CategorySummary(
+fun CategoryEntity.toCategorySummary() = CategorySummary(
     id = this.id ?: -1,
     parentId = this.parentId,
-    title = this.toTitle(request)
+    title = this.toTitle()
 )
 
-fun CategoryEntity.toTitle(request: HttpServletRequest): String =
-    if (request.locale.language == "fr")
+fun CategoryEntity.toTitle(): String {
+    val language = LocaleContextHolder.getLocale().language
+    return if (language == "fr")
         this.titleFrench
     else
         this.title
+}

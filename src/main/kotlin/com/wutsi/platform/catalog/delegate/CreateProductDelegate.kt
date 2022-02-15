@@ -23,8 +23,8 @@ public class CreateProductDelegate(
                 accountId = securityManager.accountId(),
                 currency = tenant.currency,
                 title = request.title,
-                summary = request.summary,
-                description = request.description,
+                summary = toString(request.summary),
+                description = toString(request.description),
                 comparablePrice = request.comparablePrice,
                 price = request.price,
                 visible = true,
@@ -37,4 +37,10 @@ public class CreateProductDelegate(
 
         return CreateProductResponse(product.id ?: -1)
     }
+
+    private fun toString(value: String?): String? =
+        if (value.isNullOrEmpty())
+            null
+        else
+            value
 }

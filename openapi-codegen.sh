@@ -3,7 +3,7 @@
 CODEGEN_JAR=~/wutsi-codegen/wutsi-codegen.jar
 
 API_NAME=wutsi-catalog
-API_URL=https://raw.githubusercontent.com/wutsi/wutsi-openapi/master/src/openapi/catalog/v1/catalog_api.yaml
+API_URL=https://raw.githubusercontent.com/wutsi/wutsi-openapi/master/src/openapi/e-commerce/v1/catalog_api.yaml
 GITHUB_USER=wutsi
 
 echo "Generating code from ${API_URL}"

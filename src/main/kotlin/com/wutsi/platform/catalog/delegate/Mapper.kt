@@ -25,7 +25,12 @@ fun ProductEntity.toProductSummary() = ProductSummary(
     currency = this.currency,
     created = this.created,
     updated = this.updated,
-    thumbnail = this.thumbnail?.toPictureSummary()
+    thumbnail = this.thumbnail?.toPictureSummary(),
+    categoryId = this.category.id ?: -1,
+    subCategoryId = this.subCategory.id ?: -1,
+    type = this.type.name,
+    quantity = this.quantity,
+    maxOrder = this.maxOrder
 )
 
 fun ProductEntity.toProduct() = Product(
@@ -44,6 +49,9 @@ fun ProductEntity.toProduct() = Product(
     visible = this.visible,
     category = this.category.toCategorySummary(),
     subCategory = this.subCategory.toCategorySummary(),
+    type = this.type.name,
+    quantity = this.quantity,
+    maxOrder = this.maxOrder
 )
 
 fun CategoryEntity.toCategory() = Category(

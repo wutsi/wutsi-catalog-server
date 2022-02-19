@@ -30,6 +30,8 @@ class UpdateProductAttributeDelegate(private val pictureDao: PictureRepository) 
             "comparable-price" -> product.comparablePrice = toDouble(request.value)
             "thumbnail-id" -> product.thumbnail = toPicture(product, request.value)
             "sub-category-id" -> product.subCategory = toSubCategory(product, request.value)
+            "quantity" -> product.quantity = toInt(request.value) ?: 0
+            "max-order" -> product.maxOrder = toInt(request.value)
             else -> throw BadRequestException(
                 error = Error(
                     code = ErrorURN.INVALID_ATTRIBUTE.urn,
@@ -74,6 +76,12 @@ class UpdateProductAttributeDelegate(private val pictureDao: PictureRepository) 
             null
         else
             value.toLong()
+
+    private fun toInt(value: String?): Int? =
+        if (value.isNullOrEmpty())
+            null
+        else
+            value.toInt()
 
     private fun toDouble(value: String?): Double? =
         if (value.isNullOrEmpty())

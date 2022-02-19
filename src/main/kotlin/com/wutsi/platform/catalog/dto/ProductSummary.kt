@@ -11,6 +11,11 @@ public data class ProductSummary(
     public val summary: String? = null,
     public val price: Double? = null,
     public val comparablePrice: Double? = null,
+    public val categoryId: Long = 0,
+    public val subCategoryId: Long = 0,
+    public val quantity: Int = 0,
+    public val maxOrder: Int? = null,
+    public val type: String = "",
     public val currency: String = "",
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     public val created: OffsetDateTime = OffsetDateTime.now(),

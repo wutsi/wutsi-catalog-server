@@ -2,6 +2,7 @@ package com.wutsi.platform.catalog.entity
 
 import java.time.OffsetDateTime
 import javax.persistence.Entity
+import javax.persistence.Enumerated
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -46,4 +47,10 @@ data class ProductEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_category_fk")
     var subCategory: CategoryEntity = CategoryEntity(),
+
+    var quantity: Int = 0,
+    var maxOrder: Int? = null,
+
+    @Enumerated
+    val type: ProductType = ProductType.PHYSICAL
 )

@@ -3,6 +3,7 @@ package com.wutsi.platform.catalog.`delegate`
 import com.wutsi.platform.catalog.dto.CreateProductRequest
 import com.wutsi.platform.catalog.dto.CreateProductResponse
 import com.wutsi.platform.catalog.entity.ProductEntity
+import com.wutsi.platform.catalog.entity.ProductType
 import com.wutsi.platform.tenant.WutsiTenantApi
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,7 +32,10 @@ public class CreateProductDelegate(
                 created = OffsetDateTime.now(),
                 updated = OffsetDateTime.now(),
                 category = getCategory(request.categoryId),
-                subCategory = getCategory(request.subCategoryId)
+                subCategory = getCategory(request.subCategoryId),
+                type = ProductType.valueOf(request.type.uppercase()),
+                quantity = request.quantity,
+                maxOrder = request.maxOrder,
             )
         )
 

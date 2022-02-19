@@ -1,8 +1,7 @@
 openapi: "3.0.0"
 info:
   title: "Wutsi Catalog API"
-  description: |
-    API for managing product catalog
+  description: API for managing product catalog
   version: "1.0.0"
 
 servers:
@@ -192,6 +191,8 @@ paths:
               - thumbnail-id
               - visible
               - sub-category-id
+              - quantity
+              - max-order
       requestBody:
         required: true
         content:
@@ -302,11 +303,28 @@ components:
         categoryId:
           type: integer
           format: int64
+          description: ID of the category
         subCategoryId:
           type: integer
           format: int64
+          description: ID of the sub-category
+        quantity:
+          type: integer
+          description: Quantity in stock
+          minimum: 0
+        maxOrder:
+          type: integer
+          description: Max items that a customer can order
+          nullable: true
+        type:
+          type: string
+          description: Type of product
+          enum:
+            - PHYSISCAL
+            - NUMERIC
       required:
         - title
+        - type
 
     CreateProductResponse:
       type: object
@@ -402,6 +420,27 @@ components:
           format: double
           description: Comparable Price
           nullable: true
+        categoryId:
+          type: integer
+          format: int64
+          description: ID of the category
+        subCategoryId:
+          type: integer
+          format: int64
+          description: ID of the sub-category
+        quantity:
+          type: integer
+          description: Quantity in stock
+        maxOrder:
+          type: integer
+          description: Max items that a customer can order
+          nullable: true
+        type:
+          type: string
+          description: Type of product
+          enum:
+            - PHYSISCAL
+            - NUMERIC
         currency:
           type: string
           description: Product's country
@@ -466,6 +505,27 @@ components:
         visible:
           type: boolean
           description: is the product visible
+        categoryId:
+          type: integer
+          format: int64
+          description: ID of the category
+        subCategoryId:
+          type: integer
+          format: int64
+          description: ID of the sub-category
+        quantity:
+          type: integer
+          description: Quantity in stock
+        maxOrder:
+          type: integer
+          description: Max items that a customer can order
+          nullable: true
+        type:
+          type: string
+          description: Type of product
+          enum:
+            - PHYSISCAL
+            - NUMERIC
         created:
           type: string
           format: date-time

@@ -2,6 +2,7 @@ package com.wutsi.platform.catalog.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wutsi.platform.catalog.dto.GetProductResponse
+import com.wutsi.platform.catalog.entity.ProductType
 import com.wutsi.platform.catalog.error.ErrorURN
 import com.wutsi.platform.core.error.ErrorResponse
 import org.junit.jupiter.api.Test
@@ -38,6 +39,9 @@ class GetProductControllerTest : AbstractSecuredController() {
         assertEquals("https://img.com/1.png", product.thumbnail?.url)
         assertNotNull(product.created)
         assertNotNull(product.updated)
+        assertEquals(ProductType.PHYSICAL.name, product.type)
+        assertEquals(100, product.quantity)
+        assertEquals(5, product.maxOrder)
 
         val pictures = product.pictures
         assertEquals(2, pictures.size)

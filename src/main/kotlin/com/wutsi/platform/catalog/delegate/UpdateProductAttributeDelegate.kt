@@ -5,6 +5,7 @@ import com.wutsi.platform.catalog.dto.UpdateProductAttributeRequest
 import com.wutsi.platform.catalog.entity.CategoryEntity
 import com.wutsi.platform.catalog.entity.PictureEntity
 import com.wutsi.platform.catalog.entity.ProductEntity
+import com.wutsi.platform.catalog.entity.ProductType
 import com.wutsi.platform.catalog.error.ErrorURN
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
@@ -32,6 +33,8 @@ class UpdateProductAttributeDelegate(private val pictureDao: PictureRepository) 
             "sub-category-id" -> product.subCategory = toSubCategory(product, request.value)
             "quantity" -> product.quantity = toInt(request.value) ?: 0
             "max-order" -> product.maxOrder = toInt(request.value)
+            "type" -> product.type =
+                if (toString(request.value) != null) ProductType.valueOf(request.value!!) else product.type
             else -> throw BadRequestException(
                 error = Error(
                     code = ErrorURN.INVALID_ATTRIBUTE.urn,

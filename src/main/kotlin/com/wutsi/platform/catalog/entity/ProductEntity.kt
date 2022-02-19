@@ -52,5 +52,5 @@ data class ProductEntity(
     var maxOrder: Int? = null,
 
     @Enumerated
-    val type: ProductType = ProductType.PHYSICAL
+    var type: ProductType = ProductType.PHYSICAL
 )

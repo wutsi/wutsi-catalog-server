@@ -9,4 +9,5 @@ enum class ErrorURN(val urn: String) {
     ILLEGAL_PRODUCT_ACCESS("urn:wutsi:error:catalog:illegal-product-access"),
     ILLEGAL_PICTURE_ACCESS("urn:wutsi:error:catalog:illegal-picture-access"),
     ILLEGAL_TENANT_ACCESS("urn:wutsi:error:catalog:illegal-tenant-access"),
+    OUT_OF_STOCK_ERROR("urn:wutsi:error:catalog:out-of-stock"),
 }

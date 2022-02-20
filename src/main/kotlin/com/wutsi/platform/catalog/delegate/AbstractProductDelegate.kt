@@ -36,6 +36,8 @@ class AbstractProductDelegate {
         if (checkOwnership)
             securityManager.checkOwnership(product)
 
+        securityManager.checkTenant(product)
+
         return product
     }
 

@@ -23,6 +23,15 @@ class SecurityManager(
             )
     }
 
+    fun checkTenant(product: ProductEntity) {
+        if (product.tenantId != tenantId())
+            throw ForbiddenException(
+                error = Error(
+                    code = ErrorURN.ILLEGAL_TENANT_ACCESS.urn
+                )
+            )
+    }
+
     fun checkOwnership(picture: PictureEntity) {
         if (picture.product.accountId != accountId())
             throw ForbiddenException(

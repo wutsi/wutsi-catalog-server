@@ -288,6 +288,26 @@ paths:
       security:
         - api_key: [ 'catalog-manage' ]
 
+  /v1/reservations/{id}:
+    post:
+      operationId: "cancel-reservation"
+      description: Cancel a reservation
+      parameters:
+        - in: path
+          name: id
+          description: ID of the reservation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+      tags:
+        - Reservaion
+      security:
+        - api_key: [ 'catalog-manage' ]
+
 components:
   securitySchemes:
     api_key:

@@ -19,10 +19,12 @@ data class ReservationEntity(
     val orderId: String = "",
     val tenantId: Long = -1,
 
-    val status: ReservationStatus = ReservationStatus.CREATED,
+    var status: ReservationStatus = ReservationStatus.CREATED,
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservation")
     val products: List<ReservationProductEntity> = emptyList(),
 
-    val created: OffsetDateTime = OffsetDateTime.now()
+    val created: OffsetDateTime = OffsetDateTime.now(),
+    var confirmed: OffsetDateTime? = null,
+    var cancelled: OffsetDateTime? = null
 )

@@ -18,6 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.web.client.HttpClientErrorException
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -54,6 +55,7 @@ public class CreateReservationControllerTest : AbstractSecuredController() {
         assertEquals(request.orderId, reservation.get().orderId)
         assertEquals(TENANT_ID, reservation.get().tenantId)
         assertEquals(ReservationStatus.CREATED, reservation.get().status)
+        assertNull(reservation.get().cancelled)
 
         val rproducts = reservationProductDao.findByReservation(reservation.get()).sortedBy { it.productId }
         assertEquals(2, rproducts.size)

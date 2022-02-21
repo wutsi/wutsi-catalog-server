@@ -16,7 +16,7 @@ data class ReservationEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    val orderId: Long = -1,
+    val orderId: String = "",
     val tenantId: Long = -1,
 
     val status: ReservationStatus = ReservationStatus.CREATED,

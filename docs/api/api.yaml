@@ -283,12 +283,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateReservationResponse'
-        403:
-          description: The caller is not the owner of the product
-        404:
-          description: The product not found
       tags:
-        - Product
+        - Reservaion
       security:
         - api_key: [ 'catalog-manage' ]
 
@@ -657,9 +653,9 @@ components:
       type: object
       properties:
         orderId:
-          type: integer
-          format: int64
-          description: ID of the customer
+          type: string
+          format: uuid
+          description: ID of the Order
         products:
           type: array
           items:

@@ -1,13 +1,15 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
-import com.wutsi.ecommerce.catalog.delegate.UpdateProductAttributeDelegate
+import com.wutsi.ecommerce.catalog.`delegate`.UpdateProductAttributeDelegate
 import com.wutsi.ecommerce.catalog.dto.UpdateProductAttributeRequest
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.`annotation`.PathVariable
+import org.springframework.web.bind.`annotation`.PostMapping
+import org.springframework.web.bind.`annotation`.RequestBody
+import org.springframework.web.bind.`annotation`.RestController
 import javax.validation.Valid
+import kotlin.Long
+import kotlin.String
 
 @RestController
 public class UpdateProductAttributeController(

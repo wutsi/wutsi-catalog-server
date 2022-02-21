@@ -38,7 +38,7 @@ public class CreateReservationControllerTest : AbstractSecuredController() {
     @Test
     public fun reserve() {
         val request = CreateReservationRequest(
-            orderId = 1111,
+            orderId = "1111",
             products = listOf(
                 ReservationProduct(productId = 100, quantity = 10),
                 ReservationProduct(productId = 101, quantity = 1)
@@ -70,7 +70,7 @@ public class CreateReservationControllerTest : AbstractSecuredController() {
     @Test
     public fun outOfStock() {
         val request = CreateReservationRequest(
-            orderId = 1111,
+            orderId = "1111",
             products = listOf(
                 ReservationProduct(productId = 200, quantity = 10),
                 ReservationProduct(productId = 201, quantity = 11)

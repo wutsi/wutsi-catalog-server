@@ -3,6 +3,10 @@ package com.wutsi.ecommerce.catalog.dto
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
+import kotlin.Double
+import kotlin.Int
+import kotlin.Long
+import kotlin.String
 
 public data class CreateProductRequest(
     @get:NotBlank

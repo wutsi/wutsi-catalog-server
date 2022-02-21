@@ -1,11 +1,12 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
-import com.wutsi.ecommerce.catalog.delegate.GetProductDelegate
+import com.wutsi.ecommerce.catalog.`delegate`.GetProductDelegate
 import com.wutsi.ecommerce.catalog.dto.GetProductResponse
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.`annotation`.GetMapping
+import org.springframework.web.bind.`annotation`.PathVariable
+import org.springframework.web.bind.`annotation`.RestController
+import kotlin.Long
 
 @RestController
 public class GetProductController(

@@ -21,7 +21,10 @@ fun ProductEntity.toProductSummary() = ProductSummary(
     title = this.title,
     summary = this.summary,
     price = this.price,
-    comparablePrice = this.comparablePrice,
+    comparablePrice = if (this.comparablePrice != null && this.price != null && this.comparablePrice!! > this.price!!)
+        this.comparablePrice
+    else
+        null,
     currency = this.currency,
     created = this.created,
     updated = this.updated,

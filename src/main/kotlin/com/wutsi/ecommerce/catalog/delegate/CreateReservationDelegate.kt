@@ -32,6 +32,7 @@ class CreateReservationDelegate(
             )
         )
         logger.add("reservation_id", reservation.id)
+        logger.add("product_count", request.products.size)
 
         request.products.forEach { reserve(reservation, it) }
 

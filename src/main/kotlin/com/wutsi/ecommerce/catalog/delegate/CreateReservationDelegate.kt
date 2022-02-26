@@ -12,6 +12,7 @@ import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
 import com.wutsi.platform.core.error.ParameterType
 import com.wutsi.platform.core.error.exception.ConflictException
+import com.wutsi.platform.core.logging.KVLogger
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -19,6 +20,7 @@ import javax.transaction.Transactional
 class CreateReservationDelegate(
     private val reservationDao: ReservationRepository,
     private val reservationProductDao: ReservationProductRepository,
+    private val logger: KVLogger
 ) : AbstractProductDelegate() {
     @Transactional
     fun invoke(request: CreateReservationRequest): CreateReservationResponse {
@@ -29,6 +31,7 @@ class CreateReservationDelegate(
                 tenantId = tenantId,
             )
         )
+        logger.add("reservation_id", reservation.id)
 
         request.products.forEach { reserve(reservation, it) }
 
@@ -36,7 +39,10 @@ class CreateReservationDelegate(
     }
 
     private fun reserve(reservation: ReservationEntity, item: ReservationProduct): ReservationProductEntity {
+        logger.add("product_${item.productId}_quantity_to_reserve", item.quantity)
+
         val product = getProduct(item.productId, false)
+        logger.add("product_${item.productId}_quantity_in_stock", product.quantity)
 
         if (product.quantity < item.quantity)
             throw ConflictException(

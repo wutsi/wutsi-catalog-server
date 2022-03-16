@@ -1,7 +1,13 @@
 package com.wutsi.ecommerce.catalog.dto
 
-import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.format.`annotation`.DateTimeFormat
 import java.time.OffsetDateTime
+import kotlin.Boolean
+import kotlin.Double
+import kotlin.Int
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
 
 public data class Product(
     public val id: Long = 0,
@@ -25,5 +31,6 @@ public data class Product(
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     public val created: OffsetDateTime = OffsetDateTime.now(),
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
-    public val updated: OffsetDateTime = OffsetDateTime.now()
+    public val updated: OffsetDateTime = OffsetDateTime.now(),
+    public val numericFileUrl: String? = null
 )

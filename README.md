@@ -6,9 +6,58 @@
 
 API for managing product catalog
 
-# Architecture
+# Installation Prerequisites
+## Database Setup
+- Install postgres
+- Create account with username/password: `postgres`/`postgres`
+- Create a database named `wutsi-catalog`
 
-![](https://www.plantuml.com/plantuml/png/ROmx3i8m44JxESKgrBu2IiC1A15AuSyg8ArjX7SLf8Yxau82uRHlthongN-gPG5YpOzQk2X5hrxgJEiFkowcxUw-qqI72ulK1PGs4dnZ6b8OLj2VwLAOG6-WApXtt7CtzMniJAvxe4lGwHLllimCZ5oIPVa0)
+## Configure Github
+- Generate a Github token for accessing packages from GibHub
+  - Goto [https://github.com/settings/tokens](https://github.com/settings/tokens)
+  - Click on `Generate New Token`
+  - Give a value to your token
+  - Select the permissions `read:packages`
+  - Generate the token
+- Set your GitHub environment variables on your machine:
+  - `GITHUB_TOKEN = your-token-value`
+  - `GITHUB_USER = your-github-user-name`
+
+## Maven Setup
+- Download Instance [Maven 3.6+](https://maven.apache.org/download.cgi)
+- Add into `~/m2/settings.xml`
+```
+    <settings>
+        ...
+        <servers>
+            ...
+            <server>
+              <id>github</id>
+              <username>${env.GITHUB_USER}</username>
+              <password>${env.GITHUB_TOKEN}</password>
+            </server>
+        </servers>
+    </settings>
+```
+
+## Usage
+- Install
+```
+$ git clone git@github.com:wutsi/wutsi-catalog-server.git
+```
+
+- Build
+```
+$ cd wutsi-catalog-server
+$ mvn clean install
+```
+
+- Launch the API
+```
+$ mvn spring-boot:run
+```
+
+That's it... the API is up and running! Start sending requests :-)
 
 # Links
 - [API](https://wutsi.github.io/wutsi-catalog-server/api/)

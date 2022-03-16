@@ -194,6 +194,7 @@ paths:
               - quantity
               - max-order
               - type
+              - numeric-file-url
       requestBody:
         required: true
         content:
@@ -289,7 +290,7 @@ paths:
         - api_key: [ 'catalog-manage' ]
 
   /v1/reservations/{id}:
-    post:
+    delete:
       operationId: "cancel-reservation"
       description: Cancel a reservation
       parameters:
@@ -576,6 +577,11 @@ components:
           type: string
           format: date-time
           description: Last modification Date/Time
+        numericFileUrl:
+          type: string
+          format: url
+          description: For numeric product, this represent the URL of the associated file
+          nullable: true
 
     AddPictureRequest:
       type: object

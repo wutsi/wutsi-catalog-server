@@ -246,6 +246,17 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
     }
 
     @Test
+    fun numericFileUrl() {
+        val request = UpdateProductAttributeRequest("https://www.google.com/121/111.png")
+        val response = rest.postForEntity(url("numeric-file-url", 100), request, Any::class.java)
+
+        assertEquals(200, response.statusCodeValue)
+
+        val product = dao.findById(PRODUCT_ID).get()
+        assertEquals(request.value, product.numericFileUrl)
+    }
+
+    @Test
     fun illegalAccount() {
         val request = UpdateProductAttributeRequest("15000")
         val ex = assertThrows<HttpStatusCodeException> {

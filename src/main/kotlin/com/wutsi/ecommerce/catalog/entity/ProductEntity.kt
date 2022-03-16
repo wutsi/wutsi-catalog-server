@@ -52,5 +52,7 @@ data class ProductEntity(
     var maxOrder: Int? = null,
 
     @Enumerated
-    var type: ProductType = ProductType.PHYSICAL
+    var type: ProductType = ProductType.PHYSICAL,
+
+    var numericFileUrl: String? = null
 )

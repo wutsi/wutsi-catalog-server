@@ -1,0 +1,1 @@
+ALTER TABLE T_PRODUCT ADD COLUMN numeric_file_url TEXT;

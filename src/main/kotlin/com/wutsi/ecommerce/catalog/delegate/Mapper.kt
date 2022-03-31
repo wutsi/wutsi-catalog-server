@@ -5,9 +5,12 @@ import com.wutsi.ecommerce.catalog.dto.CategorySummary
 import com.wutsi.ecommerce.catalog.dto.PictureSummary
 import com.wutsi.ecommerce.catalog.dto.Product
 import com.wutsi.ecommerce.catalog.dto.ProductSummary
+import com.wutsi.ecommerce.catalog.dto.Section
+import com.wutsi.ecommerce.catalog.dto.SectionSummary
 import com.wutsi.ecommerce.catalog.entity.CategoryEntity
 import com.wutsi.ecommerce.catalog.entity.PictureEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.ecommerce.catalog.entity.SectionEntity
 import org.springframework.context.i18n.LocaleContextHolder
 
 fun PictureEntity.toPictureSummary() = PictureSummary(
@@ -54,7 +57,8 @@ fun ProductEntity.toProduct() = Product(
     subCategory = this.subCategory.toCategorySummary(),
     type = this.type.name,
     quantity = this.quantity,
-    maxOrder = this.maxOrder
+    maxOrder = this.maxOrder,
+    sections = this.sections.filter { !it.isDeleted }.map { it.toSectionSummary() }
 )
 
 fun CategoryEntity.toCategory() = Category(
@@ -76,3 +80,17 @@ fun CategoryEntity.toTitle(): String {
     else
         this.title
 }
+
+fun SectionEntity.toSectionSummary() = SectionSummary(
+    id = this.id ?: -1,
+    title = this.title,
+    productCount = this.productCount,
+    sortOrder = this.sortOrder
+)
+
+fun SectionEntity.toSection() = Section(
+    id = this.id ?: -1,
+    title = this.title,
+    productCount = this.productCount,
+    sortOrder = this.sortOrder
+)

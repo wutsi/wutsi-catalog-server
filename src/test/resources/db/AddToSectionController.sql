@@ -13,6 +13,7 @@ INSERT INTO T_PRODUCT(id, tenant_id, account_id, category_fk, sub_category_fk, t
     VALUES
         (100, 1, 1, 100, 101, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
         (101, 1, 1, 100, 102, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
+        (102, 1, 1, 100, 102, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
         (109, 1, 1, 100, 102, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true),
 
         (200, 1, 2, 200, 201, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false),
@@ -26,25 +27,17 @@ INSERT INTO T_PRODUCT(id, tenant_id, account_id, category_fk, sub_category_fk, t
         (2200, 2, 10, 200, 201, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true)
 ;
 
-INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
-    VALUES
-        (100, 100, 'https://img.com/1.png', false, null),
-        (101, 100, 'https://img.com/2.png', false, null),
-        (102, 100, 'https://img.com/3.png', true, now());
-
-UPDATE T_PRODUCT SET thumbnail_fk=100;
 
 INSERT INTO T_SECTION(id, tenant_id, account_id, title, sort_order, product_count, is_deleted, deleted)
     VALUES
-        (100, 1, 1, 'Yo', 1, 2, false, null),
-        (200, 1, 1, 'Man', 1, 2, false, null),
+        (100, 1, 1, 'Electronic', 1, 2, false, null),
         (900, 1, 1, 'Electronic', 2, 11, true, now())
 ;
 
-INSERT INTO T_SECTION_PRODUCT(product_fk, section_fk)
+INSERT INTO T_SECTION_PRODUCT(section_fk, product_fk)
     VALUES
         (100, 100),
-        (101, 100),
-        (109, 100)
+        (100, 101),
+        (100, 109)
     ;
 

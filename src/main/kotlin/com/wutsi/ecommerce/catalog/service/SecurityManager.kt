@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.service
 
 import com.wutsi.ecommerce.catalog.entity.PictureEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.ecommerce.catalog.entity.SectionEntity
 import com.wutsi.ecommerce.catalog.error.ErrorURN
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.exception.ForbiddenException
@@ -19,6 +20,15 @@ class SecurityManager(
             throw ForbiddenException(
                 error = Error(
                     code = ErrorURN.ILLEGAL_PRODUCT_ACCESS.urn
+                )
+            )
+    }
+
+    fun checkOwnership(section: SectionEntity) {
+        if (section.accountId != accountId())
+            throw ForbiddenException(
+                error = Error(
+                    code = ErrorURN.ILLEGAL_SECTION_ACCESS.urn
                 )
             )
     }

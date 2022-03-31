@@ -65,6 +65,186 @@ paths:
       security:
         - api_key: [ 'catalog-read' ]
 
+
+
+  /v1/sections:
+    get:
+      operationId: "list-sections"
+      description: Return all the sections of a catalog
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListSectionResponse'
+        403:
+          description: The caller is not authorized to call this endpoint
+      tags:
+        - Section
+      security:
+        - api_key: [ 'catalog-read' ]
+
+    post:
+      operationId: "create-section"
+      description: Create a new section
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSectionRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSectionResponse'
+        403:
+          description: The caller is not authorized to call this endpoint
+        409:
+          description: Error
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+  /v1/sections/{id}:
+    get:
+      operationId: "get-section"
+      description: Return a section
+      parameters:
+        - in: path
+          name: id
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSectionResponse'
+        403:
+          description: The caller is not authorized to call this endpoint
+      tags:
+        - Section
+      security:
+        - api_key: [ 'catalog-read' ]
+
+    post:
+      operationId: "update-section"
+      description: Update a section
+      parameters:
+        - in: path
+          name: id
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSectionRequest'
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not authorized to call this endpoint
+        409:
+          description: Error
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+    delete:
+      operationId: "delete-section"
+      description: Delete a section
+      parameters:
+        - in: path
+          name: id
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not authorized to call this endpoint
+      tags:
+        - Section
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+  /v1/sections/{id}/products/{product-id}:
+    post:
+      operationId: "add-to-section"
+      description: Add a product into a section
+      parameters:
+        - in: path
+          name: id
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: product-id
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not authorized to call this endpoint
+      tags:
+        - Section
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+    delete:
+      operationId: "remove-from-section"
+      description: Remove a product from a section
+      parameters:
+        - in: path
+          name: id
+          description: ID of the section
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: product-id
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not authorized to call this endpoint
+      tags:
+        - Section
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+
+
   /v1/products:
     post:
       operationId: "create-product"
@@ -267,6 +447,7 @@ paths:
       security:
         - api_key: [ 'catalog-manage' ]
 
+
   /v1/reservations:
     post:
       operationId: "create-reservation"
@@ -397,6 +578,10 @@ components:
           items:
             type: integer
             format: int64
+        sectionId:
+          type: integer
+          format: int64
+          nullable: true
         visible:
           type: boolean
           nullable: true
@@ -582,6 +767,10 @@ components:
           format: url
           description: For numeric product, this represent the URL of the associated file
           nullable: true
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/SectionSummary"
 
     AddPictureRequest:
       type: object
@@ -695,3 +884,83 @@ components:
           type: integer
           format: int64
           description: ID of the reservation
+
+    SectionSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the section
+        title:
+          type: string
+          description: Title of the section
+        sortOrder:
+          type: integer
+          description: sort order
+        productCount:
+          type: integer
+          description: Number of products in this section
+
+    ListSectionResponse:
+      type: object
+      properties:
+        sections:
+          type: array
+          items:
+            $ref: "#/components/schemas/SectionSummary"
+          description: List of sections
+
+    CreateSectionRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the section
+      required:
+        - title
+
+    CreateSectionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the section
+
+    Section:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: ID of the section
+        title:
+          type: string
+          description: Title of the section
+        sortOrder:
+          type: integer
+          description: sort order
+        productCount:
+          type: integer
+          description: Number of products in this section
+
+    GetSectionResponse:
+      type: object
+      properties:
+        section:
+          type: object
+          $ref: "#/components/schemas/Section"
+
+    UpdateSectionRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the section
+        sortOrder:
+          type: integer
+          description: sort order
+      required:
+        - title
+

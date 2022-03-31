@@ -18,3 +18,18 @@ INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
         (102, 100, 'https://img.com/3.png', true, now());
 
 UPDATE T_PRODUCT SET thumbnail_fk=100;
+
+INSERT INTO T_SECTION(id, tenant_id, account_id, title, sort_order, product_count, is_deleted, deleted)
+    VALUES
+        (100, 1, 1, 'Yo', 1, 2, false, null),
+        (200, 1, 1, 'Man', 1, 2, false, null),
+        (900, 1, 1, 'Electronic', 2, 11, true, now())
+;
+
+INSERT INTO T_SECTION_PRODUCT(product_fk, section_fk)
+    VALUES
+        (100, 100),
+        (100, 200),
+        (100, 900)
+    ;
+

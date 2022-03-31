@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.Table
@@ -54,5 +55,8 @@ data class ProductEntity(
     @Enumerated
     var type: ProductType = ProductType.PHYSICAL,
 
-    var numericFileUrl: String? = null
+    var numericFileUrl: String? = null,
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
+    val sections: List<SectionEntity> = emptyList()
 )

@@ -53,6 +53,11 @@ class GetProductControllerTest : AbstractSecuredController() {
 
         assertEquals(101L, product.subCategory.id)
         assertEquals("Cell Phone", product.subCategory.title)
+
+        val sections = product.sections
+        assertEquals(2, sections.size)
+        assertEquals("Yo", sections[0].title)
+        assertEquals("Man", sections[1].title)
     }
 
     @Test

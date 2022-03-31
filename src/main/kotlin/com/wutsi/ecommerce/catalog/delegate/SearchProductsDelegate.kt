@@ -9,11 +9,11 @@ import javax.persistence.EntityManager
 import javax.persistence.Query
 
 @Service
-public class SearchProductsDelegate(
+class SearchProductsDelegate(
     private val securityManager: SecurityManager,
     private val em: EntityManager,
 ) {
-    public fun invoke(request: SearchProductRequest): SearchProductResponse {
+    fun invoke(request: SearchProductRequest): SearchProductResponse {
         val query = em.createQuery(sql(request))
         parameters(request, query)
         val products = query
@@ -27,7 +27,7 @@ public class SearchProductsDelegate(
     }
 
     private fun sql(request: SearchProductRequest): String {
-        val select = select()
+        val select = select(request)
         val where = where(request)
         return if (where.isNullOrEmpty())
             select
@@ -35,8 +35,11 @@ public class SearchProductsDelegate(
             "$select WHERE $where ORDER BY P.id"
     }
 
-    private fun select(): String =
-        "SELECT P FROM ProductEntity P"
+    private fun select(request: SearchProductRequest): String =
+        if (request.sectionId == null)
+            "SELECT P FROM ProductEntity P"
+        else
+            "SELECT P FROM ProductEntity P JOIN P.sections s"
 
     private fun where(request: SearchProductRequest): String {
         val criteria = mutableListOf("P.isDeleted=:is_deleted")
@@ -53,6 +56,9 @@ public class SearchProductsDelegate(
 
         if (request.categoryIds.isNotEmpty())
             criteria.add("(P.category.id IN :category_ids OR P.subCategory.id IN :category_ids)")
+
+        if (request.sectionId != null)
+            criteria.add("s.id=:section_id")
 
         return criteria.joinToString(separator = " AND ")
     }
@@ -72,5 +78,8 @@ public class SearchProductsDelegate(
 
         if (request.categoryIds.isNotEmpty())
             query.setParameter("category_ids", request.categoryIds)
+
+        if (request.sectionId != null)
+            query.setParameter("section_id", request.sectionId)
     }
 }

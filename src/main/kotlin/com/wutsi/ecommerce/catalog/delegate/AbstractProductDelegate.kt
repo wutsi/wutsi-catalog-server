@@ -4,12 +4,16 @@ import com.wutsi.ecommerce.catalog.dao.CategoryRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.entity.CategoryEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.ecommerce.catalog.entity.ProductType
 import com.wutsi.ecommerce.catalog.error.ErrorURN
+import com.wutsi.ecommerce.catalog.error.PublishError
 import com.wutsi.ecommerce.catalog.service.SecurityManager
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
 import com.wutsi.platform.core.error.ParameterType
+import com.wutsi.platform.core.error.exception.ConflictException
 import com.wutsi.platform.core.error.exception.NotFoundException
+import com.wutsi.platform.core.stream.EventStream
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -23,6 +27,9 @@ class AbstractProductDelegate {
 
     @Autowired
     protected lateinit var categoryDao: CategoryRepository
+
+    @Autowired
+    protected lateinit var eventStream: EventStream
 
     fun getProduct(id: Long, checkOwnership: Boolean = true): ProductEntity {
         val product = dao.findById(id)
@@ -55,6 +62,26 @@ class AbstractProductDelegate {
                     )
                 )
             }
+
+    protected fun checkPublish(product: ProductEntity) {
+        val errors = mutableListOf<PublishError>()
+        if (product.title.trim().isNullOrEmpty())
+            errors.add(PublishError.MISSING_TITLE)
+        if (product.type == ProductType.NUMERIC && product.numericFileUrl.isNullOrEmpty())
+            errors.add(PublishError.MISSING_NUMERIC_FILE)
+        if (product.pictures.filter { !it.isDeleted }.isEmpty())
+            errors.add(PublishError.MISSING_PICTURE)
+
+        if (errors.isNotEmpty())
+            throw ConflictException(
+                error = Error(
+                    code = ErrorURN.PUBLISH_ERROR.urn,
+                    data = mapOf(
+                        "publishing-errors" to errors
+                    )
+                )
+            )
+    }
 
     private fun notFound(id: Long) = NotFoundException(
         error = Error(

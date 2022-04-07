@@ -3,6 +3,7 @@ package com.wutsi.ecommerce.catalog.dto
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
+import kotlin.String
 import kotlin.collections.List
 
 public data class SearchProductRequest(
@@ -11,6 +12,7 @@ public data class SearchProductRequest(
     public val sectionId: Long? = null,
     public val visible: Boolean? = null,
     public val accountId: Long? = null,
+    public val status: String? = null,
     public val limit: Int = 30,
     public val offset: Int = 0
 )

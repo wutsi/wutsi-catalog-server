@@ -3,6 +3,7 @@ package com.wutsi.ecommerce.catalog.endpoint
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.dto.CreateProductRequest
 import com.wutsi.ecommerce.catalog.dto.CreateProductResponse
+import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.entity.ProductType
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -17,9 +18,9 @@ import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/CreateProductController.sql"])
-public class CreateProductControllerTest : AbstractSecuredController() {
+class CreateProductControllerTest : AbstractSecuredController() {
     @LocalServerPort
-    public val port: Int = 0
+    val port: Int = 0
 
     @Autowired
     private lateinit var dao: ProductRepository
@@ -34,7 +35,7 @@ public class CreateProductControllerTest : AbstractSecuredController() {
     }
 
     @Test
-    public fun invoke() {
+    fun invoke() {
         // WHEN
         val request = CreateProductRequest(
             title = "Test",
@@ -70,5 +71,7 @@ public class CreateProductControllerTest : AbstractSecuredController() {
         assertTrue(product.visible)
         assertFalse(product.isDeleted)
         assertNull(product.deleted)
+        assertNull(product.published)
+        assertEquals(ProductStatus.DRAFT, product.status)
     }
 }

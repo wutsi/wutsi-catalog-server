@@ -3,6 +3,7 @@ package com.wutsi.ecommerce.catalog.delegate
 import com.wutsi.ecommerce.catalog.dto.SearchProductRequest
 import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.service.SecurityManager
 import org.springframework.stereotype.Service
 import javax.persistence.EntityManager
@@ -60,6 +61,9 @@ class SearchProductsDelegate(
         if (request.sectionId != null)
             criteria.add("s.id=:section_id")
 
+        if (request.status != null)
+            criteria.add("P.status=:status")
+
         return criteria.joinToString(separator = " AND ")
     }
 
@@ -81,5 +85,8 @@ class SearchProductsDelegate(
 
         if (request.sectionId != null)
             query.setParameter("section_id", request.sectionId)
+
+        if (request.status != null)
+            query.setParameter("status", ProductStatus.valueOf(request.status.uppercase()))
     }
 }

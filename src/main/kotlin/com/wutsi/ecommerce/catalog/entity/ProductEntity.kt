@@ -58,5 +58,10 @@ data class ProductEntity(
     var numericFileUrl: String? = null,
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "products")
-    val sections: List<SectionEntity> = emptyList()
+    val sections: List<SectionEntity> = emptyList(),
+
+    @Enumerated
+    var status: ProductStatus = ProductStatus.DRAFT,
+
+    var published: OffsetDateTime? = null,
 )

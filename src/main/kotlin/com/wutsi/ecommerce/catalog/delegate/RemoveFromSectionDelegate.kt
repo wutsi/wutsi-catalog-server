@@ -31,7 +31,6 @@ class RemoveFromSectionDelegate(private val productDao: ProductRepository) : Abs
             }
 
         if (section.products.remove(product)) {
-            section.productCount = section.products.filter { !it.isDeleted }.size
             dao.save(section)
         }
     }

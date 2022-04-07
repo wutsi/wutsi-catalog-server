@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.endpoint
 
 import com.wutsi.ecommerce.catalog.dto.SearchProductRequest
 import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
+import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -30,6 +31,23 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         // WHEN
         val request = SearchProductRequest(
             accountId = 1
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(2, products.size)
+        assertTrue(products.map { it.id }.containsAll(listOf(100, 101)))
+    }
+
+    @Test
+    fun `search by status`() {
+        // WHEN
+        val request = SearchProductRequest(
+            accountId = 1,
+            status = ProductStatus.DRAFT.name
         )
         val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
 

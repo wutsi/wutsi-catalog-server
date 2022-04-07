@@ -60,6 +60,12 @@ wutsi:
   client-id: wutsi-catalog
   application:
     name: wutsi-catalog
+    jobs:
+      section-counter:
+        cron: "0 */30 * * * *"
+      category-counter:
+        cron: "0 */30 * * * *"
+
   platform:
     security:
       type: jwt

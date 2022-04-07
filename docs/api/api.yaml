@@ -344,6 +344,53 @@ paths:
       security:
         - api_key: [ 'catalog-manage' ]
 
+
+  /v1/products/{id}/publish:
+    post:
+      operationId: "publish-product"
+      description: Publish a product
+      parameters:
+        - in: path
+          name: id
+          description: ID of the product
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not authorized to call this endpoint
+        404:
+          description: The product not found
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+    delete:
+      operationId: "unpublish-product"
+      description: Unpublish an product
+      parameters:
+        - in: path
+          name: id
+          description: ID of the product to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        403:
+          description: The caller is not the owner of the product
+      tags:
+        - Product
+      security:
+        - api_key: [ 'catalog-manage' ]
+
+
   /v1/products/{id}/attributes/{name}:
     post:
       operationId: "update-product-attribute"
@@ -589,6 +636,12 @@ components:
           type: integer
           format: int64
           nullable: true
+        status:
+          type: string
+          enum:
+            - DRAFT
+            - PUBLISHED
+          nullable: true
         limit:
           type: integer
           default: 30
@@ -680,6 +733,15 @@ components:
           type: string
           format: date-time
           description: Last modification Date/Time
+        published:
+          type: string
+          format: date-time
+          description: Published modification Date/Time
+        status:
+          type: string
+          enum:
+            - DRAFT
+            - PUBLISHED
 
     Product:
       type: object
@@ -771,6 +833,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/SectionSummary"
+        status:
+          type: string
+          enum:
+            - DRAFT
+            - PUBLISHED
+        published:
+          type: string
+          format: date-time
+          description: Published modification Date/Time
 
     AddPictureRequest:
       type: object
@@ -813,6 +884,12 @@ components:
           format: int64
           description: ID of the parent category
           nullable: true
+        productCount:
+          type: integer
+          description: Number of products in this category
+        publishedProductCount:
+          type: integer
+          description: Number of published products in this category
 
     GetCategoryResponse:
       type: object
@@ -835,6 +912,12 @@ components:
           format: int64
           description: ID of the parent category
           nullable: true
+        productCount:
+          type: integer
+          description: Number of products in this category
+        publishedProductCount:
+          type: integer
+          description: Number of published products in this category
 
     SearchCategoryRequest:
       type: object
@@ -901,6 +984,9 @@ components:
         productCount:
           type: integer
           description: Number of products in this section
+        publishedProductCount:
+          type: integer
+          description: Number of published products in this sections
 
     ListSectionResponse:
       type: object
@@ -944,6 +1030,9 @@ components:
         productCount:
           type: integer
           description: Number of products in this section
+        publishedProductCount:
+          type: integer
+          description: Number of published products in this sections
 
     GetSectionResponse:
       type: object

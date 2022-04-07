@@ -30,7 +30,7 @@ class RemoveFromSectionControllerTest : AbstractSecuredController() {
         rest.delete(url)
 
         val section = dao.findById(100).get()
-        assertEquals(1, section.productCount)
+        assertEquals(2, section.productCount)
     }
 
     @Test

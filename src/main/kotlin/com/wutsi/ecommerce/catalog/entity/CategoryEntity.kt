@@ -18,5 +18,8 @@ data class CategoryEntity(
     val titleFrench: String = "",
 
     @Column(name = "parent_fk")
-    val parentId: Long? = null
+    val parentId: Long? = null,
+
+    var productCount: Int = 0,
+    var publishedProductCount: Int = 0,
 )

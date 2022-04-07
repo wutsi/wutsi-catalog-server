@@ -7,6 +7,7 @@ import com.wutsi.platform.core.security.SubjectType
 import com.wutsi.platform.core.security.SubjectType.USER
 import com.wutsi.platform.core.security.spring.SpringAuthorizationRequestInterceptor
 import com.wutsi.platform.core.security.spring.jwt.JWTBuilder
+import com.wutsi.platform.core.stream.EventStream
 import com.wutsi.platform.core.test.TestRSAKeyProvider
 import com.wutsi.platform.core.test.TestTokenProvider
 import com.wutsi.platform.core.test.TestTracingContext
@@ -32,6 +33,9 @@ abstract class AbstractSecuredController {
     protected lateinit var tenantApi: WutsiTenantApi
 
     protected lateinit var rest: RestTemplate
+
+    @MockBean
+    protected lateinit var eventStream: EventStream
 
     @BeforeEach
     open fun setUp() {

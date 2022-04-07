@@ -23,7 +23,7 @@ class AddToSectionControllerTest : AbstractSecuredController() {
         rest.postForEntity(url, null, Any::class.java)
 
         val section = dao.findById(100).get()
-        assertEquals(3, section.productCount)
+        assertEquals(2, section.productCount)
     }
 
     @Test

@@ -30,6 +30,7 @@ class GetSectionControllerTest : AbstractSecuredController() {
         assertEquals("Electronic", section.title)
         assertEquals(1, section.sortOrder)
         assertEquals(10, section.productCount)
+        assertEquals(7, section.publishedProductCount)
     }
 
     @Test

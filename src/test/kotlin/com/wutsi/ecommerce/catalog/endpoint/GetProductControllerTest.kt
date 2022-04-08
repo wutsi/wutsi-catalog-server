@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.wutsi.ecommerce.catalog.dto.GetProductResponse
+import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.entity.ProductType
 import com.wutsi.ecommerce.catalog.error.ErrorURN
 import com.wutsi.platform.core.error.ErrorResponse
@@ -13,6 +14,7 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.web.client.HttpStatusCodeException
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/GetProductController.sql"])
@@ -42,6 +44,8 @@ class GetProductControllerTest : AbstractSecuredController() {
         assertEquals(ProductType.PHYSICAL.name, product.type)
         assertEquals(100, product.quantity)
         assertEquals(5, product.maxOrder)
+        assertEquals(ProductStatus.DRAFT.name, product.status)
+        assertNull(product.published)
 
         val pictures = product.pictures
         assertEquals(2, pictures.size)

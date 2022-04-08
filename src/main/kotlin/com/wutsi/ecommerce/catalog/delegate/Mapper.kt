@@ -36,7 +36,9 @@ fun ProductEntity.toProductSummary() = ProductSummary(
     subCategoryId = this.subCategory.id ?: -1,
     type = this.type.name,
     quantity = this.quantity,
-    maxOrder = this.maxOrder
+    maxOrder = this.maxOrder,
+    status = this.status.name,
+    published = this.published
 )
 
 fun ProductEntity.toProduct() = Product(
@@ -58,19 +60,25 @@ fun ProductEntity.toProduct() = Product(
     type = this.type.name,
     quantity = this.quantity,
     maxOrder = this.maxOrder,
-    sections = this.sections.filter { !it.isDeleted }.map { it.toSectionSummary() }
+    sections = this.sections.filter { !it.isDeleted }.map { it.toSectionSummary() },
+    status = this.status.name,
+    published = this.published
 )
 
 fun CategoryEntity.toCategory() = Category(
     id = this.id ?: -1,
     parentId = this.parentId,
-    title = this.toTitle()
+    title = this.toTitle(),
+    productCount = this.productCount,
+    publishedProductCount = this.publishedProductCount
 )
 
 fun CategoryEntity.toCategorySummary() = CategorySummary(
     id = this.id ?: -1,
     parentId = this.parentId,
-    title = this.toTitle()
+    title = this.toTitle(),
+    productCount = this.productCount,
+    publishedProductCount = this.publishedProductCount
 )
 
 fun CategoryEntity.toTitle(): String {
@@ -84,13 +92,16 @@ fun CategoryEntity.toTitle(): String {
 fun SectionEntity.toSectionSummary() = SectionSummary(
     id = this.id ?: -1,
     title = this.title,
+    sortOrder = this.sortOrder,
     productCount = this.productCount,
-    sortOrder = this.sortOrder
+    publishedProductCount = this.publishedProductCount
+
 )
 
 fun SectionEntity.toSection() = Section(
     id = this.id ?: -1,
     title = this.title,
+    sortOrder = this.sortOrder,
     productCount = this.productCount,
-    sortOrder = this.sortOrder
+    publishedProductCount = this.publishedProductCount
 )

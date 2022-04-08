@@ -19,6 +19,6 @@ data class ProductSummary(
     val currency: String = "",
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ") val created: OffsetDateTime = OffsetDateTime.now(),
     @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ") val updated: OffsetDateTime = OffsetDateTime.now(),
-    @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ") val published: OffsetDateTime = OffsetDateTime.now(),
+    @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ") val published: OffsetDateTime? = null,
     val status: String = ""
 )

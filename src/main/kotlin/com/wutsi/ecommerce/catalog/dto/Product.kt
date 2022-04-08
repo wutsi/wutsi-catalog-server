@@ -27,5 +27,5 @@ data class Product(
     val numericFileUrl: String? = null,
     val sections: List<SectionSummary> = emptyList(),
     val status: String = "",
-    @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ") val published: OffsetDateTime = OffsetDateTime.now()
+    @get:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ") val published: OffsetDateTime? = null
 )

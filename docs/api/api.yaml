@@ -71,6 +71,14 @@ paths:
     get:
       operationId: "list-sections"
       description: Return all the sections of a catalog
+      parameters:
+        - in: path
+          name: account-id
+          description: ID of the owner of the sections
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Success
@@ -737,6 +745,7 @@ components:
           type: string
           format: date-time
           description: Published modification Date/Time
+          nullable: true
         status:
           type: string
           enum:
@@ -842,7 +851,7 @@ components:
           type: string
           format: date-time
           description: Published modification Date/Time
-
+          nullable: true
     AddPictureRequest:
       type: object
       properties:

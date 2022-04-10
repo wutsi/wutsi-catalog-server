@@ -16,7 +16,8 @@ class ListSectionsControllerTest : AbstractSecuredController() {
     @Test
     fun list() {
         // WHEN
-        val response = rest.getForEntity("http://localhost:$port/v1/sections", ListSectionResponse::class.java)
+        val response =
+            rest.getForEntity("http://localhost:$port/v1/sections?account-id=$USER_ID", ListSectionResponse::class.java)
 
         // THEN
         assertEquals(200, response.statusCodeValue)

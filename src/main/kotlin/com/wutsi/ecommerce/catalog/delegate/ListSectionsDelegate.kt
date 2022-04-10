@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class ListSectionsDelegate : AbstractSectionDelegate() {
-    fun invoke() = ListSectionResponse(
-        sections = dao.findByAccountId(securityManager.accountId())
+    fun invoke(accountId: Long) = ListSectionResponse(
+        sections = dao.findByAccountId(accountId)
             .filter { !it.isDeleted }
             .sortedBy { it.sortOrder }
             .map { it.toSectionSummary() }

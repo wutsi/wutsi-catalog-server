@@ -5,6 +5,7 @@ import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.service.SecurityManager
+import com.wutsi.platform.core.logging.KVLogger
 import org.springframework.stereotype.Service
 import javax.persistence.EntityManager
 import javax.persistence.Query
@@ -13,6 +14,7 @@ import javax.persistence.Query
 class SearchProductsDelegate(
     private val securityManager: SecurityManager,
     private val em: EntityManager,
+    private val logger: KVLogger
 ) {
     fun invoke(request: SearchProductRequest): SearchProductResponse {
         val query = em.createQuery(sql(request))
@@ -22,6 +24,14 @@ class SearchProductsDelegate(
             .setMaxResults(request.limit)
             .resultList as List<ProductEntity>
 
+        logger.add("offset", request.offset)
+        logger.add("limit", request.limit)
+        logger.add("status", request.status)
+        logger.add("section_id", request.sectionId)
+        logger.add("product_ids", request.productIds)
+        logger.add("account_id", request.accountId)
+        logger.add("visible", request.visible)
+        logger.add("count", products.size)
         return SearchProductResponse(
             products = products.map { it.toProductSummary() }
         )

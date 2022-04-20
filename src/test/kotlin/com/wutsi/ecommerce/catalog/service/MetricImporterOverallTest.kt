@@ -18,7 +18,7 @@ import kotlin.test.assertTrue
 internal class MetricImporterOverallTest {
     companion object {
         const val CSV: String = """
-            "time","tenantid","merchantid","productid","count"
+            "time","tenantid","merchantid","productid","value"
             "1586837219285","1","555","1","31"
             "1586837219485","1","666","2","11"
         """

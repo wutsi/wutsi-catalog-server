@@ -106,8 +106,8 @@ class MetricImporterOverall(
         stmt.setLong(2, item.productId?.toLong() ?: -1)
         stmt.setLong(3, item.merchantId?.toLong() ?: -1)
         stmt.setInt(4, type.ordinal)
-        stmt.setLong(5, item.count)
-        stmt.setLong(6, item.count)
+        stmt.setLong(5, item.value)
+        stmt.setLong(6, item.value)
         stmt.setLong(7, item.merchantId?.toLong() ?: -1)
     }
 

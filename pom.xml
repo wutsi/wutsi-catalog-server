@@ -33,7 +33,7 @@
     <hikari-cp.version>5.0.1</hikari-cp.version>
     <opencsv.version>5.6</opencsv.version>
     <postgresql.version>42.3.3</postgresql.version>
-    <flyway.version>8.5.7</flyway.version>
+    <flyway.version>8.5.8</flyway.version>
     <wutsi-platform-core.version>0.0.109</wutsi-platform-core.version>
     <wutsi-tenant.version>0.0.20</wutsi-tenant.version>
   </properties>
@@ -50,6 +50,12 @@
       <version>${wutsi-platform-core.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+      <version>${opencsv.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
       <version>${kotlin.version}</version>
@@ -58,11 +64,6 @@
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-reflect</artifactId>
       <version>${kotlin.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.opencsv</groupId>
-      <artifactId>opencsv</artifactId>
-      <version>${opencsv.version}</version>
     </dependency>
 
     <dependency>

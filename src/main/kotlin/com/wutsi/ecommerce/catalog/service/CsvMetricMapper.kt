@@ -7,6 +7,6 @@ class CsvMetricMapper : AbstractCsvMapper<CsvMetric>() {
             tenantId = getString("tenantid", col),
             merchantId = getString("merchantid", col),
             productId = getString("productid", col),
-            count = getLong("count", col) ?: 0
+            value = getLong("value", col) ?: 0
         )
 }

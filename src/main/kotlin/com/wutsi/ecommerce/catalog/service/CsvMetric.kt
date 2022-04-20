@@ -5,5 +5,5 @@ data class CsvMetric(
     var tenantId: String? = null,
     var merchantId: String? = null,
     var productId: String? = null,
-    var count: Long = 1
+    var value: Long = 1
 )

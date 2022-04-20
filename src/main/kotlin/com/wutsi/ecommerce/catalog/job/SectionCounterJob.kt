@@ -6,11 +6,18 @@ import javax.transaction.Transactional
 
 @Service
 class SectionCounterJob : AbstractCounterJob() {
-    @Scheduled(cron = "\${wutsi.application.jobs.section-counter.cron}")
-    @Transactional
-    fun run() {
+    override fun getJobName() = "section-counter"
+
+    override fun doRun(): Long {
         totalCount()
         publishedCount()
+        return -1
+    }
+
+    @Scheduled(cron = "\${wutsi.application.jobs.section-counter.cron}")
+    @Transactional
+    override fun run() {
+        super.run()
     }
 
     private fun totalCount() {

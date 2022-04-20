@@ -39,7 +39,7 @@ spring:
     clean-disabled: false
 
   jpa:
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: none
       dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -62,9 +62,11 @@ wutsi:
     name: wutsi-catalog
     jobs:
       section-counter:
-        cron: "0 */30 * * * *"
+        cron: "0 */30 * * * *" # Every 30 mins
       category-counter:
-        cron: "0 */30 * * * *"
+        cron: "0 */30 * * * *" # Every 30 mins
+      metric-importer:
+        cron: "0 0 6 * * *"    # Every day at 6AM
 
   platform:
     security:
@@ -79,6 +81,8 @@ wutsi:
       client-id: ${wutsi.application.name}
       device-id-provider:
         type: header
+    storage:
+      type: local
 
 logging:
   level:

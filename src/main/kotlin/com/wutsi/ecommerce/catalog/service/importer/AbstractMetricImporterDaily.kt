@@ -99,7 +99,7 @@ abstract class AbstractMetricImporterDaily(
 
     private fun toURL(date: LocalDate, type: MetricType): URL =
         storage.toURL(
-            "/aggregates/daily/" +
+            "aggregates/daily/" +
                 date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) +
                 type.name.lowercase() + ".csv"
         )

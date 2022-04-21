@@ -16,7 +16,6 @@ abstract class AbstractCounterJob : AbstractCronJob() {
 
     protected fun exec(step: String, sql: String): Int {
         logger.add("step", step)
-        logger.add("sql", sql)
         try {
             val result = em.createNativeQuery(sql).executeUpdate()
             logger.add("result", result)

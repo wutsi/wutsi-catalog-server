@@ -1,7 +1,7 @@
 package com.wutsi.ecommerce.catalog.service.importer
 
 import com.opencsv.CSVReader
-import com.wutsi.ecommerce.catalog.entity.MetricType
+import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.service.CsvMetric
 import com.wutsi.ecommerce.catalog.service.CsvMetricMapper
 import com.wutsi.platform.core.logging.DefaultKVLogger

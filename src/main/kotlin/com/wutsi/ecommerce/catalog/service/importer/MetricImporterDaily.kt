@@ -1,6 +1,6 @@
 package com.wutsi.ecommerce.catalog.service.importer
 
-import com.wutsi.ecommerce.catalog.entity.MetricType
+import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.service.CsvMetric
 import com.wutsi.platform.core.storage.StorageService
 import org.springframework.stereotype.Service

@@ -1,6 +1,7 @@
 package com.wutsi.ecommerce.catalog.job
 
-import com.wutsi.ecommerce.catalog.entity.MetricType
+import com.wutsi.analytics.tracking.entity.MetricType
+import com.wutsi.ecommerce.catalog.service.importer.ConversionImporterDaily
 import com.wutsi.ecommerce.catalog.service.importer.MetricImporterDaily
 import com.wutsi.ecommerce.catalog.service.importer.ScoreImporterDaily
 import com.wutsi.platform.core.cron.AbstractCronJob
@@ -14,6 +15,7 @@ import java.time.LocalDate
 class MetricImporterJob(
     private val importer: MetricImporterDaily,
     private val score: ScoreImporterDaily,
+    private val conversion: ConversionImporterDaily,
     private val clock: Clock,
     private val logger: KVLogger
 ) : AbstractCronJob() {
@@ -25,10 +27,12 @@ class MetricImporterJob(
         val date = LocalDate.now(clock).minusDays(1) // Yesterday
         logger.add("date", date)
 
-        importer.import(date, MetricType.CHAT)
-        importer.import(date, MetricType.SHARE)
-        importer.import(date, MetricType.VIEW)
-        return score.import(date, MetricType.VIEW)
+        return importer.import(date, MetricType.CHAT) +
+            importer.import(date, MetricType.SHARE) +
+            importer.import(date, MetricType.VIEW) +
+            importer.import(date, MetricType.ORDER) +
+            conversion.import(date, MetricType.ORDER) + // IMPORTANT: MUST BE AFTER ALL METRICS
+            score.import(date, MetricType.VIEW) // IMPORTANT: MUST BE THE LAST
     }
 
     @Scheduled(cron = "\${wutsi.application.jobs.metric-importer.cron}")

@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.wutsi.ecommerce.catalog.entity.MetricType
+import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.service.importer.MetricImporterDaily
 import com.wutsi.ecommerce.catalog.service.importer.ScoreImporterDaily
 import org.junit.jupiter.api.BeforeEach
@@ -49,10 +49,11 @@ internal class MetricImporterDailyJobTest {
     fun run() {
         job.run()
 
-        verify(metricImporter, times(3)).import(any(), any())
+        verify(metricImporter, times(4)).import(any(), any())
         verify(metricImporter).import(date, MetricType.SHARE)
         verify(metricImporter).import(date, MetricType.CHAT)
         verify(metricImporter).import(date, MetricType.VIEW)
+        verify(metricImporter).import(date, MetricType.ORDER)
 
         verify(scoreImporter).import(date, MetricType.VIEW)
     }

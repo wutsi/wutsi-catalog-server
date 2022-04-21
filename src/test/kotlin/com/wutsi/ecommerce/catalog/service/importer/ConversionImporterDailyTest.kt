@@ -3,7 +3,6 @@ package com.wutsi.ecommerce.catalog.service.importer
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.platform.core.storage.StorageService
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,9 +13,10 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import kotlin.test.assertEquals
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class ScoreImporterDailyTest {
+internal class ConversionImporterDailyTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -32,7 +32,7 @@ internal class ScoreImporterDailyTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: ScoreImporterDaily
+    private lateinit var service: ConversionImporterDaily
 
     @Autowired
     private lateinit var dao: ProductRepository
@@ -45,37 +45,37 @@ internal class ScoreImporterDailyTest {
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/ScoreImporterDaily.sql"])
-    fun view() {
+    @Sql(value = ["/db/clean.sql", "/db/ConversionImporterDaily.sql"])
+    fun cvr() {
         store()
 
-        service.import(date, MetricType.VIEW)
+        service.import(date, MetricType.ORDER)
 
-        assertScore(100, 0.111)
-        assertScore(101, 0.16)
-        assertScore(102, 0.0)
+        assertConversion(100, 0.01)
+        assertConversion(101, 0.11)
+        assertConversion(102, 0.0)
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/ScoreImporterDaily.sql"])
+    @Sql(value = ["/db/clean.sql", "/db/ConversionImporterDaily.sql"])
     fun fileNotFound() {
-        service.import(date, MetricType.VIEW)
+        service.import(date, MetricType.ORDER)
 
-        assertScore(100, 0.0)
-        assertScore(101, 0.0)
-        assertScore(102, 0.0)
+        assertConversion(100, 0.0)
+        assertConversion(101, 0.0)
+        assertConversion(102, 0.0)
     }
 
-    private fun assertScore(productId: Long, expected: Double) {
+    private fun assertConversion(productId: Long, expected: Double) {
         val product = dao.findById(productId)
 
-        assertEquals(expected, product.get().score)
+        assertEquals(expected, product.get().conversion)
     }
 
     private fun store() {
         val path = "aggregates/daily/" +
             date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
-            "/view.csv"
+            "/order.csv"
         storage.store(
             path,
             ByteArrayInputStream(CSV.trimIndent().toByteArray()),

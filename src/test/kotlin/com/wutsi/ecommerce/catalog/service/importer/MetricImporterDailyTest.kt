@@ -1,7 +1,7 @@
 package com.wutsi.ecommerce.catalog.service.importer
 
+import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
-import com.wutsi.ecommerce.catalog.entity.MetricType
 import com.wutsi.platform.core.storage.StorageService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

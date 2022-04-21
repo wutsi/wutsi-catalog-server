@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.delegate
 
 import com.wutsi.ecommerce.catalog.dto.Category
 import com.wutsi.ecommerce.catalog.dto.CategorySummary
+import com.wutsi.ecommerce.catalog.dto.Metrics
 import com.wutsi.ecommerce.catalog.dto.PictureSummary
 import com.wutsi.ecommerce.catalog.dto.Product
 import com.wutsi.ecommerce.catalog.dto.ProductSummary
@@ -62,7 +63,17 @@ fun ProductEntity.toProduct() = Product(
     maxOrder = this.maxOrder,
     sections = this.sections.filter { !it.isDeleted }.map { it.toSectionSummary() },
     status = this.status.name,
-    published = this.published
+    published = this.published,
+    overallMetrics = this.toMetrics()
+)
+
+fun ProductEntity.toMetrics() = Metrics(
+    totalViews = this.totalChats,
+    totalChats = this.totalChats,
+    totalShares = this.totalShares,
+    totalOrders = this.totalShares,
+    conversion = this.conversion,
+    score = this.score
 )
 
 fun CategoryEntity.toCategory() = Category(

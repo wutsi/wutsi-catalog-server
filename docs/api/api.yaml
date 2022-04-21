@@ -860,6 +860,32 @@ components:
           format: date-time
           description: Published modification Date/Time
           nullable: true
+        overallMetrics:
+          type: object
+          $ref: "#/components/schemas/Metrics"
+
+    Metrics:
+      type: object
+      properties:
+        totalViews:
+          type: integer
+          format: int64
+        totalChats:
+          type: integer
+          format: int64
+        totalShares:
+          type: integer
+          format: int64
+        totalOrders:
+          type: integer
+          format: int64
+        conversion:
+          type: number
+          format: double
+        score:
+          type: number
+          format: double
+
     AddPictureRequest:
       type: object
       properties:

@@ -8,59 +8,34 @@ import javax.transaction.Transactional
 class CategoryCounterJob : AbstractCounterJob() {
     override fun getJobName() = "category-counter"
 
-    override fun doRun(): Long {
-        totalCount()
-        publishedCount()
-        return -1
-    }
+    override fun doRun(): Long =
+        exec(
+            """
+                UPDATE T_CATEGORY C
+                SET
+                    update_counters = false,
+                    product_count = (
+                       SELECT count(*)
+                        FROM T_PRODUCT
+                        WHERE
+                            is_deleted=false AND
+                            (category_fk=C.id OR sub_category_fk=C.id)
+                    ),
+                    published_product_count = (
+                       SELECT count(*)
+                        FROM T_PRODUCT
+                        WHERE
+                            status=1 AND
+                            is_deleted=false AND
+                            (category_fk=C.id  OR sub_category_fk=C.id)
+                    )
+                WHERE update_counters=true
+            """.trimIndent()
+        )
 
     @Scheduled(cron = "\${wutsi.application.jobs.category-counter.cron}")
     @Transactional
     override fun run() {
         super.run()
-    }
-
-    private fun totalCount() {
-        val sql1 = """
-            UPDATE T_CATEGORY
-            SET product_count = TMP.cnt
-            FROM (
-               SELECT category_fk AS id, count(*) as cnt FROM T_PRODUCT WHERE is_deleted=false GROUP BY category_fk
-            ) AS TMP
-            WHERE TMP.id=T_CATEGORY.id
-        """.trimIndent()
-        exec("total-count", sql1)
-
-        val sql2 = """
-            UPDATE T_CATEGORY
-            SET product_count = TMP.cnt
-            FROM (
-               SELECT sub_category_fk AS id, count(*) as cnt FROM T_PRODUCT WHERE is_deleted=false GROUP BY sub_category_fk
-            ) AS TMP
-            WHERE TMP.id=T_CATEGORY.id
-        """.trimIndent()
-        exec("total-count", sql2)
-    }
-
-    private fun publishedCount() {
-        val sql1 = """
-            UPDATE T_CATEGORY
-            SET published_product_count = TMP.cnt
-            FROM (
-               SELECT category_fk AS id, count(*) as cnt FROM T_PRODUCT WHERE is_deleted=false AND status=1 GROUP BY category_fk
-            ) AS TMP
-            WHERE TMP.id=T_CATEGORY.id
-        """.trimIndent()
-        exec("total-count", sql1)
-
-        val sql2 = """
-            UPDATE T_CATEGORY
-            SET published_product_count = TMP.cnt
-            FROM (
-               SELECT sub_category_fk AS id, count(*) as cnt FROM T_PRODUCT WHERE is_deleted=false AND status=1 GROUP BY sub_category_fk
-            ) AS TMP
-            WHERE TMP.id=T_CATEGORY.id
-        """.trimIndent()
-        exec("total-count", sql2)
     }
 }

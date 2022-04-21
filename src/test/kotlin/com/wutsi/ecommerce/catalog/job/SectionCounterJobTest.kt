@@ -22,12 +22,15 @@ internal class SectionCounterJobTest : AbstractSecuredController() {
         job.run()
 
         assertCount(100, 3, 2)
-        assertCount(200, 1, 1)
+        assertCount(200, 666, 66)
+        assertCount(300, 0, 0)
+        assertCount(900, 100, 10, true)
     }
 
-    private fun assertCount(id: Long, productCount: Int, publishedProductCount: Int) {
+    private fun assertCount(id: Long, productCount: Int, publishedProductCount: Int, updateCounters: Boolean = false) {
         val section = dao.findById(id).get()
         assertEquals(productCount, section.productCount, "$id-product-count")
         assertEquals(publishedProductCount, section.publishedProductCount, "$id-published-product-count")
+        assertEquals(updateCounters, section.updateCounters, "$id-update-counters")
     }
 }

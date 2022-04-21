@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/CreateSectionController.sql"])
@@ -50,6 +51,7 @@ class CreateSectionControllerTest : AbstractSecuredController() {
         assertEquals(1, section.sortOrder)
         assertFalse(section.isDeleted)
         assertNull(section.deleted)
+        assertTrue(section.updateCounters)
     }
 
     @Test

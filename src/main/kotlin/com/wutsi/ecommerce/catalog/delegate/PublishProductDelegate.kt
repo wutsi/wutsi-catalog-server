@@ -18,6 +18,9 @@ class PublishProductDelegate : AbstractProductDelegate() {
         product.published = OffsetDateTime.now()
         dao.save(product)
 
+        // Update counters
+        updateCounters(product)
+
         // Notify
         eventStream.publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(id = id))
     }

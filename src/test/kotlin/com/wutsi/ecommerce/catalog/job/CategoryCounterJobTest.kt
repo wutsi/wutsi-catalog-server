@@ -24,12 +24,13 @@ internal class CategoryCounterJobTest {
         assertCount(101, 3, 2)
         assertCount(102, 0, 0)
         assertCount(200, 1, 1)
-        assertCount(201, 1, 1)
+        assertCount(201, 555, 55)
     }
 
-    private fun assertCount(id: Long, productCount: Int, publishedProductCount: Int) {
+    private fun assertCount(id: Long, productCount: Int, publishedProductCount: Int, updateCounters: Boolean = false) {
         val category = dao.findById(id).get()
         assertEquals(productCount, category.productCount, "$id-product-count")
         assertEquals(publishedProductCount, category.publishedProductCount, "$id-published-product-count")
+        assertEquals(updateCounters, category.updateCounters, "$id-update-counters")
     }
 }

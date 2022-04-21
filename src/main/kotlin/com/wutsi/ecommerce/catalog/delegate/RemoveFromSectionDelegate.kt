@@ -31,6 +31,7 @@ class RemoveFromSectionDelegate(private val productDao: ProductRepository) : Abs
             }
 
         if (section.products.remove(product)) {
+            section.updateCounters = true
             dao.save(section)
         }
     }

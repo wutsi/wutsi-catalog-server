@@ -1,7 +1,9 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.wutsi.ecommerce.catalog.dao.CategoryRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
+import com.wutsi.ecommerce.catalog.dao.SectionRepository
 import com.wutsi.ecommerce.catalog.error.ErrorURN
 import com.wutsi.platform.core.error.ErrorResponse
 import org.junit.jupiter.api.Test
@@ -24,6 +26,12 @@ class DeleteProductControllerTest : AbstractSecuredController() {
     @Autowired
     private lateinit var dao: ProductRepository
 
+    @Autowired
+    private lateinit var categoryDao: CategoryRepository
+
+    @Autowired
+    private lateinit var sectionDao: SectionRepository
+
     @Test
     fun delete() {
         rest.delete(url(100))
@@ -31,6 +39,12 @@ class DeleteProductControllerTest : AbstractSecuredController() {
         val product = dao.findById(100).get()
         assertTrue(product.isDeleted)
         assertNotNull(product.deleted)
+
+        assertTrue(categoryDao.findById(100).get().updateCounters)
+        assertTrue(categoryDao.findById(101).get().updateCounters)
+
+        assertTrue(sectionDao.findById(100).get().updateCounters)
+        assertTrue(sectionDao.findById(200).get().updateCounters)
     }
 
     @Test

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
+import com.wutsi.ecommerce.catalog.dao.CategoryRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
+import com.wutsi.ecommerce.catalog.dao.SectionRepository
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.error.ErrorURN
 import com.wutsi.ecommerce.catalog.error.PublishError
@@ -20,6 +22,7 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.web.client.HttpClientErrorException
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/PublishProductController.sql"])
@@ -29,6 +32,12 @@ class PublishProductControllerTest : AbstractSecuredController() {
 
     @Autowired
     private lateinit var dao: ProductRepository
+
+    @Autowired
+    private lateinit var categoryDao: CategoryRepository
+
+    @Autowired
+    private lateinit var sectionDao: SectionRepository
 
     @Test
     fun publish() {
@@ -41,6 +50,12 @@ class PublishProductControllerTest : AbstractSecuredController() {
         val product = dao.findById(100).get()
         assertEquals(ProductStatus.PUBLISHED, product.status)
         assertNotNull(product.published)
+
+        assertTrue(categoryDao.findById(100).get().updateCounters)
+        assertTrue(categoryDao.findById(101).get().updateCounters)
+
+        assertTrue(sectionDao.findById(100).get().updateCounters)
+        assertTrue(sectionDao.findById(200).get().updateCounters)
 
         verify(eventStream).publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(100))
     }

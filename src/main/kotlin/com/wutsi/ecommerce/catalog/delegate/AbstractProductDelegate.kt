@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.delegate
 
 import com.wutsi.ecommerce.catalog.dao.CategoryRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
+import com.wutsi.ecommerce.catalog.dao.SectionRepository
 import com.wutsi.ecommerce.catalog.entity.CategoryEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.ProductType
@@ -27,6 +28,9 @@ class AbstractProductDelegate {
 
     @Autowired
     protected lateinit var categoryDao: CategoryRepository
+
+    @Autowired
+    protected lateinit var sectionDao: SectionRepository
 
     @Autowired
     protected lateinit var eventStream: EventStream
@@ -93,4 +97,13 @@ class AbstractProductDelegate {
             )
         )
     )
+
+    protected fun updateCounters(product: ProductEntity) {
+        product.sections.forEach { it.updateCounters = true }
+        sectionDao.saveAll(product.sections)
+
+        product.category.updateCounters = true
+        product.subCategory.updateCounters = true
+        categoryDao.saveAll(listOfNotNull(product.category, product.subCategory))
+    }
 }

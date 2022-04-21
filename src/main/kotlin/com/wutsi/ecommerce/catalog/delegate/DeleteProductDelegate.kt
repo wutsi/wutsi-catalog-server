@@ -8,9 +8,16 @@ import java.time.OffsetDateTime
 class DeleteProductDelegate : AbstractProductDelegate() {
     @Transactional
     fun invoke(id: Long) {
+        // Delete
         val product = getProduct(id)
+        if (product.isDeleted)
+            return
+
         product.isDeleted = true
         product.deleted = OffsetDateTime.now()
         dao.save(product)
+
+        // Update counters
+        updateCounters(product)
     }
 }

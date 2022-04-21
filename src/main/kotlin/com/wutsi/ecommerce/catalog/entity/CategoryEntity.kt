@@ -22,4 +22,5 @@ data class CategoryEntity(
 
     var productCount: Int = 0,
     var publishedProductCount: Int = 0,
+    var updateCounters: Boolean = true,
 )

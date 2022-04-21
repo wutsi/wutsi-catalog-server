@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.test.context.jdbc.Sql
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AddToSectionControllerTest : AbstractSecuredController() {
@@ -24,6 +25,7 @@ class AddToSectionControllerTest : AbstractSecuredController() {
 
         val section = dao.findById(100).get()
         assertEquals(2, section.productCount)
+        assertTrue(section.updateCounters)
     }
 
     @Test
@@ -34,5 +36,6 @@ class AddToSectionControllerTest : AbstractSecuredController() {
 
         val section = dao.findById(100).get()
         assertEquals(2, section.productCount)
+        assertTrue(section.updateCounters)
     }
 }

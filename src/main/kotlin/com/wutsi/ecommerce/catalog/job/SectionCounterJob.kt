@@ -8,39 +8,38 @@ import javax.transaction.Transactional
 class SectionCounterJob : AbstractCounterJob() {
     override fun getJobName() = "section-counter"
 
-    override fun doRun(): Long {
-        totalCount()
-        publishedCount()
-        return -1
-    }
+    override fun doRun(): Long =
+        exec(
+            """
+                UPDATE T_SECTION S
+                SET
+                    update_counters = false,
+                    product_count = (
+                       SELECT count(*)
+                        FROM T_SECTION_PRODUCT SP
+                            JOIN T_PRODUCT P ON P.id=SP.product_fk
+                        WHERE
+                            S.id=SP.section_fk AND
+                            P.is_deleted=false
+                    ),
+                    published_product_count = (
+                       SELECT count(*)
+                        FROM T_SECTION_PRODUCT SP
+                            JOIN T_PRODUCT P ON P.id=SP.product_fk
+                        WHERE
+                            S.id=SP.section_fk AND
+                            P.status=1 AND
+                            P.is_deleted=false
+                    )
+                WHERE
+                    is_deleted=false AND
+                    update_counters=true
+            """.trimIndent()
+        )
 
-    @Scheduled(cron = "\${wutsi.application.jobs.section-counter.cron}")
     @Transactional
+    @Scheduled(cron = "\${wutsi.application.jobs.section-counter.cron}")
     override fun run() {
         super.run()
-    }
-
-    private fun totalCount() {
-        val sql = """
-            UPDATE T_SECTION
-            SET product_count = TMP.cnt
-            FROM (
-               SELECT section_fk AS id, count(*) AS cnt FROM T_SECTION_PRODUCT S JOIN T_PRODUCT P ON P.id=S.product_fk WHERE P.is_deleted=false GROUP BY section_fk
-            ) AS TMP
-            WHERE TMP.id=T_SECTION.id;
-        """.trimIndent()
-        exec("total-count", sql)
-    }
-
-    private fun publishedCount() {
-        val sql = """
-            UPDATE T_SECTION
-            SET published_product_count = TMP.cnt
-            FROM (
-               SELECT section_fk AS id, count(*) AS cnt FROM T_SECTION_PRODUCT S JOIN T_PRODUCT P ON P.id=S.product_fk WHERE P.status=1 AND P.is_deleted=false GROUP BY section_fk
-            ) AS TMP
-            WHERE TMP.id=T_SECTION.id;
-        """.trimIndent()
-        exec("published-count", sql)
     }
 }

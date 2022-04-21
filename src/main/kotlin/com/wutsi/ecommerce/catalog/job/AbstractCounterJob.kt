@@ -14,17 +14,13 @@ abstract class AbstractCounterJob : AbstractCronJob() {
 
     override fun getToken(): String? = null
 
-    protected fun exec(step: String, sql: String): Int {
-        logger.add("step", step)
+    protected fun exec(sql: String): Long {
         try {
-            val result = em.createNativeQuery(sql).executeUpdate()
-            logger.add("result", result)
-            return result
+            return em.createNativeQuery(sql).executeUpdate().toLong()
         } catch (ex: Exception) {
+            logger.add("sql", sql)
             logger.setException(ex)
             return 0
-        } finally {
-            logger.log()
         }
     }
 }

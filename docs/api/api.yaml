@@ -72,7 +72,7 @@ paths:
       operationId: "list-sections"
       description: Return all the sections of a catalog
       parameters:
-        - in: path
+        - in: query
           name: account-id
           description: ID of the owner of the sections
           required: true
@@ -656,6 +656,14 @@ components:
         offset:
           type: integer
           default: 0
+        sortBy:
+          type: string
+          enum:
+            - RECOMMENDED
+            - PRICE_DESC
+            - PRICE_ASC
+            - VIEWS
+          nullable: true
 
     SearchProductResponse:
       type: object

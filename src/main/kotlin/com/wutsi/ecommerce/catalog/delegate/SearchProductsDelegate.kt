@@ -3,6 +3,7 @@ package com.wutsi.ecommerce.catalog.delegate
 import com.wutsi.ecommerce.catalog.dto.SearchProductRequest
 import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.ecommerce.catalog.entity.ProductSort
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.service.SecurityManager
 import com.wutsi.platform.core.logging.KVLogger
@@ -40,10 +41,11 @@ class SearchProductsDelegate(
     private fun sql(request: SearchProductRequest): String {
         val select = select(request)
         val where = where(request)
+        val orderBy = orderBy(request)
         return if (where.isNullOrEmpty())
             select
         else
-            "$select WHERE $where ORDER BY P.id"
+            "$select WHERE $where ORDER BY $orderBy"
     }
 
     private fun select(request: SearchProductRequest): String =
@@ -76,6 +78,16 @@ class SearchProductsDelegate(
 
         return criteria.joinToString(separator = " AND ")
     }
+
+    private fun orderBy(request: SearchProductRequest): String =
+        if (ProductSort.PRICE_DESC.name.equals(request.sortBy, true))
+            "P.price DESC, P.score DESC" // Price, then score
+        else if (ProductSort.PRICE_ASC.name.equals(request.sortBy, true))
+            "P.price ASC, P.score DESC" // Price, then score
+        else if (ProductSort.VIEWS.name.equals(request.sortBy, true))
+            "P.totalViews DESC, P.score DESC" // Views, then score
+        else
+            "P.score DESC, P.totalViews DESC" // Views, then views
 
     private fun parameters(request: SearchProductRequest, query: Query) {
         query.setParameter("is_deleted", false)

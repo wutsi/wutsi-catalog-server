@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.endpoint
 
 import com.wutsi.ecommerce.catalog.dto.SearchProductRequest
 import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
+import com.wutsi.ecommerce.catalog.entity.ProductSort
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -71,8 +72,8 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val products = response.body!!.products
-        assertEquals(4, products.size)
-        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 200, 201)))
+        assertEquals(5, products.size)
+        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 102, 200, 201)))
     }
 
     @Test
@@ -89,8 +90,8 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val products = response.body!!.products.sortedBy { it.id }
-        assertEquals(3, products.size)
-        assertTrue(products.map { it.id }.containsAll(listOf(101L, 200L, 201L)))
+        assertEquals(4, products.size)
+        assertTrue(products.map { it.id }.containsAll(listOf(101L, 102, 200L, 201L)))
     }
 
     @Test
@@ -108,5 +109,73 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         val products = response.body!!.products.sortedBy { it.id }
         assertEquals(2, products.size)
         assertTrue(products.map { it.id }.containsAll(listOf(100L, 101L)))
+    }
+
+    @Test
+    fun `order by price asc`() {
+        // WHEN
+        val request = SearchProductRequest(
+            accountId = 1,
+            sortBy = ProductSort.PRICE_ASC.name
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(2, products.size)
+        assertTrue(products[0].price!! < products[1].price!!)
+    }
+
+    @Test
+    fun `order by price desc`() {
+        // WHEN
+        val request = SearchProductRequest(
+            accountId = 1,
+            sortBy = ProductSort.PRICE_DESC.name
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(2, products.size)
+        assertTrue(products[0].price!! > products[1].price!!)
+    }
+
+    @Test
+    fun `order by views`() {
+        // WHEN
+        val request = SearchProductRequest(
+            visible = true,
+            sortBy = ProductSort.VIEWS.name
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(5, products.size)
+        assertEquals(listOf(101L, 200L, 102L, 100L, 201L), products.map { it.id })
+    }
+
+    @Test
+    fun `order by recommended`() {
+        // WHEN
+        val request = SearchProductRequest(
+            visible = true,
+            sortBy = ProductSort.RECOMMENDED.name
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(5, products.size)
+        assertEquals(listOf(200L, 101L, 102L, 100L, 201L), products.map { it.id })
     }
 }

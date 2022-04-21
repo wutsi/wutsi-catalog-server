@@ -64,4 +64,9 @@ data class ProductEntity(
     var status: ProductStatus = ProductStatus.DRAFT,
 
     var published: OffsetDateTime? = null,
+
+    val totalViews: Long = 0,
+    val totalShares: Long = 0,
+    val totalChats: Long = 0,
+    val score: Double = 0.0
 )

@@ -27,6 +27,7 @@ class SearchProductsDelegate(
 
         logger.add("offset", request.offset)
         logger.add("limit", request.limit)
+        logger.add("sort_by", request.sortBy)
         logger.add("status", request.status)
         logger.add("section_id", request.sectionId)
         logger.add("product_ids", request.productIds)

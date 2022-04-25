@@ -64,7 +64,8 @@ class SearchProductsControllerTest : AbstractSecuredController() {
     fun `search by categories`() {
         // WHEN
         val request = SearchProductRequest(
-            categoryIds = listOf(100, 201)
+            categoryIds = listOf(100, 201),
+            sortBy = ProductSort.RECOMMENDED.name,
         )
         val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
 

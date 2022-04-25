@@ -61,6 +61,22 @@ class SearchProductsControllerTest : AbstractSecuredController() {
     }
 
     @Test
+    fun `search by categories`() {
+        // WHEN
+        val request = SearchProductRequest(
+            categoryIds = listOf(100, 201)
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(5, products.size)
+        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 102, 200, 300)))
+    }
+
+    @Test
     fun `search visible products`() {
         // WHEN
         val request = SearchProductRequest(

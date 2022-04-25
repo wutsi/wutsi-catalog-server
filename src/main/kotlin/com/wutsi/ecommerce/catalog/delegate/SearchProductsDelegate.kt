@@ -31,6 +31,7 @@ class SearchProductsDelegate(
         logger.add("status", request.status)
         logger.add("section_id", request.sectionId)
         logger.add("product_ids", request.productIds)
+        logger.add("category_ids", request.categoryIds)
         logger.add("account_id", request.accountId)
         logger.add("visible", request.visible)
         logger.add("count", products.size)

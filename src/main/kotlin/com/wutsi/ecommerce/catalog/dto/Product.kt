@@ -17,8 +17,6 @@ data class Product(
     val comparablePrice: Double? = null,
     val currency: String = "",
     val visible: Boolean = false,
-    val categoryId: Long = 0,
-    val subCategoryId: Long = 0,
     val quantity: Int = 0,
     val maxOrder: Int? = null,
     val type: String = "",

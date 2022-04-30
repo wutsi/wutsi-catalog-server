@@ -812,14 +812,6 @@ components:
         visible:
           type: boolean
           description: is the product visible
-        categoryId:
-          type: integer
-          format: int64
-          description: ID of the category
-        subCategoryId:
-          type: integer
-          format: int64
-          description: ID of the sub-category
         quantity:
           type: integer
           description: Quantity in stock

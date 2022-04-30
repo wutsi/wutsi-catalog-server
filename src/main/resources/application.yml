@@ -62,9 +62,9 @@ wutsi:
     name: wutsi-catalog
     jobs:
       section-counter:
-        cron: "0 */30 * * * *"   # Every 30 mins
+        cron: "0 0 * * * *"   # Every hour
       category-counter:
-        cron: "0 */30 * * * *"   # Every 30 mins
+        cron: "0 0 * * * *"   # Every hour
       metric-importer:
         cron: "0 0 3 * * *"   # Every day at 3AM
 

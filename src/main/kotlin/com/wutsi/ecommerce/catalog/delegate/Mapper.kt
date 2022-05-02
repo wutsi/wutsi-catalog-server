@@ -64,7 +64,8 @@ fun ProductEntity.toProduct() = Product(
     sections = this.sections.filter { !it.isDeleted }.map { it.toSectionSummary() },
     status = this.status.name,
     published = this.published,
-    overallMetrics = this.toMetrics()
+    overallMetrics = this.toMetrics(),
+    numericFileUrl = this.numericFileUrl,
 )
 
 fun ProductEntity.toMetrics() = Metrics(

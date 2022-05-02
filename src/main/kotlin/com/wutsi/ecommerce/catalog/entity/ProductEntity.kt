@@ -25,7 +25,10 @@ data class ProductEntity(
     var title: String = "",
     var summary: String? = null,
     var description: String? = null,
+
+    @Deprecated("No longer used - replace by publication")
     var visible: Boolean = true,
+
     var price: Double? = null,
     var comparablePrice: Double? = null,
     val currency: String = "",

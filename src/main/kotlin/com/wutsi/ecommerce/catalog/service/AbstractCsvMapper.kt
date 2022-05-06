@@ -25,6 +25,13 @@ abstract class AbstractCsvMapper<T> {
             null
         }
 
+    protected fun getInt(column: String, col: Array<String>): Int? =
+        try {
+            getString(column, col)?.toInt()
+        } catch (ex: Exception) {
+            null
+        }
+
     protected fun getLong(column: String, col: Array<String>): Long? =
         try {
             getString(column, col)?.toLong()

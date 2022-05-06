@@ -18,12 +18,7 @@ class SearchProductsDelegate(
     private val logger: KVLogger
 ) {
     fun invoke(request: SearchProductRequest): SearchProductResponse {
-        val query = em.createQuery(sql(request))
-        parameters(request, query)
-        val products = query
-            .setFirstResult(request.offset)
-            .setMaxResults(request.limit)
-            .resultList as List<ProductEntity>
+        val products = search(request, securityManager.tenantId())
 
         logger.add("offset", request.offset)
         logger.add("limit", request.limit)
@@ -40,9 +35,18 @@ class SearchProductsDelegate(
         )
     }
 
-    private fun sql(request: SearchProductRequest): String {
+    fun search(request: SearchProductRequest, tenantId: Long?): List<ProductEntity> {
+        val query = em.createQuery(sql(request, tenantId))
+        parameters(request, query, tenantId)
+        return query
+            .setFirstResult(request.offset)
+            .setMaxResults(request.limit)
+            .resultList as List<ProductEntity>
+    }
+
+    private fun sql(request: SearchProductRequest, tenantId: Long?): String {
         val select = select(request)
-        val where = where(request)
+        val where = where(request, tenantId)
         val orderBy = orderBy(request)
         return if (where.isNullOrEmpty())
             select
@@ -56,10 +60,12 @@ class SearchProductsDelegate(
         else
             "SELECT P FROM ProductEntity P JOIN P.sections s"
 
-    private fun where(request: SearchProductRequest): String {
+    private fun where(request: SearchProductRequest, tenantId: Long?): String {
         val criteria = mutableListOf("P.isDeleted=:is_deleted")
 
-        criteria.add("P.tenantId = :tenant_id")
+        if (tenantId != null)
+            criteria.add("P.tenantId = :tenant_id")
+
         if (request.accountId != null)
             criteria.add("P.accountId = :account_id")
 
@@ -91,9 +97,11 @@ class SearchProductsDelegate(
         else
             "P.score DESC, P.totalViews DESC" // Views, then views
 
-    private fun parameters(request: SearchProductRequest, query: Query) {
+    private fun parameters(request: SearchProductRequest, query: Query, tenantId: Long?) {
         query.setParameter("is_deleted", false)
-        query.setParameter("tenant_id", securityManager.tenantId())
+
+        if (tenantId != null)
+            query.setParameter("tenant_id", tenantId)
 
         if (request.accountId != null)
             query.setParameter("account_id", request.accountId)

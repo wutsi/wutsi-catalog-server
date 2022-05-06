@@ -1,4 +1,6 @@
-package com.wutsi.ecommerce.catalog.service
+package com.wutsi.ecommerce.catalog.service.metrics
+
+import com.wutsi.ecommerce.catalog.service.AbstractCsvMapper
 
 class CsvMetricMapper : AbstractCsvMapper<CsvMetric>() {
     override fun map(col: Array<String>): CsvMetric =

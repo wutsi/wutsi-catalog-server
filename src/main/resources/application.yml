@@ -71,6 +71,8 @@ wutsi:
   platform:
     security:
       type: jwt
+      public-endpoints:
+        - GET /v1/feeds/**
     cache:
       name: ${wutsi.application.name}
       type: local

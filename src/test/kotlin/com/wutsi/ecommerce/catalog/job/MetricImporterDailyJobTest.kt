@@ -6,8 +6,8 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.importer.MetricImporterDaily
-import com.wutsi.ecommerce.catalog.service.importer.ScoreImporterDaily
+import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterDaily
+import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterDaily
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

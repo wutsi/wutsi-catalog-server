@@ -1,4 +1,4 @@
-package com.wutsi.ecommerce.catalog.service.importer
+package com.wutsi.ecommerce.catalog.service.metrics
 
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.dao.ProductRepository

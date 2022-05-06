@@ -1,4 +1,4 @@
-package com.wutsi.ecommerce.catalog.service
+package com.wutsi.ecommerce.catalog.service.metrics
 
 data class CsvMetric(
     var time: Long? = null,

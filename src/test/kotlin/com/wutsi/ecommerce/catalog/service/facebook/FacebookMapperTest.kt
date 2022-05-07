@@ -19,7 +19,7 @@ internal class FacebookMapperTest {
 
     @Test
     fun `map product`() {
-        val product = createProduct(10, 1000.0)
+        val product = createProduct(price = 1000.0, quantity = 10)
 
         val result = mapper.toFacebookProduct(product, tenant)
 
@@ -37,7 +37,7 @@ internal class FacebookMapperTest {
 
     @Test
     fun `map unavailable product`() {
-        val product = createProduct(0, 1000.0)
+        val product = createProduct(quantity = 0)
 
         val result = mapper.toFacebookProduct(product, tenant)
 
@@ -46,7 +46,7 @@ internal class FacebookMapperTest {
 
     @Test
     fun `map product in sales`() {
-        val product = createProduct(10, 1000.0, 1500.0)
+        val product = createProduct(price = 1000.0, comparablePrice = 1500.0)
 
         val result = mapper.toFacebookProduct(product, tenant)
 
@@ -54,13 +54,26 @@ internal class FacebookMapperTest {
         assertEquals("1,500 XAF", result.price)
     }
 
-    private fun createProduct(quantity: Int, price: Double, comparablePrice: Double? = null) = ProductEntity(
+    @Test
+    fun `map product with no summary`() {
+        val product = createProduct(summary = null)
+
+        val result = mapper.toFacebookProduct(product, tenant)
+
+        assertEquals(product.title, result.description)
+    }
+
+    private fun createProduct(
+        quantity: Int = 10,
+        price: Double = 1000.0,
+        comparablePrice: Double? = null,
+        summary: String? = "Description of product 111"
+    ) = ProductEntity(
         id = 111,
         title = "Product 111",
-        summary = "Summary of product 111",
-        description = "Description of product 111",
+        summary = summary,
         quantity = quantity,
-        price = 1000.0,
+        price = price,
         comparablePrice = comparablePrice,
         thumbnail = PictureEntity(
             id = 111,

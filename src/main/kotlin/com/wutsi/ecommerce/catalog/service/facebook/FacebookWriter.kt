@@ -22,6 +22,9 @@ class FacebookWriter {
         }
     }
 
+    /**
+     * See https://developers.facebook.com/docs/commerce-platform/catalog/fields
+     */
     private fun headers(csv: CSVWriter) {
         csv.writeNext(
             arrayOf(
@@ -31,7 +34,7 @@ class FacebookWriter {
                 "availability",
                 "condition",
                 "price",
-                "sales_price",
+                "sale_price",
                 "link",
                 "image_link",
                 "brand",

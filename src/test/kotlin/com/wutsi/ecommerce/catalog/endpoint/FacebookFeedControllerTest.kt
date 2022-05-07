@@ -20,7 +20,7 @@ internal class FacebookFeedControllerTest : AbstractSecuredController() {
         val csv = URL(url).readText(Charset.defaultCharset())
         assertEquals(
             """
-                "id","title","description","availability","condition","price","sales_price","link","image_link","brand"
+                "id","title","description","availability","condition","price","sale_price","link","image_link","brand"
                 "101","Product 101","This is the summary 101","out of stock","new","1,100 XAF","","https://www.wutsi.me/product?id=101","https://img.com/1.png","Unknown Brand"
                 "100","Product 100","This is the summary 100","in stock","new","1,500 XAF","1,000 XAF","https://www.wutsi.me/product?id=100","https://img.com/1.png","Unknown Brand"
             """.trimIndent(),

@@ -51,7 +51,9 @@ abstract class AbstractSecuredController {
             languages = listOf("en", "fr"),
             currency = "XAF",
             domainName = "www.wutsi.com",
-            webappUrl = "https://www.wutsi.me"
+            webappUrl = "https://www.wutsi.me",
+            numberFormat = "#,###,##0",
+            monetaryFormat = "#,###,##0 FCFA"
         )
         doReturn(GetTenantResponse(tenant)).whenever(tenantApi).getTenant(any())
 

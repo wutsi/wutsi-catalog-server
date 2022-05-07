@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 internal class FacebookMapperTest {
     private val tenant = Tenant(
         numberFormat = "#,###,##0",
+        monetaryFormat = "#,###,##0 FCFA",
         currency = "XAF",
         name = "Test",
         webappUrl = "https://wutsi.me"

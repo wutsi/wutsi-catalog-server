@@ -22,5 +22,4 @@ class FacebookMapper {
 
     private fun formatMoney(amount: Double, tenant: Tenant): String =
         DecimalFormat(tenant.monetaryFormat).format(amount) + " ${tenant.currency}"
-
 }

@@ -2,6 +2,7 @@ package com.wutsi.ecommerce.catalog.service.facebook
 
 import com.wutsi.ecommerce.catalog.entity.PictureEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.platform.account.dto.Account
 import com.wutsi.platform.tenant.dto.Tenant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
@@ -15,22 +16,31 @@ internal class FacebookMapperTest {
         name = "Test",
         webappUrl = "https://wutsi.me"
     )
+
+    private val account = Account(
+        displayName = "Nike"
+    )
+
     private val mapper = FacebookMapper()
 
     @Test
     fun `map product`() {
         val product = createProduct(price = 1000.0, quantity = 10)
 
-        val result = mapper.toFacebookProduct(product, tenant)
+        val result = mapper.toFacebookProduct(product, account, tenant)
 
         assertEquals(product.id.toString(), result.id)
         assertEquals(product.title, result.title)
         assertEquals(product.summary, result.description)
         assertEquals("new", result.condition)
         assertEquals("in stock", result.availability)
-        assertEquals("Unknown Brand", result.brand)
+        assertEquals(account.displayName, result.brand)
         assertEquals("1,000 XAF", result.price)
         assertEquals(product.thumbnail?.url, result.imageLink)
+        assertEquals(
+            listOf("https://www.img.com/12.png", "https://www.img.com/13.png", "https://www.img.com/14.png"),
+            result.additionalImageLink
+        )
         assertEquals("https://wutsi.me/product?id=${product.id}", result.link)
         assertNull(result.salesPrice)
     }
@@ -39,7 +49,7 @@ internal class FacebookMapperTest {
     fun `map unavailable product`() {
         val product = createProduct(quantity = 0)
 
-        val result = mapper.toFacebookProduct(product, tenant)
+        val result = mapper.toFacebookProduct(product, account, tenant)
 
         assertEquals("out of stock", result.availability)
     }
@@ -48,7 +58,7 @@ internal class FacebookMapperTest {
     fun `map product in sales`() {
         val product = createProduct(price = 1000.0, comparablePrice = 1500.0)
 
-        val result = mapper.toFacebookProduct(product, tenant)
+        val result = mapper.toFacebookProduct(product, account, tenant)
 
         assertEquals("1,000 XAF", result.salesPrice)
         assertEquals("1,500 XAF", result.price)
@@ -58,7 +68,7 @@ internal class FacebookMapperTest {
     fun `map product with no summary`() {
         val product = createProduct(summary = null)
 
-        val result = mapper.toFacebookProduct(product, tenant)
+        val result = mapper.toFacebookProduct(product, account, tenant)
 
         assertEquals(product.title, result.description)
     }
@@ -75,9 +85,12 @@ internal class FacebookMapperTest {
         quantity = quantity,
         price = price,
         comparablePrice = comparablePrice,
-        thumbnail = PictureEntity(
-            id = 111,
-            url = "https://www.img.com/1.png"
+        thumbnail = PictureEntity(id = 11, url = "https://www.img.com/11.png"),
+        pictures = listOf(
+            PictureEntity(id = 11, url = "https://www.img.com/11.png"),
+            PictureEntity(id = 12, url = "https://www.img.com/12.png"),
+            PictureEntity(id = 13, url = "https://www.img.com/13.png"),
+            PictureEntity(id = 14, url = "https://www.img.com/14.png"),
         )
     )
 }

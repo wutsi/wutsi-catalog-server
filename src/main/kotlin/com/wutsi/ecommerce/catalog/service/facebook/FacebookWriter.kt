@@ -23,7 +23,7 @@ class FacebookWriter {
     }
 
     /**
-     * See https://developers.facebook.com/docs/commerce-platform/catalog/fields
+     * See https://developers.facebook.com/docs/marketing-api/catalog/reference/
      */
     private fun headers(csv: CSVWriter) {
         csv.writeNext(
@@ -35,9 +35,10 @@ class FacebookWriter {
                 "condition",
                 "price",
                 "sale_price",
+                "brand",
                 "link",
                 "image_link",
-                "brand",
+                "additional_image_link"
             )
         )
     }
@@ -56,9 +57,10 @@ class FacebookWriter {
                 string(item.condition),
                 string(item.price),
                 string(item.salesPrice),
+                string(item.brand),
                 string(item.link),
                 string(item.imageLink),
-                string(item.brand),
+                item.additionalImageLink.joinToString(separator = "|")
             )
         )
     }

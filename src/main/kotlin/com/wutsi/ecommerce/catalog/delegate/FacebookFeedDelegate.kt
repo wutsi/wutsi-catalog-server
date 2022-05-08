@@ -5,6 +5,9 @@ import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.service.facebook.FacebookMapper
 import com.wutsi.ecommerce.catalog.service.facebook.FacebookProduct
 import com.wutsi.ecommerce.catalog.service.facebook.FacebookWriter
+import com.wutsi.platform.account.WutsiAccountApi
+import com.wutsi.platform.account.dto.Account
+import com.wutsi.platform.account.entity.AccountStatus
 import com.wutsi.platform.core.logging.KVLogger
 import com.wutsi.platform.tenant.WutsiTenantApi
 import com.wutsi.platform.tenant.dto.Tenant
@@ -15,11 +18,24 @@ import javax.servlet.http.HttpServletResponse
 class FacebookFeedDelegate(
     private val search: SearchProductsDelegate,
     private val tenantApi: WutsiTenantApi,
+    private val accountApi: WutsiAccountApi,
     private val response: HttpServletResponse,
     private val logger: KVLogger,
     private val mapper: FacebookMapper
 ) {
     fun invoke(accountId: Long) {
+        val account = accountApi.getAccount(accountId).account
+        logger.add("account_id", accountId)
+        logger.add("account_status", account.status)
+        logger.add("account_display_name", account.displayName)
+
+        if (account.status.equals(AccountStatus.ACTIVE.name, true))
+            invoke(account)
+        else
+            write(emptyList())
+    }
+
+    private fun invoke(account: Account) {
         val limit = 100
         var offset = 0
         val fbProducts = mutableListOf<FacebookProduct>()
@@ -31,7 +47,7 @@ class FacebookFeedDelegate(
                 request = SearchProductRequest(
                     limit = limit,
                     offset = offset,
-                    accountId = accountId,
+                    accountId = account.id,
                     status = ProductStatus.PUBLISHED.name,
                 ),
                 tenantId = null
@@ -44,7 +60,7 @@ class FacebookFeedDelegate(
                 tenant = tenantApi.getTenant(products[0].tenantId).tenant
 
             // Map
-            fbProducts.addAll(products.map { mapper.toFacebookProduct(it, tenant) })
+            fbProducts.addAll(products.map { mapper.toFacebookProduct(it, account, tenant) })
 
             // Next
             if (products.size < limit)
@@ -54,6 +70,10 @@ class FacebookFeedDelegate(
         }
 
         logger.add("product_count", fbProducts.size)
+        write(fbProducts)
+    }
+
+    private fun write(fbProducts: List<FacebookProduct>) {
         FacebookWriter().write(fbProducts, response.outputStream)
     }
 }

@@ -29,9 +29,10 @@ INSERT INTO T_PRODUCT(id, status, tenant_id, account_id, category_fk, sub_catego
 
 INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
     VALUES
-        (100, 100, 'https://img.com/1.png', false, null),
-        (101, 100, 'https://img.com/2.png', false, null),
-        (102, 100, 'https://img.com/3.png', true, now());
+        (100, 100, 'https://img.com/100.png', false, null),
+        (101, 100, 'https://img.com/101.png', false, null),
+        (102, 100, 'https://img.com/102.png', true, now()),
+        (103, 100, 'https://img.com/103.png', false, null);
 
 UPDATE T_PRODUCT SET thumbnail_fk=100;
 

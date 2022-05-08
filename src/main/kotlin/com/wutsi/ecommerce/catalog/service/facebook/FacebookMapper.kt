@@ -1,13 +1,14 @@
 package com.wutsi.ecommerce.catalog.service.facebook
 
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.platform.account.dto.Account
 import com.wutsi.platform.tenant.dto.Tenant
 import org.springframework.stereotype.Service
 import java.text.DecimalFormat
 
 @Service
 class FacebookMapper {
-    fun toFacebookProduct(product: ProductEntity, tenant: Tenant) = FacebookProduct(
+    fun toFacebookProduct(product: ProductEntity, account: Account, tenant: Tenant) = FacebookProduct(
         id = product.id.toString(),
         title = product.title,
         description = toString(product.summary) ?: product.title,
@@ -17,7 +18,12 @@ class FacebookMapper {
         salesPrice = product.comparablePrice?.let { formatMoney(product.price!!, tenant) },
         link = "${tenant.webappUrl}/product?id=${product.id}",
         imageLink = product.thumbnail?.url,
-        brand = "Unknown Brand"
+        brand = account.displayName,
+        additionalImageLink = product.pictures
+            .filter { it.id != product.thumbnail?.id }
+            .filter { !it.isDeleted }
+            .map { it.url }
+            .take(20)
     )
 
     private fun formatMoney(amount: Double, tenant: Tenant): String =

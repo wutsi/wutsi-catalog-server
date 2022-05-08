@@ -10,5 +10,6 @@ data class FacebookProduct(
     val salesPrice: String? = null,
     val link: String = "",
     val imageLink: String? = null,
-    val brand: String = "",
+    val brand: String? = null,
+    val additionalImageLink: List<String> = emptyList(),
 )

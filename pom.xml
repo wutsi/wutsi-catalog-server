@@ -35,11 +35,17 @@
     <postgresql.version>42.3.3</postgresql.version>
     <flyway.version>8.5.10</flyway.version>
     <wutsi-platform-core.version>0.0.109</wutsi-platform-core.version>
+    <wutsi-account.version>1.0.45</wutsi-account.version>
     <wutsi-tenant.version>0.0.38</wutsi-tenant.version>
     <wutsi-tracking.version>0.0.12</wutsi-tracking.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.wutsi.platform.account</groupId>
+      <artifactId>wutsi-account-sdk-kotlin</artifactId>
+      <version>${wutsi-account.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.wutsi.platform.tenant</groupId>
       <artifactId>wutsi-tenant-sdk-kotlin</artifactId>

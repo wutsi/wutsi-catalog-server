@@ -73,14 +73,24 @@ internal class FacebookMapperTest {
         assertEquals(product.title, result.description)
     }
 
+    @Test
+    fun `map product with no title all caps`() {
+        val product = createProduct(title = "HELLO WORLD")
+
+        val result = mapper.toFacebookProduct(product, account, tenant)
+
+        assertEquals("Hello world", result.title)
+    }
+
     private fun createProduct(
+        title: String = "Product 111",
         quantity: Int = 10,
         price: Double = 1000.0,
         comparablePrice: Double? = null,
         summary: String? = "Description of product 111"
     ) = ProductEntity(
         id = 111,
-        title = "Product 111",
+        title = title,
         summary = summary,
         quantity = quantity,
         price = price,

@@ -5,12 +5,14 @@ import com.wutsi.platform.account.dto.Account
 import com.wutsi.platform.tenant.dto.Tenant
 import org.springframework.stereotype.Service
 import java.text.DecimalFormat
+import java.util.Locale
 
 @Service
 class FacebookMapper {
     fun toFacebookProduct(product: ProductEntity, account: Account, tenant: Tenant) = FacebookProduct(
         id = product.id.toString(),
-        title = product.title,
+        title = product.title.lowercase()
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
         description = toString(product.summary) ?: product.title,
         availability = if (product.quantity > 0) "in stock" else "out of stock",
         condition = "new",

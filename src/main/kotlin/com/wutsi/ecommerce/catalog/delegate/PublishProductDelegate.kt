@@ -23,5 +23,6 @@ class PublishProductDelegate : AbstractProductDelegate() {
 
         // Notify
         eventStream.publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(id = id))
+        eventStream.enqueue(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(id = id))
     }
 }

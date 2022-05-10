@@ -8,6 +8,8 @@ import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.ProductType
 import com.wutsi.ecommerce.catalog.error.ErrorURN
 import com.wutsi.ecommerce.catalog.error.PublishError
+import com.wutsi.ecommerce.catalog.event.EventURN
+import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import com.wutsi.ecommerce.catalog.service.SecurityManager
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
@@ -15,6 +17,7 @@ import com.wutsi.platform.core.error.ParameterType
 import com.wutsi.platform.core.error.exception.ConflictException
 import com.wutsi.platform.core.error.exception.NotFoundException
 import com.wutsi.platform.core.stream.EventStream
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -66,6 +69,17 @@ class AbstractProductDelegate {
                     )
                 )
             }
+
+    protected fun publish(eventType: EventURN, product: ProductEntity) {
+        try {
+            eventStream.publish(
+                eventType.urn,
+                ProductEventPayload(id = product.id ?: -1, accountId = product.accountId)
+            )
+        } catch (ex: Exception) {
+            LoggerFactory.getLogger(javaClass).warn("Unable to publish $eventType for Product#${product.id}", ex)
+        }
+    }
 
     protected fun checkPublish(product: ProductEntity) {
         val errors = mutableListOf<PublishError>()

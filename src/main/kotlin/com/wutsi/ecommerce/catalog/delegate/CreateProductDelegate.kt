@@ -4,17 +4,18 @@ import com.wutsi.ecommerce.catalog.dto.CreateProductRequest
 import com.wutsi.ecommerce.catalog.dto.CreateProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.ProductType
+import com.wutsi.ecommerce.catalog.event.EventURN
 import com.wutsi.platform.tenant.WutsiTenantApi
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
 
 @Service
-public class CreateProductDelegate(
+class CreateProductDelegate(
     private val tenantApi: WutsiTenantApi
 ) : AbstractProductDelegate() {
     @Transactional
-    public fun invoke(request: CreateProductRequest): CreateProductResponse {
+    fun invoke(request: CreateProductRequest): CreateProductResponse {
         val tenantId = securityManager.tenantId()
         val tenant = tenantApi.getTenant(tenantId).tenant
 
@@ -39,7 +40,10 @@ public class CreateProductDelegate(
             )
         )
 
-        return CreateProductResponse(product.id ?: -1)
+        val response = CreateProductResponse(product.id ?: -1)
+
+        publish(EventURN.PRODUCT_CREATED, product)
+        return response
     }
 
     private fun toString(value: String?): String? =

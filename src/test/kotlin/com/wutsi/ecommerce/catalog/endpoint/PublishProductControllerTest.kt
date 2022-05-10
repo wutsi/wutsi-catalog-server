@@ -57,7 +57,7 @@ class PublishProductControllerTest : AbstractSecuredController() {
         assertTrue(sectionDao.findById(100).get().updateCounters)
         assertTrue(sectionDao.findById(200).get().updateCounters)
 
-        verify(eventStream).publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(100))
+        verify(eventStream).publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(100, accountId = 1))
     }
 
     @Test

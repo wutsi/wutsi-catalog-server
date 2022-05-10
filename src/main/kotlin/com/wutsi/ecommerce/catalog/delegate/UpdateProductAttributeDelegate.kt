@@ -7,6 +7,7 @@ import com.wutsi.ecommerce.catalog.entity.PictureEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.ProductType
 import com.wutsi.ecommerce.catalog.error.ErrorURN
+import com.wutsi.ecommerce.catalog.event.EventURN
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
 import com.wutsi.platform.core.error.ParameterType
@@ -14,7 +15,9 @@ import com.wutsi.platform.core.error.exception.BadRequestException
 import org.springframework.stereotype.Service
 
 @Service
-class UpdateProductAttributeDelegate(private val pictureDao: PictureRepository) : AbstractProductDelegate() {
+class UpdateProductAttributeDelegate(
+    private val pictureDao: PictureRepository,
+) : AbstractProductDelegate() {
     fun invoke(
         id: Long,
         name: String,
@@ -50,6 +53,9 @@ class UpdateProductAttributeDelegate(private val pictureDao: PictureRepository) 
             )
         }
         dao.save(product)
+
+        // Publish event
+        publish(EventURN.PRODUCT_UPDATED, product)
     }
 
     private fun toSubCategory(product: ProductEntity, value: String?): CategoryEntity {

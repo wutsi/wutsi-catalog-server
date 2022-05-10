@@ -1,10 +1,15 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
 import com.wutsi.ecommerce.catalog.dao.CategoryRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.dao.SectionRepository
 import com.wutsi.ecommerce.catalog.error.ErrorURN
+import com.wutsi.ecommerce.catalog.event.EventURN
+import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import com.wutsi.platform.core.error.ErrorResponse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -45,6 +50,8 @@ class DeleteProductControllerTest : AbstractSecuredController() {
 
         assertTrue(sectionDao.findById(100).get().updateCounters)
         assertTrue(sectionDao.findById(200).get().updateCounters)
+
+        verify(eventStream).publish(EventURN.PRODUCT_DELETED.urn, ProductEventPayload(id = 100L, accountId = 1L))
     }
 
     @Test
@@ -57,6 +64,8 @@ class DeleteProductControllerTest : AbstractSecuredController() {
 
         val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
         assertEquals(ErrorURN.PRODUCT_NOT_FOUND.urn, response.error.code)
+
+        verify(eventStream, never()).publish(any(), any())
     }
 
     @Test
@@ -69,6 +78,8 @@ class DeleteProductControllerTest : AbstractSecuredController() {
 
         val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
         assertEquals(ErrorURN.PRODUCT_NOT_FOUND.urn, response.error.code)
+
+        verify(eventStream, never()).publish(any(), any())
     }
 
     private fun url(productId: Long) = "http://localhost:$port/v1/products/$productId"

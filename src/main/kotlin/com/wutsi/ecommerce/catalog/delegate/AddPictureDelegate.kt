@@ -4,6 +4,7 @@ import com.wutsi.ecommerce.catalog.dao.PictureRepository
 import com.wutsi.ecommerce.catalog.dto.AddPictureRequest
 import com.wutsi.ecommerce.catalog.dto.AddPictureResponse
 import com.wutsi.ecommerce.catalog.entity.PictureEntity
+import com.wutsi.ecommerce.catalog.event.EventURN
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -25,6 +26,8 @@ class AddPictureDelegate(
             product.thumbnail = picture
             dao.save(product)
         }
+
+        publish(EventURN.PRODUCT_UPDATED, product)
         return AddPictureResponse(picture.id ?: -1)
     }
 }

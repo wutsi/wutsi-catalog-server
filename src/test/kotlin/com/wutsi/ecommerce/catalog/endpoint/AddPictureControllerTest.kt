@@ -1,9 +1,12 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
+import com.nhaarman.mockitokotlin2.verify
 import com.wutsi.ecommerce.catalog.dao.PictureRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.dto.AddPictureRequest
 import com.wutsi.ecommerce.catalog.dto.AddPictureResponse
+import com.wutsi.ecommerce.catalog.event.EventURN
+import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -14,9 +17,9 @@ import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/AddPictureController.sql"])
-public class AddPictureControllerTest : AbstractSecuredController() {
+class AddPictureControllerTest : AbstractSecuredController() {
     @LocalServerPort
-    public val port: Int = 0
+    val port: Int = 0
 
     @Autowired
     private lateinit var dao: PictureRepository
@@ -25,7 +28,7 @@ public class AddPictureControllerTest : AbstractSecuredController() {
     private lateinit var productDao: ProductRepository
 
     @Test
-    public fun add() {
+    fun add() {
         // WHEN
         val request = AddPictureRequest(
             url = "https://img.com/1111.png"
@@ -42,10 +45,12 @@ public class AddPictureControllerTest : AbstractSecuredController() {
 
         val product = productDao.findById(100).get()
         assertEquals(id, product.thumbnail?.id)
+
+        verify(eventStream).publish(EventURN.PRODUCT_UPDATED.urn, ProductEventPayload(id = 100, accountId = 1L))
     }
 
     @Test
-    public fun `do not reset product thumbnail`() {
+    fun `do not reset product thumbnail`() {
         // WHEN
         val request = AddPictureRequest(
             url = "https://img.com/2222.png"

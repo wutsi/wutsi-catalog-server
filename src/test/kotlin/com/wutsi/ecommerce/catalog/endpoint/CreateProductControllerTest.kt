@@ -1,10 +1,13 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
+import com.nhaarman.mockitokotlin2.verify
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.dto.CreateProductRequest
 import com.wutsi.ecommerce.catalog.dto.CreateProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.entity.ProductType
+import com.wutsi.ecommerce.catalog.event.EventURN
+import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -73,5 +76,10 @@ class CreateProductControllerTest : AbstractSecuredController() {
         assertNull(product.deleted)
         assertNull(product.published)
         assertEquals(ProductStatus.DRAFT, product.status)
+
+        verify(eventStream).publish(
+            EventURN.PRODUCT_CREATED.urn,
+            ProductEventPayload(id = product.id ?: -1, accountId = product.accountId)
+        )
     }
 }

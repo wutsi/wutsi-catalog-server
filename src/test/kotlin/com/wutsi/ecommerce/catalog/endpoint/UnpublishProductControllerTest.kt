@@ -29,7 +29,7 @@ class UnpublishProductControllerTest : AbstractSecuredController() {
         val product = dao.findById(100).get()
         assertEquals(ProductStatus.DRAFT, product.status)
 
-        verify(eventStream).publish(EventURN.PRODUCT_UNPUBLISHED.urn, ProductEventPayload(100))
+        verify(eventStream).publish(EventURN.PRODUCT_UNPUBLISHED.urn, ProductEventPayload(100, accountId = 1))
     }
 
     private fun url(id: Long): String =

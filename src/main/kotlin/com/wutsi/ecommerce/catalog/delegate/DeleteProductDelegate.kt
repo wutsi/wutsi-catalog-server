@@ -1,5 +1,6 @@
 package com.wutsi.ecommerce.catalog.delegate
 
+import com.wutsi.ecommerce.catalog.event.EventURN
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.OffsetDateTime
@@ -19,5 +20,7 @@ class DeleteProductDelegate : AbstractProductDelegate() {
 
         // Update counters
         updateCounters(product)
+
+        publish(EventURN.PRODUCT_DELETED, product)
     }
 }

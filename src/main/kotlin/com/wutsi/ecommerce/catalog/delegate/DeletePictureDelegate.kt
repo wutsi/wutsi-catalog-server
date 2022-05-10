@@ -1,9 +1,8 @@
 package com.wutsi.ecommerce.catalog.delegate
 
 import com.wutsi.ecommerce.catalog.dao.PictureRepository
-import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.error.ErrorURN
-import com.wutsi.ecommerce.catalog.service.SecurityManager
+import com.wutsi.ecommerce.catalog.event.EventURN
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
 import com.wutsi.platform.core.error.ParameterType
@@ -14,13 +13,11 @@ import java.time.OffsetDateTime
 
 @Service
 class DeletePictureDelegate(
-    private val dao: PictureRepository,
-    private val productDao: ProductRepository,
-    private val securityManager: SecurityManager
-) {
+    private val pictureDao: PictureRepository
+) : AbstractProductDelegate() {
     @Transactional
     fun invoke(id: Long) {
-        val picture = dao.findById(id)
+        val picture = pictureDao.findById(id)
             .orElseThrow {
                 NotFoundException(
                     error = Error(
@@ -35,23 +32,14 @@ class DeletePictureDelegate(
             }
 
         if (picture.isDeleted)
-            throw NotFoundException(
-                error = Error(
-                    code = ErrorURN.PICTURE_NOT_FOUND.urn,
-                    parameter = Parameter(
-                        name = "id",
-                        type = ParameterType.PARAMETER_TYPE_PATH,
-                        value = id
-                    )
-                )
-            )
+            return
 
         securityManager.checkOwnership(picture)
 
         // Delete the picture
         picture.deleted = OffsetDateTime.now()
         picture.isDeleted = true
-        dao.save(picture)
+        pictureDao.save(picture)
 
         // Reset thumbnail
         val product = picture.product
@@ -60,7 +48,9 @@ class DeletePictureDelegate(
             if (product.thumbnail?.isDeleted == true)
                 product.thumbnail = null
 
-            productDao.save(product)
+            dao.save(product)
         }
+
+        publish(EventURN.PRODUCT_UPDATED, product)
     }
 }

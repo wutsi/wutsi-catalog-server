@@ -1,9 +1,12 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockitokotlin2.verify
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.dto.UpdateProductAttributeRequest
 import com.wutsi.ecommerce.catalog.error.ErrorURN
+import com.wutsi.ecommerce.catalog.event.EventURN
+import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import com.wutsi.platform.core.error.ErrorResponse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -39,6 +42,8 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
 
         val product = dao.findById(PRODUCT_ID).get()
         assertEquals(request.value, product.title)
+
+        verify(eventStream).publish(EventURN.PRODUCT_UPDATED.urn, ProductEventPayload(id = PRODUCT_ID, accountId = 1L))
     }
 
     @Test
@@ -216,7 +221,7 @@ class UpdateProductAttributeControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val product = dao.findById(PRODUCT_ID).get()
-        assertEquals(request.value?.toLong(), product.subCategory?.id)
+        assertEquals(request.value?.toLong(), product.subCategory.id)
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.wutsi.ecommerce.catalog.`delegate`
 
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.event.EventURN
-import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import javax.transaction.Transactional
@@ -21,8 +20,7 @@ class PublishProductDelegate : AbstractProductDelegate() {
         // Update counters
         updateCounters(product)
 
-        // Notify
-        eventStream.publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(id = id))
-        eventStream.enqueue(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(id = id))
+        // Publish event
+        publish(EventURN.PRODUCT_PUBLISHED, product)
     }
 }

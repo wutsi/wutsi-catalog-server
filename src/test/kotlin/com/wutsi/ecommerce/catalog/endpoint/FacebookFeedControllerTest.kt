@@ -48,8 +48,8 @@ internal class FacebookFeedControllerTest : AbstractSecuredController() {
         assertEquals(
             """
                 "id","title","description","availability","condition","price","sale_price","brand","google_product_category","link","image_link","additional_image_link"
-                "101","Product 101","This is the summary 101","out of stock","new","1,100 XAF",,"Nike","404","https://www.wutsi.me/product?id=101","https://img.com/100.png",""
-                "100","Product 100","This is the summary 100","in stock","new","1,500 XAF","1,000 XAF","Nike","267","https://www.wutsi.me/product?id=100","https://img.com/100.png","https://img.com/101.png|https://img.com/103.png"
+                "101","Product 101","This is the summary 101","out of stock","new","1,100 XAF",,"Nike",,"https://www.wutsi.me/product?id=101","https://img.com/100.png",""
+                "100","Product 100","This is the summary 100","in stock","new","1,500 XAF","1,000 XAF","Nike",,"https://www.wutsi.me/product?id=100","https://img.com/100.png","https://img.com/101.png|https://img.com/103.png"
             """.trimIndent(),
             csv.trimIndent()
         )

@@ -1,9 +1,14 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
 import com.wutsi.ecommerce.catalog.dao.PictureRepository
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
 import com.wutsi.ecommerce.catalog.error.ErrorURN
+import com.wutsi.ecommerce.catalog.event.EventURN
+import com.wutsi.ecommerce.catalog.event.ProductEventPayload
 import com.wutsi.platform.core.error.ErrorResponse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -40,6 +45,8 @@ class DeletePictureControllerTest : AbstractSecuredController() {
         // Thumbnail not changed
         val product = productDao.findById(picture.product.id).get()
         assertEquals(102, product.thumbnail?.id)
+
+        verify(eventStream).publish(EventURN.PRODUCT_UPDATED.urn, ProductEventPayload(id = 100, accountId = 1L))
     }
 
     @Test
@@ -82,14 +89,9 @@ class DeletePictureControllerTest : AbstractSecuredController() {
 
     @Test
     fun deleted() {
-        val ex = assertThrows<HttpStatusCodeException> {
-            rest.delete(url(109))
-        }
+        rest.delete(url(109))
 
-        assertEquals(404, ex.rawStatusCode)
-
-        val response = ObjectMapper().readValue(ex.responseBodyAsString, ErrorResponse::class.java)
-        assertEquals(ErrorURN.PICTURE_NOT_FOUND.urn, response.error.code)
+        verify(eventStream, never()).publish(any(), any())
     }
 
     private fun url(id: Long) = "http://localhost:$port/v1/products/pictures/$id"

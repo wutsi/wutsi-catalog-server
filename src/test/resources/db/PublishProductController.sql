@@ -11,6 +11,7 @@ INSERT INTO T_PRODUCT(id, type, tenant_id, account_id, category_fk, sub_category
         (110, 0, 1, 1, 100, 101, '', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false, 100, 5, null),
         (111, 1, 1, 1, 100, 101, 'No File URL', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false, 100, 5, null),
         (112, 0, 1, 1, 100, 101, 'No Picture', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false, 100, 5, null),
+        (113, 0, 1, 1, 100, 101, 'No Summary', null, 'This is the description', 1000, 1500, 'XAF', true, false, 100, 5, null),
         (900, 0, 1, 1, 100, 101, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true, 100, null, null)
 ;
 

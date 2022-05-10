@@ -102,6 +102,20 @@ class PublishProductControllerTest : AbstractSecuredController() {
         verify(eventStream, never()).publish(any(), any())
     }
 
+    @Test
+    fun noSummary() {
+        // WHEN
+        val ex = assertThrows<HttpClientErrorException> {
+            rest.postForEntity(url(113), null, Any::class.java)
+        }
+
+        // THEN
+        assertEquals(409, ex.rawStatusCode)
+        assertPublishError(113, PublishError.MISSING_SUMMARY, ex)
+
+        verify(eventStream, never()).publish(any(), any())
+    }
+
     private fun assertPublishError(id: Long, err: PublishError, ex: HttpClientErrorException) {
         val product = dao.findById(id).get()
         assertEquals(ProductStatus.DRAFT, product.status)

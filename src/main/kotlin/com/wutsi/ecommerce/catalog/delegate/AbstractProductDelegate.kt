@@ -75,6 +75,8 @@ class AbstractProductDelegate {
             errors.add(PublishError.MISSING_NUMERIC_FILE)
         if (product.pictures.filter { !it.isDeleted }.isEmpty())
             errors.add(PublishError.MISSING_PICTURE)
+        if (product.summary?.trim().isNullOrEmpty())
+            errors.add(PublishError.MISSING_SUMMARY)
 
         if (errors.isNotEmpty())
             throw ConflictException(

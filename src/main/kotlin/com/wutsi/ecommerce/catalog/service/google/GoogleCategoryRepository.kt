@@ -1,10 +1,11 @@
 package com.wutsi.ecommerce.catalog.service.google
 
 import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Service
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-
+@Service
 class GoogleCategoryRepository {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(GoogleCategoryRepository::class.java)

@@ -5,6 +5,8 @@ import com.wutsi.ecommerce.catalog.entity.ProductStatus
 import com.wutsi.ecommerce.catalog.service.facebook.FacebookMapper
 import com.wutsi.ecommerce.catalog.service.facebook.FacebookProduct
 import com.wutsi.ecommerce.catalog.service.facebook.FacebookWriter
+import com.wutsi.ecommerce.catalog.service.google.GoogleCategory
+import com.wutsi.ecommerce.catalog.service.google.GoogleCategoryRepository
 import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.Account
 import com.wutsi.platform.account.entity.AccountStatus
@@ -21,21 +23,24 @@ class FacebookFeedDelegate(
     private val accountApi: WutsiAccountApi,
     private val response: HttpServletResponse,
     private val logger: KVLogger,
-    private val mapper: FacebookMapper
+    private val mapper: FacebookMapper,
+    private val googleCategoryRepository: GoogleCategoryRepository
 ) {
     fun invoke(accountId: Long) {
         val account = accountApi.getAccount(accountId).account
+        val gcategories = googleCategoryRepository.findAll()
+
         logger.add("account_id", accountId)
         logger.add("account_status", account.status)
         logger.add("account_display_name", account.displayName)
 
         if (account.status.equals(AccountStatus.ACTIVE.name, true))
-            invoke(account)
+            invoke(account, gcategories)
         else
             write(emptyList())
     }
 
-    private fun invoke(account: Account) {
+    private fun invoke(account: Account, gcategories: List<GoogleCategory>) {
         val limit = 100
         var offset = 0
         val fbProducts = mutableListOf<FacebookProduct>()
@@ -60,7 +65,7 @@ class FacebookFeedDelegate(
                 tenant = tenantApi.getTenant(products[0].tenantId).tenant
 
             // Map
-            fbProducts.addAll(products.map { mapper.toFacebookProduct(it, account, tenant) })
+            fbProducts.addAll(products.map { mapper.toFacebookProduct(it, account, tenant, gcategories) })
 
             // Next
             if (products.size < limit)

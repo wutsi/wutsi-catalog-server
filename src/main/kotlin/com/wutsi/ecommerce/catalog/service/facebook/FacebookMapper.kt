@@ -1,6 +1,8 @@
 package com.wutsi.ecommerce.catalog.service.facebook
 
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
+import com.wutsi.ecommerce.catalog.service.google.GoogleCategory
+import com.wutsi.ecommerce.catalog.service.google.GoogleCategoryMatcher
 import com.wutsi.platform.account.dto.Account
 import com.wutsi.platform.tenant.dto.Tenant
 import org.springframework.stereotype.Service
@@ -8,8 +10,13 @@ import java.text.DecimalFormat
 import java.util.Locale
 
 @Service
-class FacebookMapper {
-    fun toFacebookProduct(product: ProductEntity, account: Account, tenant: Tenant) = FacebookProduct(
+class FacebookMapper(private val googleCategoryMatcher: GoogleCategoryMatcher) {
+    fun toFacebookProduct(
+        product: ProductEntity,
+        account: Account,
+        tenant: Tenant,
+        gcategories: List<GoogleCategory>
+    ) = FacebookProduct(
         id = product.id.toString(),
         title = capitalize(product.title),
         description = toString(product.summary) ?: capitalize(product.title),
@@ -24,7 +31,9 @@ class FacebookMapper {
             .filter { it.id != product.thumbnail?.id }
             .filter { !it.isDeleted }
             .map { it.url }
-            .take(20)
+            .take(20),
+        googleProductCategory = googleCategoryMatcher.find(product.subCategory.title, gcategories)?.id
+            ?: googleCategoryMatcher.find(product.category.title, gcategories)?.id
     )
 
     private fun capitalize(value: String): String =

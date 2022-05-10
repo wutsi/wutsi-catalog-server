@@ -12,4 +12,5 @@ data class FacebookProduct(
     val imageLink: String? = null,
     val brand: String? = null,
     val additionalImageLink: List<String> = emptyList(),
+    val googleProductCategory: Long? = null
 )

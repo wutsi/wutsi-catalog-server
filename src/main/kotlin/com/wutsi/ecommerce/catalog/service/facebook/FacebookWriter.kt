@@ -36,6 +36,7 @@ class FacebookWriter {
                 "price",
                 "sale_price",
                 "brand",
+                "google_product_category",
                 "link",
                 "image_link",
                 "additional_image_link"
@@ -50,20 +51,19 @@ class FacebookWriter {
     private fun data(item: FacebookProduct, csv: CSVWriter) {
         csv.writeNext(
             arrayOf(
-                string(item.id),
-                string(item.title),
-                string(item.description),
-                string(item.availability),
-                string(item.condition),
-                string(item.price),
-                string(item.salesPrice),
-                string(item.brand),
-                string(item.link),
-                string(item.imageLink),
+                item.id,
+                item.title,
+                item.description,
+                item.availability,
+                item.condition,
+                item.price,
+                item.salesPrice,
+                item.brand,
+                item.googleProductCategory?.toString(),
+                item.link,
+                item.imageLink,
                 item.additionalImageLink.joinToString(separator = "|")
             )
         )
     }
-
-    private fun string(s: String?) = s ?: ""
 }

@@ -29,7 +29,7 @@ class FacebookMapper {
             .filter { !it.isDeleted }
             .map { it.url }
             .take(20),
-        googleProductCategory = null
+        googleProductCategory = product.subCategory.googleProductCategoryId ?: product.category.googleProductCategoryId
     )
 
     private fun capitalize(value: String): String =

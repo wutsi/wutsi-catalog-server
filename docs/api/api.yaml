@@ -925,6 +925,11 @@ components:
         publishedProductCount:
           type: integer
           description: Number of published products in this category
+        googleCategoryId:
+          type: integer
+          format: int64
+          description:  ID of the Google Product Category
+          nullable: true
 
     GetCategoryResponse:
       type: object
@@ -953,6 +958,11 @@ components:
         publishedProductCount:
           type: integer
           description: Number of published products in this category
+        googleCategoryId:
+          type: integer
+          format: int64
+          description:  ID of the Google Product Category
+          nullable: true
 
     SearchCategoryRequest:
       type: object

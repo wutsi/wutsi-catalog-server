@@ -34,6 +34,7 @@ class GetCategoryControllerTest : AbstractSecuredController() {
         assertNull(category.parentId)
         assertEquals(10, category.productCount)
         assertEquals(5, category.publishedProductCount)
+        assertEquals(1001, category.googleProductCategoryId)
     }
 
     @Test
@@ -48,6 +49,7 @@ class GetCategoryControllerTest : AbstractSecuredController() {
         val category = response.body!!.category
         assertEquals("Cell Phone", category.title)
         assertEquals(100, category.parentId)
+        assertEquals(1011, category.googleProductCategoryId)
     }
 
     @Test

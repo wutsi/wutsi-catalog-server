@@ -9,5 +9,6 @@ public data class CategorySummary(
     public val title: String = "",
     public val parentId: Long? = null,
     public val productCount: Int = 0,
-    public val publishedProductCount: Int = 0
+    public val publishedProductCount: Int = 0,
+    public val googleCategoryId: Long? = null
 )

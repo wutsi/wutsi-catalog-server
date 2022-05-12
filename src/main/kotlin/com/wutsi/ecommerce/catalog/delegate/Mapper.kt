@@ -82,7 +82,8 @@ fun CategoryEntity.toCategory() = Category(
     parentId = this.parentId,
     title = this.toTitle(),
     productCount = this.productCount,
-    publishedProductCount = this.publishedProductCount
+    publishedProductCount = this.publishedProductCount,
+    googleProductCategoryId = this.googleProductCategoryId,
 )
 
 fun CategoryEntity.toCategorySummary() = CategorySummary(
@@ -90,7 +91,8 @@ fun CategoryEntity.toCategorySummary() = CategorySummary(
     parentId = this.parentId,
     title = this.toTitle(),
     productCount = this.productCount,
-    publishedProductCount = this.publishedProductCount
+    publishedProductCount = this.publishedProductCount,
+    googleCategoryId = this.googleProductCategoryId,
 )
 
 fun CategoryEntity.toTitle(): String {

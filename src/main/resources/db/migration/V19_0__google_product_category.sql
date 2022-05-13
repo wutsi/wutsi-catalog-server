@@ -128,7 +128,6 @@ INSERT INTO T_CATEGORY(id, parent_fk, google_product_category_id, title, title_f
 
 -- Food Items
 UPDATE T_CATEGORY set google_product_category_id=422 WHERE id=2100;
-DELETE FROM T_CATEGORY WHERE id=2110;
 UPDATE T_CATEGORY set google_product_category_id=4628 WHERE id=2120;
 UPDATE T_CATEGORY set google_product_category_id=4629 WHERE id=2121;
 UPDATE T_CATEGORY set google_product_category_id=428, title='Dairy Products & Eggs', title_french='Produits Laitiers & Oeufs' WHERE id=2130;

@@ -132,7 +132,6 @@ UPDATE T_CATEGORY set google_product_category_id=4628 WHERE id=2120;
 UPDATE T_CATEGORY set google_product_category_id=4629 WHERE id=2121;
 UPDATE T_CATEGORY set google_product_category_id=428, title='Dairy Products & Eggs', title_french='Produits Laitiers & Oeufs' WHERE id=2130;
 UPDATE T_CATEGORY set google_product_category_id=423 WHERE id=2140;
-DELETE FROM T_CATEGORY WHERE id=2141;
 UPDATE T_CATEGORY set google_product_category_id=431, title='Rice, Grain & Cereal', title_french='Riz, Grain & Céréales' WHERE id=2142;
 UPDATE T_CATEGORY set google_product_category_id=434 WHERE id=2143;
 UPDATE T_CATEGORY set google_product_category_id=427 WHERE id=2144;

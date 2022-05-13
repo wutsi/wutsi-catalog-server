@@ -28,8 +28,11 @@ UPDATE T_CATEGORY set google_product_category_id=494, title='Health Care', title
 INSERT INTO T_CATEGORY(id, parent_fk, google_product_category_id, title, title_french) VALUES (1299, 1200, null, 'Other', 'Autre');
 
 -- Sporting Goods/Articles de Sport
+DELETE FROM T_CATEGORY where id=1310;
 UPDATE T_CATEGORY set google_product_category_id=988, title='Sporting Goods', title_french='Articles de Sports' WHERE id=1300;
-DELETE FROM T_CATEGORY WHERE parent_fk=1300;
+UPDATE T_CATEGORY set google_product_category_id=1001  WHERE id=1320;
+UPDATE T_CATEGORY set google_product_category_id=499846  WHERE id=1330;
+DELETE FROM T_CATEGORY where id=1340;
 INSERT INTO T_CATEGORY(id, parent_fk, google_product_category_id, title, title_french) VALUES (1310, 1300, 1111, 'Football', 'Football');
 INSERT INTO T_CATEGORY(id, parent_fk, google_product_category_id, title, title_french) VALUES (1311, 1300, 1081, 'Basketball', 'Basketball');
 INSERT INTO T_CATEGORY(id, parent_fk, google_product_category_id, title, title_french) VALUES (1312, 1300, 1083, 'Boxing & Martial Arts', 'Boxe & Arts Martiaux');

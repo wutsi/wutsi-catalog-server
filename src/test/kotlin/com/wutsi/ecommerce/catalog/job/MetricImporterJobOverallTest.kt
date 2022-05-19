@@ -2,6 +2,8 @@ package com.wutsi.ecommerce.catalog.job
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -11,36 +13,27 @@ import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterOverall
 import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterOverall
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.test.context.jdbc.Sql
 import java.time.LocalDate
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(value = ["/db/clean.sql"])
 internal class MetricImporterJobOverallTest {
-    @MockBean
     private lateinit var metricImporter: MetricImporterOverall
-
-    @MockBean
     private lateinit var scoreImporter: ScoreImporterOverall
-
-    @MockBean
     private lateinit var conversionImporter: ConversionImporterOverall
-
-    @Autowired
-    private lateinit var job: MetricImporterOverallJob
 
     private val date = LocalDate.now()
 
     @BeforeEach
     fun setUp() {
+        metricImporter = mock()
+        conversionImporter = mock()
+        scoreImporter = mock()
         doReturn(100L).whenever(metricImporter).import(any(), any())
     }
 
     @Test
-    fun run() {
+    fun enabled() {
+        val job = MetricImporterOverallJob(metricImporter, scoreImporter, conversionImporter, true)
+
         job.run()
 
         verify(metricImporter, times(4)).import(any(), any())
@@ -51,5 +44,21 @@ internal class MetricImporterJobOverallTest {
 
         verify(conversionImporter).import(date, MetricType.ORDER)
         verify(scoreImporter).import(date, MetricType.VIEW)
+    }
+
+    @Test
+    fun disabled() {
+        val job = MetricImporterOverallJob(metricImporter, scoreImporter, conversionImporter, false)
+
+        job.run()
+
+        verify(metricImporter, never()).import(any(), any())
+        verify(metricImporter, never()).import(any(), any())
+        verify(metricImporter, never()).import(any(), any())
+        verify(metricImporter, never()).import(any(), any())
+        verify(metricImporter, never()).import(any(), any())
+
+        verify(conversionImporter, never()).import(any(), any())
+        verify(scoreImporter, never()).import(any(), any())
     }
 }

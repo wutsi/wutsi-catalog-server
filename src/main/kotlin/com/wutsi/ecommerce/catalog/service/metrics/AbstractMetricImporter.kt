@@ -16,8 +16,8 @@ import java.time.format.DateTimeFormatter
 import javax.sql.DataSource
 
 abstract class AbstractMetricImporter(
-    private val ds: DataSource,
-    private val storage: StorageService,
+    protected val ds: DataSource,
+    protected val storage: StorageService,
 ) {
     protected abstract fun sql(type: MetricType): String
     protected abstract fun map(item: CsvMetric, stmt: PreparedStatement)
@@ -95,7 +95,7 @@ abstract class AbstractMetricImporter(
         return imported
     }
 
-    private fun toURL(date: LocalDate, type: MetricType): URL =
+    protected open fun toURL(date: LocalDate, type: MetricType): URL =
         storage.toURL(
             "aggregates/daily/" +
                 date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) +

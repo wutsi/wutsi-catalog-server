@@ -1,0 +1,36 @@
+package com.wutsi.ecommerce.catalog.job
+
+import com.wutsi.analytics.tracking.entity.MetricType
+import com.wutsi.ecommerce.catalog.service.metrics.ConversionImporter
+import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporter
+import com.wutsi.platform.core.cron.AbstractCronJob
+import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Service
+import java.time.LocalDate
+
+@Service
+class MetricImporterOverallJob(
+    private val importer: MetricImporterOverall,
+    private val score: ScoreImporter,
+    private val conversion: ConversionImporter,
+) : AbstractCronJob() {
+    override fun getJobName(): String = "metric-importer-overall"
+
+    override fun getToken(): String? = null
+
+    override fun doRun(): Long {
+        val date = LocalDate.now()
+        return importer.import(date, MetricType.CHAT) +
+            importer.import(date, MetricType.SHARE) +
+            importer.import(date, MetricType.VIEW) +
+            importer.import(date, MetricType.ORDER) +
+            conversion.import(date, MetricType.ORDER) + // IMPORTANT: MUST BE AFTER ALL METRICS
+            score.import(date, MetricType.VIEW) // IMPORTANT: MUST BE THE LAST
+    }
+
+    @Scheduled(cron = "\${wutsi.application.jobs.metric-importer-overall.cron}")
+    override fun run() {
+        super.run()
+    }
+}

@@ -67,6 +67,8 @@ wutsi:
         cron: "0 0 0 * * *"   # Every day at midnight
       metric-importer:
         cron: "0 0 3 * * *"   # Every day at 3AM
+      metric-importer-overall:
+        cron: "0 15 21 * * *"   # Every day at 9:15PM
 
   platform:
     security:

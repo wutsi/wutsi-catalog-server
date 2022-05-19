@@ -7,17 +7,17 @@ import java.sql.PreparedStatement
 import javax.sql.DataSource
 
 @Service
-class ScoreImporterDaily(
+class ConversionImporter(
     ds: DataSource,
     storage: StorageService,
-) : AbstractMetricImporterDaily(ds, storage) {
+) : AbstractMetricImporter(ds, storage) {
     override fun sql(type: MetricType): String =
         """
             UPDATE T_PRODUCT
-                SET score=conversion +
+                SET conversion=
                     CASE total_views
                         WHEN 0 THEN 0
-                        ELSE CAST (total_shares+total_chats as DECIMAL)/total_views
+                        ELSE CAST (total_orders as DECIMAL)/total_views
                     END
                 WHERE id=?
         """

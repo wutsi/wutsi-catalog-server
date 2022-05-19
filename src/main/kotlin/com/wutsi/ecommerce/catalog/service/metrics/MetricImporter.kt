@@ -7,22 +7,21 @@ import java.sql.PreparedStatement
 import javax.sql.DataSource
 
 @Service
-class ConversionImporterDaily(
+class MetricImporter(
     ds: DataSource,
     storage: StorageService,
-) : AbstractMetricImporterDaily(ds, storage) {
-    override fun sql(type: MetricType): String =
-        """
+) : AbstractMetricImporter(ds, storage) {
+    override fun sql(type: MetricType): String {
+        val column = "total_${type.name.lowercase()}s"
+        return """
             UPDATE T_PRODUCT
-                SET conversion=
-                    CASE total_views
-                        WHEN 0 THEN 0
-                        ELSE CAST (total_orders as DECIMAL)/total_views
-                    END
+                SET $column=$column+?
                 WHERE id=?
         """
+    }
 
     override fun map(item: CsvMetric, stmt: PreparedStatement) {
-        stmt.setLong(1, item.productId?.toLong() ?: -1)
+        stmt.setLong(1, item.value)
+        stmt.setLong(2, item.productId?.toLong() ?: -1)
     }
 }

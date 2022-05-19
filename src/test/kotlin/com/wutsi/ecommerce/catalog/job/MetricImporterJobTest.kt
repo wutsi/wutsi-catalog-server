@@ -6,8 +6,8 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterDaily
-import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterDaily
+import com.wutsi.ecommerce.catalog.service.metrics.MetricImporter
+import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporter
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,12 +21,12 @@ import java.time.ZoneId
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql"])
-internal class MetricImporterDailyJobTest {
+internal class MetricImporterJobTest {
     @MockBean
-    private lateinit var metricImporter: MetricImporterDaily
+    private lateinit var metricImporter: MetricImporter
 
     @MockBean
-    private lateinit var scoreImporter: ScoreImporterDaily
+    private lateinit var scoreImporter: ScoreImporter
 
     @MockBean
     private lateinit var clock: Clock

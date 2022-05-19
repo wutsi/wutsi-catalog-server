@@ -15,7 +15,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.sql.DataSource
 
-abstract class AbstractMetricImporterDaily(
+abstract class AbstractMetricImporter(
     private val ds: DataSource,
     private val storage: StorageService,
 ) {

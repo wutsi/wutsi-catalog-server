@@ -16,7 +16,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class MetricImporterDailyTest {
+internal class MetricImporterTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -32,7 +32,7 @@ internal class MetricImporterDailyTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: MetricImporterDaily
+    private lateinit var service: MetricImporter
 
     @Autowired
     private lateinit var dao: ProductRepository

@@ -1,9 +1,9 @@
 package com.wutsi.ecommerce.catalog.job
 
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.metrics.ConversionImporterDaily
-import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterDaily
-import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterDaily
+import com.wutsi.ecommerce.catalog.service.metrics.ConversionImporter
+import com.wutsi.ecommerce.catalog.service.metrics.MetricImporter
+import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporter
 import com.wutsi.platform.core.cron.AbstractCronJob
 import com.wutsi.platform.core.logging.KVLogger
 import org.springframework.scheduling.annotation.Scheduled
@@ -13,9 +13,9 @@ import java.time.LocalDate
 
 @Service
 class MetricImporterJob(
-    private val importer: MetricImporterDaily,
-    private val score: ScoreImporterDaily,
-    private val conversion: ConversionImporterDaily,
+    private val importer: MetricImporter,
+    private val score: ScoreImporter,
+    private val conversion: ConversionImporter,
     private val clock: Clock,
     private val logger: KVLogger
 ) : AbstractCronJob() {

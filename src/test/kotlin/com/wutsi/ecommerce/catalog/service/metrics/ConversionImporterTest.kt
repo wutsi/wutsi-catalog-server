@@ -45,7 +45,7 @@ internal class ConversionImporterTest {
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/ConversionImporterDaily.sql"])
+    @Sql(value = ["/db/clean.sql", "/db/ConversionImporter.sql"])
     fun cvr() {
         store()
 
@@ -57,7 +57,7 @@ internal class ConversionImporterTest {
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/ConversionImporterDaily.sql"])
+    @Sql(value = ["/db/clean.sql", "/db/ConversionImporter.sql"])
     fun fileNotFound() {
         service.import(date, MetricType.ORDER)
 

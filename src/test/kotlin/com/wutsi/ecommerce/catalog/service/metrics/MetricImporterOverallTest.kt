@@ -15,7 +15,7 @@ import java.io.File
 import java.time.LocalDate
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(value = ["/db/clean.sql", "/db/MetricImporterDaily.sql"])
+@Sql(value = ["/db/clean.sql", "/db/MetricImporter.sql"])
 internal class MetricImporterOverallTest {
     companion object {
         const val CSV: String = """
@@ -80,7 +80,7 @@ internal class MetricImporterOverallTest {
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/MetricImporterDaily.sql"])
+    @Sql(value = ["/db/clean.sql", "/db/MetricImporter.sql"])
     fun fileNotFound() {
         service.import(date, MetricType.VIEW)
 

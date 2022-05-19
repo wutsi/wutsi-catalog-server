@@ -6,8 +6,9 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.analytics.tracking.entity.MetricType
+import com.wutsi.ecommerce.catalog.service.metrics.ConversionImporterOverall
 import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporter
+import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterOverall
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,10 @@ internal class MetricImporterJobOverallTest {
     private lateinit var metricImporter: MetricImporterOverall
 
     @MockBean
-    private lateinit var scoreImporter: ScoreImporter
+    private lateinit var scoreImporter: ScoreImporterOverall
+
+    @MockBean
+    private lateinit var conversionImporter: ConversionImporterOverall
 
     @Autowired
     private lateinit var job: MetricImporterOverallJob
@@ -45,6 +49,7 @@ internal class MetricImporterJobOverallTest {
         verify(metricImporter).import(date, MetricType.VIEW)
         verify(metricImporter).import(date, MetricType.ORDER)
 
+        verify(conversionImporter).import(date, MetricType.ORDER)
         verify(scoreImporter).import(date, MetricType.VIEW)
     }
 }

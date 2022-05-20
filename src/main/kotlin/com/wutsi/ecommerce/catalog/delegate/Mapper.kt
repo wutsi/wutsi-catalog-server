@@ -69,10 +69,10 @@ fun ProductEntity.toProduct() = Product(
 )
 
 fun ProductEntity.toMetrics() = Metrics(
-    totalViews = this.totalChats,
+    totalViews = this.totalViews,
     totalChats = this.totalChats,
     totalShares = this.totalShares,
-    totalOrders = this.totalShares,
+    totalOrders = this.totalOrders,
     totalSales = this.totalSales,
     conversion = this.conversion,
     score = this.score

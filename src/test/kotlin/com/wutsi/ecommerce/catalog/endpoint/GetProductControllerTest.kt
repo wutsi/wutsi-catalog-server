@@ -62,6 +62,15 @@ class GetProductControllerTest : AbstractSecuredController() {
         assertEquals(2, sections.size)
         assertEquals("Yo", sections[0].title)
         assertEquals("Man", sections[1].title)
+
+        val metrics = product.overallMetrics
+        assertEquals(1000, metrics.totalViews)
+        assertEquals(10, metrics.totalOrders)
+        assertEquals(150000, metrics.totalSales)
+        assertEquals(11, metrics.totalShares)
+        assertEquals(15, metrics.totalChats)
+        assertEquals(0.01, metrics.conversion)
+        assertEquals(0.5, metrics.score)
     }
 
     @Test

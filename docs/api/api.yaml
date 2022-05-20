@@ -877,6 +877,9 @@ components:
         score:
           type: number
           format: double
+        totalSales:
+          type: number
+          format: int64
 
     AddPictureRequest:
       type: object
@@ -925,7 +928,7 @@ components:
         publishedProductCount:
           type: integer
           description: Number of published products in this category
-        googleCategoryId:
+        googleProductCategoryId:
           type: integer
           format: int64
           description:  ID of the Google Product Category
@@ -958,7 +961,7 @@ components:
         publishedProductCount:
           type: integer
           description: Number of published products in this category
-        googleCategoryId:
+        googleProductCategoryId:
           type: integer
           format: int64
           description:  ID of the Google Product Category

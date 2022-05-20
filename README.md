@@ -8,7 +8,7 @@ API for managing product catalog
 
 # Architecture
 
-![](https://www.plantuml.com/plantuml/png/RP2n2i8m48RtUugZpZUvInry074GaGwNvAYbQIBDXGgbxsuLXsAx_lduld1bKkurTnvix9unI52qhEnZZUDYkmzPKqE_fmftD_4-3e1kNWmdmSAPOWJy8ycP2d02M1c83bli18lgyNh1hrDxjcqJQafxCjcseXL-q7EMB4WhEQngU7hP1uTQOECZcm4e9RZvCcy0)
+![](https://www.plantuml.com/plantuml/png/TP2z2i8m58Nt-nINEcTobphu0E8W8XdoSwcbQIB9ZHMAxsuKGP5cpSbtliDj4wl8UNHWmdWDdZoZKQnSw73-UJjFcLClFf5856yK9QvEv5oO06q9j4g4ZTND3FWFM2q17m2r8Y4sIqWXlXksnmE-gpagC_I-q6kXinc89Rw-xZDbGb5pGCsDkxkvADyHrDSjMg4bRylndW00)
 
 # Links
 

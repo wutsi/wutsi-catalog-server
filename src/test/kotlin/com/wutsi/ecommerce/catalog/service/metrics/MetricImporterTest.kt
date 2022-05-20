@@ -76,6 +76,16 @@ internal class MetricImporterTest {
     }
 
     @Test
+    fun sale() {
+        store(MetricType.SALE)
+
+        service.import(date, MetricType.SALE)
+
+        assertTotalSales(100, 50000 + 31)
+        assertTotalSales(101, 15000 + 11)
+    }
+
+    @Test
     fun fileNotFound() {
         service.import(date, MetricType.VIEW)
 
@@ -99,6 +109,12 @@ internal class MetricImporterTest {
         val product = dao.findById(productId)
 
         assertEquals(expected, product.get().totalChats)
+    }
+
+    private fun assertTotalSales(productId: Long, expected: Long) {
+        val product = dao.findById(productId)
+
+        assertEquals(expected, product.get().totalSales)
     }
 
     private fun store(type: MetricType) {

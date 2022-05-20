@@ -74,6 +74,16 @@ internal class MetricImporterOverallTest {
         assertTotalChats(101, 11)
     }
 
+    @Test
+    fun sale() {
+        store(MetricType.SALE)
+
+        service.import(date, MetricType.SALE)
+
+        assertTotalSales(100, 31)
+        assertTotalSales(101, 11)
+    }
+
     private fun store(type: MetricType) {
         val path = "aggregates/overall/" + type.name.lowercase() + ".csv"
         storage.store(path, ByteArrayInputStream(CSV.trimIndent().toByteArray()), "application/csv")
@@ -104,5 +114,11 @@ internal class MetricImporterOverallTest {
         val product = dao.findById(productId)
 
         assertEquals(expected, product.get().totalChats)
+    }
+
+    private fun assertTotalSales(productId: Long, expected: Long) {
+        val product = dao.findById(productId)
+
+        assertEquals(expected, product.get().totalSales)
     }
 }

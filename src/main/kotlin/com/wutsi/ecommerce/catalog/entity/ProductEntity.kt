@@ -72,6 +72,7 @@ data class ProductEntity(
     val totalShares: Long = 0,
     val totalChats: Long = 0,
     val totalOrders: Long = 0,
+    val totalSales: Long = 0,
     val conversion: Double = 0.0,
     val score: Double = 0.0,
 )

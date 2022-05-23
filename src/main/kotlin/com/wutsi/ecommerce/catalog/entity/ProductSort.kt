@@ -5,4 +5,5 @@ enum class ProductSort {
     PRICE_DESC,
     PRICE_ASC,
     VIEWS,
+    TITLE,
 }

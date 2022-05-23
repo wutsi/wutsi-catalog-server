@@ -166,7 +166,6 @@ class SearchProductsControllerTest : AbstractSecuredController() {
     fun `order by views`() {
         // WHEN
         val request = SearchProductRequest(
-            visible = true,
             sortBy = ProductSort.VIEWS.name
         )
         val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
@@ -175,15 +174,14 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val products = response.body!!.products
-        assertEquals(5, products.size)
-        assertEquals(listOf(101L, 200L, 102L, 100L, 201L), products.map { it.id })
+        assertEquals(6, products.size)
+        assertEquals(listOf(101L, 200L, 102L, 100L, 201L, 300L), products.map { it.id })
     }
 
     @Test
     fun `order by recommended`() {
         // WHEN
         val request = SearchProductRequest(
-            visible = true,
             sortBy = ProductSort.RECOMMENDED.name
         )
         val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
@@ -192,7 +190,24 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val products = response.body!!.products
-        assertEquals(5, products.size)
-        assertEquals(listOf(200L, 101L, 102L, 100L, 201L), products.map { it.id })
+        assertEquals(6, products.size)
+        assertEquals(listOf(200L, 101L, 102L, 100L, 201L, 300L), products.map { it.id })
+    }
+
+
+    @Test
+    fun `order by title`() {
+        // WHEN
+        val request = SearchProductRequest(
+            sortBy = ProductSort.TITLE.name
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(6, products.size)
+        assertEquals(listOf(100L, 101L, 102L, 200L, 201L, 300L), products.map { it.id })
     }
 }

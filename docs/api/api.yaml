@@ -663,6 +663,7 @@ components:
             - PRICE_DESC
             - PRICE_ASC
             - VIEWS
+            - TITLE
           nullable: true
 
     SearchProductResponse:

@@ -94,6 +94,8 @@ class SearchProductsDelegate(
             "P.price ASC, P.score DESC" // Price, then score
         else if (ProductSort.VIEWS.name.equals(request.sortBy, true))
             "P.totalViews DESC, P.score DESC" // Views, then score
+        else if (ProductSort.TITLE.name.equals(request.sortBy, true))
+            "P.title"
         else
             "P.score DESC, P.totalViews DESC" // Views, then views
 

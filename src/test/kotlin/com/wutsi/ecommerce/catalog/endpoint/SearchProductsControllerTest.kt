@@ -194,7 +194,6 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(listOf(200L, 101L, 102L, 100L, 201L, 300L), products.map { it.id })
     }
 
-
     @Test
     fun `order by title`() {
         // WHEN

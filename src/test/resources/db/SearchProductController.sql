@@ -1,3 +1,13 @@
+INSERT INTO T_MERCHANT(account_id, enabled)
+    VALUES
+        (1, true),
+        (2, true),
+        (3, true),
+        (5, false),
+        (9, true),
+        (10, true)
+;
+
 INSERT INTO T_CATEGORY(id, parent_fk, title, title_french)
     VALUES
         (100, null, 'Electronic', 'Électronique'),
@@ -20,6 +30,10 @@ INSERT INTO T_PRODUCT(id, tenant_id, account_id, category_fk, sub_category_fk, t
         (201, 1, 2, 200, 202, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, false, 0, 0.0),
 
         (300, 1, 3, 200, 201, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', false, false, 0, 0.0),
+
+        (500, 1, 5, 200, 201, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', false, false, 0, 0.0),
+        (501, 1, 5, 200, 201, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', false, false, 0, 0.0),
+        (502, 1, 5, 200, 201, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', false, false, 0, 0.0),
 
         (900, 1, 9, 200, 102, 'Yo', 'Man', 'This is the description', 1000, 1500, 'XAF', true, true, 0, 0.0),
 

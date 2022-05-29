@@ -84,6 +84,9 @@ class SearchProductsDelegate(
         if (request.status != null)
             criteria.add("P.status=:status")
 
+        // Ensure that the merchant is enabled!!
+        criteria.add("EXISTS (SELECT M FROM MerchantEntity M WHERE M.accountId=P.accountId AND M.enabled=true)")
+
         return criteria.joinToString(separator = " AND ")
     }
 

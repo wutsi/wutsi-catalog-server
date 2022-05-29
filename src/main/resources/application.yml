@@ -76,12 +76,11 @@ wutsi:
       type: jwt
       public-endpoints:
         - GET /v1/feeds/**
-    cache:
-      name: ${wutsi.application.name}
-      type: local
     stream:
       name: ${wutsi.application.name}
       type: local
+      subscriptions:
+        - wutsi-account
     tracing:
       client-id: ${wutsi.application.name}
       device-id-provider:

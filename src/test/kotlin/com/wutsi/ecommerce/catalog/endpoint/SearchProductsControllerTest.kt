@@ -209,4 +209,19 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(6, products.size)
         assertEquals(listOf(100L, 101L, 102L, 200L, 201L, 300L), products.map { it.id })
     }
+
+    @Test
+    fun `never return products from disabled merchant`() {
+        // WHEN
+        val request = SearchProductRequest(
+            accountId = 5
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(0, products.size)
+    }
 }

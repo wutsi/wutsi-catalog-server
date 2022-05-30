@@ -18,8 +18,6 @@ class SearchProductsDelegate(
     private val logger: KVLogger
 ) {
     fun invoke(request: SearchProductRequest): SearchProductResponse {
-        val products = search(request, securityManager.tenantId())
-
         logger.add("offset", request.offset)
         logger.add("limit", request.limit)
         logger.add("sort_by", request.sortBy)
@@ -29,6 +27,8 @@ class SearchProductsDelegate(
         logger.add("category_ids", request.categoryIds)
         logger.add("account_id", request.accountId)
         logger.add("visible", request.visible)
+
+        val products = search(request, securityManager.tenantId())
         logger.add("count", products.size)
         return SearchProductResponse(
             products = products.map { it.toProductSummary() }
@@ -85,7 +85,7 @@ class SearchProductsDelegate(
             criteria.add("P.status=:status")
 
         // Ensure that the merchant is enabled!!
-        criteria.add("EXISTS (SELECT M FROM MerchantEntity M WHERE M.accountId=P.accountId AND M.enabled=true)")
+        criteria.add("EXISTS (SELECT M FROM MerchantEntity M WHERE M.accountId=P.accountId AND M.isEnabled=true)")
 
         return criteria.joinToString(separator = " AND ")
     }

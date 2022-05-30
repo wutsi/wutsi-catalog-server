@@ -1,10 +1,11 @@
 CREATE TABLE T_MERCHANT(
     id              SERIAL NOT NULL,
 
+    tenant_id       BIGINT NOT NULL,
     account_id      BIGINT NOT NULL,
     city_id         BIGINT,
 
-    enabled         BOOLEAN NOT NULL DEFAULT true,
+    is_enabled      BOOLEAN NOT NULL DEFAULT true,
     product_count   INT NOT NULL DEFAULT 0,
     published_product_count   INT NOT NULL DEFAULT 0,
 
@@ -12,7 +13,7 @@ CREATE TABLE T_MERCHANT(
     PRIMARY KEY (id)
 );
 
-INSERT INTO T_MERCHANT(account_id, enabled)
+INSERT INTO T_MERCHANT(account_id, is_enabled)
     SELECT DISTINCT account_id, true FROM T_PRODUCT;
 
 UPDATE T_MERCHANT M

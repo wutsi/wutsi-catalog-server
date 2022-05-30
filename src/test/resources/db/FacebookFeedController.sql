@@ -1,3 +1,13 @@
+INSERT INTO T_MERCHANT(tenant_id, account_id, is_enabled)
+    VALUES
+        (1, 1, true),
+        (1, 2, true),
+        (1, 3, true),
+        (1, 5, false),
+        (1, 9, true),
+        (1, 10, true)
+;
+
 INSERT INTO T_CATEGORY(id, parent_fk, title, title_french)
     VALUES
         (100, null, 'Electronics', 'Électronique'),

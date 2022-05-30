@@ -2,6 +2,8 @@ package com.wutsi.ecommerce.catalog.delegate
 
 import com.wutsi.ecommerce.catalog.dto.Category
 import com.wutsi.ecommerce.catalog.dto.CategorySummary
+import com.wutsi.ecommerce.catalog.dto.Merchant
+import com.wutsi.ecommerce.catalog.dto.MerchantSummary
 import com.wutsi.ecommerce.catalog.dto.Metrics
 import com.wutsi.ecommerce.catalog.dto.PictureSummary
 import com.wutsi.ecommerce.catalog.dto.Product
@@ -9,6 +11,7 @@ import com.wutsi.ecommerce.catalog.dto.ProductSummary
 import com.wutsi.ecommerce.catalog.dto.Section
 import com.wutsi.ecommerce.catalog.dto.SectionSummary
 import com.wutsi.ecommerce.catalog.entity.CategoryEntity
+import com.wutsi.ecommerce.catalog.entity.MerchantEntity
 import com.wutsi.ecommerce.catalog.entity.PictureEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.SectionEntity
@@ -119,4 +122,16 @@ fun SectionEntity.toSection() = Section(
     sortOrder = this.sortOrder,
     productCount = this.productCount,
     publishedProductCount = this.publishedProductCount
+)
+
+fun MerchantEntity.toMerchant() = Merchant(
+    id = this.id ?: -1,
+    accountId = this.accountId,
+    cityId = this.cityId
+)
+
+fun MerchantEntity.toMerchantSummary() = MerchantSummary(
+    id = this.id ?: -1,
+    accountId = this.accountId,
+    cityId = this.cityId
 )

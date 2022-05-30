@@ -1,5 +1,6 @@
 package com.wutsi.ecommerce.catalog.service
 
+import com.wutsi.ecommerce.catalog.entity.MerchantEntity
 import com.wutsi.ecommerce.catalog.entity.PictureEntity
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.SectionEntity
@@ -35,6 +36,15 @@ class SecurityManager(
 
     fun checkTenant(product: ProductEntity) {
         if (product.tenantId != tenantId())
+            throw ForbiddenException(
+                error = Error(
+                    code = ErrorURN.ILLEGAL_TENANT_ACCESS.urn
+                )
+            )
+    }
+
+    fun checkTenant(merchant: MerchantEntity) {
+        if (merchant.tenantId != tenantId())
             throw ForbiddenException(
                 error = Error(
                     code = ErrorURN.ILLEGAL_TENANT_ACCESS.urn

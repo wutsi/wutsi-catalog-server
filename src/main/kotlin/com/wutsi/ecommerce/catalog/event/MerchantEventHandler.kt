@@ -6,6 +6,7 @@ import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.event.AccountDeletedPayload
 import com.wutsi.platform.account.event.AccountUpdatedPayload
 import com.wutsi.platform.core.logging.KVLogger
+import com.wutsi.platform.core.tracing.TracingContext
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
@@ -13,7 +14,8 @@ import javax.transaction.Transactional
 class MerchantEventHandler(
     private val accountApi: WutsiAccountApi,
     private val dao: MerchantRepository,
-    private val logger: KVLogger
+    private val logger: KVLogger,
+    private val tracingContext: TracingContext
 ) {
     companion object {
         val SYNC_ATTRIBUTES = listOf(
@@ -29,11 +31,11 @@ class MerchantEventHandler(
         val merchant = dao.findByAccountId(payload.accountId).orElseGet { null }
             ?: return
         logger.add("merchant_id", merchant.id)
-        logger.add("merchant_enabled", merchant.enabled)
+        logger.add("merchant_enabled", merchant.isEnabled)
 
         // Update
-        if (merchant.enabled) {
-            merchant.enabled = false
+        if (merchant.isEnabled) {
+            merchant.isEnabled = false
             dao.save(merchant)
 
             logger.add("merchant_disabled", true)
@@ -62,8 +64,9 @@ class MerchantEventHandler(
                 val created = dao.save(
                     MerchantEntity(
                         accountId = payload.accountId,
-                        enabled = true,
-                        cityId = account.cityId
+                        isEnabled = true,
+                        cityId = account.cityId,
+                        tenantId = tracingContext.tenantId()?.toLong() ?: -1
                     )
                 )
                 logger.add("merchant_updated", true)
@@ -73,13 +76,13 @@ class MerchantEventHandler(
             }
         } else {
             logger.add("merchant_id", merchant.id)
-            logger.add("merchant_enabled", merchant.enabled)
+            logger.add("merchant_enabled", merchant.isEnabled)
             logger.add("merchant_city_id", merchant.cityId)
 
             // Update
-            if (merchant.enabled != enabled || merchant.cityId != account.cityId) {
+            if (merchant.isEnabled != enabled || merchant.cityId != account.cityId) {
                 merchant.cityId = account.cityId
-                merchant.enabled = enabled
+                merchant.isEnabled = enabled
                 dao.save(merchant)
 
                 logger.add("merchant_updated", true)

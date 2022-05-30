@@ -1,11 +1,11 @@
-INSERT INTO T_MERCHANT(account_id, enabled)
+INSERT INTO T_MERCHANT(tenant_id, account_id, is_enabled, city_id)
     VALUES
-        (1, true),
-        (2, true),
-        (3, true),
-        (5, false),
-        (9, true),
-        (10, true)
+        (1, 1, true, 111),
+        (1, 2, true, 111),
+        (1, 3, true, 333),
+        (1, 5, false, null),
+        (1, 9, true, null),
+        (1, 10, true, null)
 ;
 
 INSERT INTO T_CATEGORY(id, parent_fk, title, title_french)

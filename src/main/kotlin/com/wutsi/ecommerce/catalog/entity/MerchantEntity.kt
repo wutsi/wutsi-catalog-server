@@ -13,9 +13,10 @@ data class MerchantEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+    val tenantId: Long = -1,
     val accountId: Long = -1,
     var cityId: Long? = null,
-    var enabled: Boolean = false,
+    var isEnabled: Boolean = false,
     val productCount: Int = 0,
     val publishedProductCount: Int = 0,
 )

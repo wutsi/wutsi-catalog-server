@@ -37,7 +37,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(900).get()
-        assertFalse(merchant.enabled)
+        assertFalse(merchant.isEnabled)
     }
 
     @Test
@@ -52,7 +52,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertTrue(merchant.enabled)
+        assertTrue(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 
@@ -83,7 +83,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertTrue(merchant.enabled)
+        assertTrue(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 
@@ -99,7 +99,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertTrue(merchant.enabled)
+        assertTrue(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 
@@ -115,7 +115,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertFalse(merchant.enabled)
+        assertFalse(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 
@@ -131,7 +131,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertTrue(merchant.enabled)
+        assertTrue(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 
@@ -147,7 +147,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertTrue(merchant.enabled)
+        assertTrue(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 
@@ -163,7 +163,7 @@ internal class MerchantEventHandlerTest {
 
         // THEN
         val merchant = dao.findByAccountId(accountId).get()
-        assertFalse(merchant.enabled)
+        assertFalse(merchant.isEnabled)
         assertEquals(account.cityId, merchant.cityId)
     }
 

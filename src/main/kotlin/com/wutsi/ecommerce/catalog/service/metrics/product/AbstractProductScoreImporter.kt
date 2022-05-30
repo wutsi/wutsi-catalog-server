@@ -9,4 +9,5 @@ abstract class AbstractProductScoreImporter(
     storage: StorageService,
 ) : AbstractScoreImporter(ds, storage) {
     override fun table() = "T_PRODUCT"
+    override fun id() = "id"
 }

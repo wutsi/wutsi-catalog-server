@@ -118,11 +118,23 @@ fun SectionEntity.toSection() = Section(
 fun MerchantEntity.toMerchant() = Merchant(
     id = this.id ?: -1,
     accountId = this.accountId,
-    cityId = this.cityId
+    cityId = this.cityId,
+    overallMetrics = this.toMetrics()
 )
 
 fun MerchantEntity.toMerchantSummary() = MerchantSummary(
     id = this.id ?: -1,
     accountId = this.accountId,
-    cityId = this.cityId
+    cityId = this.cityId,
 )
+
+fun MerchantEntity.toMetrics() = Metrics(
+    totalViews = this.totalViews,
+    totalChats = this.totalChats,
+    totalShares = this.totalShares,
+    totalOrders = this.totalOrders,
+    totalSales = this.totalSales,
+    conversion = this.conversion,
+    score = this.score
+)
+

@@ -1,0 +1,144 @@
+package com.wutsi.ecommerce.catalog.service.metrics.merchant
+
+import com.wutsi.analytics.tracking.entity.MetricType
+import com.wutsi.ecommerce.catalog.dao.MerchantRepository
+import com.wutsi.platform.core.storage.StorageService
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.jdbc.Sql
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.time.LocalDate
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(value = ["/db/clean.sql", "/db/MerchantMetricImporter.sql"])
+internal class MerchantMetricImporterOverallTest {
+    companion object {
+        const val CSV: String = """
+            "time","tenantid","merchantid","productid","value"
+            "1586837219285","1","1","100","31"
+            "1586837219485","1","2","101","10"
+            "1586837219485","1","3","101","1"
+        """
+    }
+
+    @Value("\${wutsi.platform.storage.local.directory:\${user.home}/wutsi/storage}")
+    protected lateinit var storageDirectory: String
+
+    @Autowired
+    private lateinit var storage: StorageService
+
+    @Autowired
+    private lateinit var service: MerchantMetricImporterOverall
+
+    @Autowired
+    private lateinit var dao: MerchantRepository
+
+    private val date = LocalDate.of(2020, 4, 14)
+
+
+    @BeforeEach
+    fun setUp() {
+        File(storageDirectory).deleteRecursively()
+    }
+
+    @Test
+    fun view() {
+        store(MetricType.VIEW)
+
+        val result = service.import(date, MetricType.VIEW)
+
+        assertEquals(3, result)
+        assertTotalViews(1, 1100)
+        assertTotalViews(2, 100)
+        assertTotalViews(3, 0)
+    }
+
+    @Test
+    fun share() {
+        store(MetricType.SHARE)
+
+        val result = service.import(date, MetricType.SHARE)
+
+        assertEquals(3, result)
+        assertTotalShares(1, 110)
+        assertTotalShares(2, 10)
+        assertTotalShares(3, 0)
+    }
+
+    @Test
+    fun chat() {
+        store(MetricType.CHAT)
+
+        val result = service.import(date, MetricType.CHAT)
+
+        assertEquals(3, result)
+        assertTotalChats(1, 11)
+        assertTotalChats(2, 1)
+        assertTotalChats(3, 0)
+    }
+
+    @Test
+    fun sale() {
+        store(MetricType.SALE)
+
+        val result = service.import(date, MetricType.SALE)
+
+        assertEquals(3, result)
+        assertTotalSales(1, 65000)
+        assertTotalSales(2, 15000)
+        assertTotalSales(3, 0)
+    }
+
+    @Test
+    fun order() {
+        store(MetricType.ORDER)
+
+        val result = service.import(date, MetricType.ORDER)
+
+        assertEquals(3, result)
+        assertTotalOrders(1, 36)
+        assertTotalOrders(2, 5)
+        assertTotalOrders(3, 0)
+    }
+
+    private fun assertTotalOrders(merchantId: Long, expected: Long) {
+        val merchant = dao.findByAccountId(merchantId)
+
+        assertEquals(expected, merchant.get().totalOrders)
+    }
+
+    private fun assertTotalShares(merchantId: Long, expected: Long) {
+        val merchant = dao.findByAccountId(merchantId)
+
+        assertEquals(expected, merchant.get().totalShares)
+    }
+
+    private fun assertTotalViews(merchantId: Long, expected: Long) {
+        val merchant = dao.findByAccountId(merchantId)
+
+        assertEquals(expected, merchant.get().totalViews)
+    }
+
+    private fun assertTotalChats(merchantId: Long, expected: Long) {
+        val merchant = dao.findByAccountId(merchantId)
+
+        assertEquals(expected, merchant.get().totalChats)
+    }
+
+    private fun assertTotalSales(merchantId: Long, expected: Long) {
+        val merchant = dao.findByAccountId(merchantId)
+
+        assertEquals(expected, merchant.get().totalSales)
+    }
+
+    private fun store(type: MetricType) {
+        val path = "aggregates/overall/" + type.name.lowercase() + ".csv"
+        storage.store(path, ByteArrayInputStream(CSV.trimIndent().toByteArray()), "application/csv")
+    }
+
+}

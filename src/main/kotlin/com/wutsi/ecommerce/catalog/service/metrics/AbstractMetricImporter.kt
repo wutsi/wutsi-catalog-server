@@ -13,6 +13,7 @@ import java.net.URL
 import java.sql.PreparedStatement
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 import javax.sql.DataSource
 
 abstract class AbstractMetricImporter(
@@ -72,9 +73,9 @@ abstract class AbstractMetricImporter(
     private fun import(csv: CSVReader, stmt: PreparedStatement): Long {
         val mapper = CsvMetricMapper()
 
-        var imported = 0L
         var row = 0
         val iterator: Iterator<Array<String>> = csv.iterator()
+        val keys = mutableSetOf<String>()
         while (iterator.hasNext()) {
             val data = iterator.next()
             if (row == 0) {
@@ -83,16 +84,18 @@ abstract class AbstractMetricImporter(
                 // Load the data
                 val item = mapper.map(data)
                 try {
-                    map(item, stmt)
-                    stmt.executeUpdate()
-                    imported++
+                    val key = toKey(item)
+                    if (keys.add(key)) {
+                        map(item, stmt)
+                        stmt.executeUpdate()
+                    }
                 } catch (ex: Exception) {
                     LoggerFactory.getLogger(javaClass).warn("Unable to import row#$row", ex)
                 }
             }
             row++
         }
-        return imported
+        return keys.size.toLong()
     }
 
     protected open fun toURL(date: LocalDate, type: MetricType): URL =
@@ -101,4 +104,7 @@ abstract class AbstractMetricImporter(
                 date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) +
                 type.name.lowercase() + ".csv"
         )
+
+    protected open fun toKey(item: CsvMetric): String =
+        UUID.randomUUID().toString()
 }

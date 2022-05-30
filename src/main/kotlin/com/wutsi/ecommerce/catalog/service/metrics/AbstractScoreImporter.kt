@@ -10,6 +10,7 @@ abstract class AbstractScoreImporter(
     storage: StorageService,
 ) : AbstractMetricImporter(ds, storage) {
     protected abstract fun table(): String
+    protected abstract fun id(): String
 
     override fun sql(type: MetricType): String =
         """
@@ -19,7 +20,7 @@ abstract class AbstractScoreImporter(
                         WHEN 0 THEN 0
                         ELSE CAST (total_shares+total_chats as DECIMAL)/total_views
                     END
-                WHERE id=?
+                WHERE ${id()}=?
         """
 
     override fun map(item: CsvMetric, stmt: PreparedStatement) {

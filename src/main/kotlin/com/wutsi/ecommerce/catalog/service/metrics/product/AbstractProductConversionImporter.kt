@@ -9,4 +9,5 @@ abstract class AbstractProductConversionImporter(
     storage: StorageService,
 ) : AbstractConversionImporter(ds, storage) {
     override fun table(): String = "T_PRODUCT"
+    override fun id(): String = "id"
 }

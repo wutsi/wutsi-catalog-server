@@ -1,11 +1,11 @@
-package com.wutsi.ecommerce.catalog.service.metrics.product
+package com.wutsi.ecommerce.catalog.service.metrics.merchant
 
 import com.wutsi.platform.core.storage.StorageService
 import org.springframework.stereotype.Service
 import javax.sql.DataSource
 
 @Service
-class ProductMetricImporter(
+class MerchantConversionImporter(
     ds: DataSource,
     storage: StorageService,
-) : AbstractProductMetricImporter(ds, storage)
+) : AbstractMerchantConversionImporter(ds, storage)

@@ -21,7 +21,7 @@ import java.time.ZoneId
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql"])
-internal class MetricImporterJobTest {
+internal class ProductMetricImporterJobTest {
     @MockBean
     private lateinit var productMetricImporter: ProductMetricImporter
 
@@ -32,7 +32,7 @@ internal class MetricImporterJobTest {
     private lateinit var clock: Clock
 
     @Autowired
-    private lateinit var job: MetricImporterJob
+    private lateinit var job: ProductMetricImporterJob
 
     private val date = LocalDate.of(2020, 4, 14)
 

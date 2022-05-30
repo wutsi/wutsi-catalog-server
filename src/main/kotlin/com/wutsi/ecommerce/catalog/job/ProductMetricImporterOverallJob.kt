@@ -1,32 +1,28 @@
 package com.wutsi.ecommerce.catalog.job
 
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.metrics.product.ProductConversionImporter
-import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporter
-import com.wutsi.ecommerce.catalog.service.metrics.product.ProductScoreImporter
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductConversionImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ScoreImporterOverall
 import com.wutsi.platform.core.cron.AbstractCronJob
-import com.wutsi.platform.core.logging.KVLogger
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
-import java.time.Clock
 import java.time.LocalDate
 
 @Service
-class MetricImporterJob(
-    private val importer: ProductMetricImporter,
-    private val score: ProductScoreImporter,
-    private val conversion: ProductConversionImporter,
-    private val clock: Clock,
-    private val logger: KVLogger
+class ProductMetricImporterOverallJob(
+    private val importer: ProductMetricImporterOverall,
+    private val score: ScoreImporterOverall,
+    private val conversion: ProductConversionImporterOverall,
+    @Value("\${wutsi.application.jobs.product-metric-importer-overall.enabled}") private val enabled: Boolean
 ) : AbstractCronJob() {
-    override fun getJobName(): String = "metric-importer"
+    override fun getJobName(): String = "product-metric-importer-overall"
 
     override fun getToken(): String? = null
 
     override fun doRun(): Long {
-        val date = LocalDate.now(clock).minusDays(1) // Yesterday
-        logger.add("date", date)
-
+        val date = LocalDate.now()
         return importer.import(date, MetricType.CHAT) +
             importer.import(date, MetricType.SHARE) +
             importer.import(date, MetricType.VIEW) +
@@ -36,8 +32,9 @@ class MetricImporterJob(
             score.import(date, MetricType.VIEW) // IMPORTANT: MUST BE THE LAST
     }
 
-    @Scheduled(cron = "\${wutsi.application.jobs.metric-importer.cron}")
+    @Scheduled(cron = "\${wutsi.application.jobs.product-metric-importer-overall.cron}")
     override fun run() {
-        super.run()
+        if (enabled)
+            super.run()
     }
 }

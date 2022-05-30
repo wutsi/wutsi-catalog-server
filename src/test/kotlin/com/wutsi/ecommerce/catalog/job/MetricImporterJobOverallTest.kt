@@ -32,7 +32,7 @@ internal class MetricImporterJobOverallTest {
 
     @Test
     fun enabled() {
-        val job = MetricImporterOverallJob(metricImporter, scoreImporter, conversionImporter, true)
+        val job = ProductMetricImporterOverallJob(metricImporter, scoreImporter, conversionImporter, true)
 
         job.run()
 
@@ -49,7 +49,7 @@ internal class MetricImporterJobOverallTest {
 
     @Test
     fun disabled() {
-        val job = MetricImporterOverallJob(metricImporter, scoreImporter, conversionImporter, false)
+        val job = ProductMetricImporterOverallJob(metricImporter, scoreImporter, conversionImporter, false)
 
         job.run()
 

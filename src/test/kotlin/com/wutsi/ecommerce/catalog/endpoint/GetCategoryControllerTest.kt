@@ -32,8 +32,6 @@ class GetCategoryControllerTest : AbstractSecuredController() {
         val category = response.body!!.category
         assertEquals("Electronic", category.title)
         assertNull(category.parentId)
-        assertEquals(10, category.productCount)
-        assertEquals(5, category.publishedProductCount)
         assertEquals(1001, category.googleProductCategoryId)
     }
 

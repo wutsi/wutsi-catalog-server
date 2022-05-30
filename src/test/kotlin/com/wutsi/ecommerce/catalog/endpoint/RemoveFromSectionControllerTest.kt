@@ -13,7 +13,6 @@ import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.web.client.HttpStatusCodeException
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/RemoveFromSectionController.sql"])
@@ -31,8 +30,6 @@ class RemoveFromSectionControllerTest : AbstractSecuredController() {
         rest.delete(url)
 
         val section = dao.findById(100).get()
-        assertEquals(2, section.productCount)
-        assertTrue(section.updateCounters)
     }
 
     @Test
@@ -42,8 +39,6 @@ class RemoveFromSectionControllerTest : AbstractSecuredController() {
         rest.delete(url)
 
         val section = dao.findById(100).get()
-        assertEquals(2, section.productCount)
-        assertTrue(section.updateCounters)
     }
 
     @Test

@@ -113,13 +113,4 @@ class AbstractProductDelegate {
             )
         )
     )
-
-    protected fun updateCounters(product: ProductEntity) {
-        product.sections.forEach { it.updateCounters = true }
-        sectionDao.saveAll(product.sections)
-
-        product.category.updateCounters = true
-        product.subCategory.updateCounters = true
-        categoryDao.saveAll(listOfNotNull(product.category, product.subCategory))
-    }
 }

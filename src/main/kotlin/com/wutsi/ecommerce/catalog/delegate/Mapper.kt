@@ -85,8 +85,6 @@ fun CategoryEntity.toCategory() = Category(
     id = this.id ?: -1,
     parentId = this.parentId,
     title = this.toTitle(),
-    productCount = this.productCount,
-    publishedProductCount = this.publishedProductCount,
     googleProductCategoryId = this.googleProductCategoryId,
 )
 
@@ -94,9 +92,7 @@ fun CategoryEntity.toCategorySummary() = CategorySummary(
     id = this.id ?: -1,
     parentId = this.parentId,
     title = this.toTitle(),
-    productCount = this.productCount,
-    publishedProductCount = this.publishedProductCount,
-    googleCategoryId = this.googleProductCategoryId,
+    googleProductCategoryId = this.googleProductCategoryId,
 )
 
 fun CategoryEntity.toTitle(): String {
@@ -111,17 +107,12 @@ fun SectionEntity.toSectionSummary() = SectionSummary(
     id = this.id ?: -1,
     title = this.title,
     sortOrder = this.sortOrder,
-    productCount = this.productCount,
-    publishedProductCount = this.publishedProductCount
-
 )
 
 fun SectionEntity.toSection() = Section(
     id = this.id ?: -1,
     title = this.title,
     sortOrder = this.sortOrder,
-    productCount = this.productCount,
-    publishedProductCount = this.publishedProductCount
 )
 
 fun MerchantEntity.toMerchant() = Merchant(

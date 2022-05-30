@@ -46,11 +46,11 @@ INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
 
 UPDATE T_PRODUCT SET thumbnail_fk=100;
 
-INSERT INTO T_SECTION(id, tenant_id, account_id, title, sort_order, product_count, is_deleted, deleted)
+INSERT INTO T_SECTION(id, tenant_id, account_id, title, sort_order, is_deleted, deleted)
     VALUES
-        (100, 1, 1, 'Yo', 1, 2, false, null),
-        (200, 1, 1, 'Man', 1, 2, false, null),
-        (900, 1, 1, 'Electronic', 2, 11, true, now())
+        (100, 1, 1, 'Yo', 1, false, null),
+        (200, 1, 1, 'Man', 1, false, null),
+        (900, 1, 1, 'Electronic', 2, true, now())
 ;
 
 INSERT INTO T_SECTION_PRODUCT(product_fk, section_fk)

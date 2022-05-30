@@ -1,10 +1,11 @@
 package com.wutsi.ecommerce.catalog.dto
 
-data class Category(
-    val id: Long = 0,
-    val title: String = "",
-    val parentId: Long? = null,
-    val productCount: Int = 0,
-    val publishedProductCount: Int = 0,
-    val googleProductCategoryId: Long? = null
+import kotlin.Long
+import kotlin.String
+
+public data class Category(
+    public val id: Long = 0,
+    public val title: String = "",
+    public val parentId: Long? = null,
+    public val googleProductCategoryId: Long? = null
 )

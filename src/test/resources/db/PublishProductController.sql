@@ -1,7 +1,7 @@
-INSERT INTO T_CATEGORY(id, parent_fk, title, title_french, update_counters)
+INSERT INTO T_CATEGORY(id, parent_fk, title, title_french)
     VALUES
-        (100, null, 'Electronic', 'Électronique', false),
-        (101, 100, 'Cell Phone', 'Téléphone portable', false)
+        (100, null, 'Electronic', 'Électronique'),
+        (101, 100, 'Cell Phone', 'Téléphone portable')
 ;
 
 
@@ -23,10 +23,10 @@ INSERT INTO T_PICTURE(id, product_fk, url, is_deleted, deleted)
         (1111, 111, 'https://img.com/3.png', true, now()),
         (1129, 112, 'https://img.com/4.png', true, now());
 
-INSERT INTO T_SECTION(id, tenant_id, account_id, title, sort_order, is_deleted, deleted, update_counters)
+INSERT INTO T_SECTION(id, tenant_id, account_id, title, sort_order, is_deleted, deleted)
     VALUES
-        (100, 1, 1, 'Yo', 1, false, null, false),
-        (200, 1, 1, 'Man', 1, false, null, false)
+        (100, 1, 1, 'Yo', 1, false, null),
+        (200, 1, 1, 'Man', 1, false, null)
 ;
 
 INSERT INTO T_SECTION_PRODUCT(product_fk, section_fk)

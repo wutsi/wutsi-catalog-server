@@ -26,9 +26,6 @@ data class SectionEntity(
     val created: OffsetDateTime = OffsetDateTime.now(),
     var updated: OffsetDateTime = OffsetDateTime.now(),
     var deleted: OffsetDateTime? = null,
-    var productCount: Int = 0,
-    var publishedProductCount: Int = 0,
-    var updateCounters: Boolean = true,
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

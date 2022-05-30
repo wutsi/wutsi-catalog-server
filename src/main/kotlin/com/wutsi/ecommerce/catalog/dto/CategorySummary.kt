@@ -1,6 +1,5 @@
 package com.wutsi.ecommerce.catalog.dto
 
-import kotlin.Int
 import kotlin.Long
 import kotlin.String
 
@@ -8,7 +7,5 @@ public data class CategorySummary(
     public val id: Long = 0,
     public val title: String = "",
     public val parentId: Long? = null,
-    public val productCount: Int = 0,
-    public val publishedProductCount: Int = 0,
-    public val googleCategoryId: Long? = null
+    public val googleProductCategoryId: Long? = null
 )

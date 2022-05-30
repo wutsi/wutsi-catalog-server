@@ -17,9 +17,6 @@ class PublishProductDelegate : AbstractProductDelegate() {
         product.published = OffsetDateTime.now()
         dao.save(product)
 
-        // Update counters
-        updateCounters(product)
-
         // Publish event
         publish(EventURN.PRODUCT_PUBLISHED, product)
     }

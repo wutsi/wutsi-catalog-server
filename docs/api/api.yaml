@@ -974,12 +974,6 @@ components:
           format: int64
           description: ID of the parent category
           nullable: true
-        productCount:
-          type: integer
-          description: Number of products in this category
-        publishedProductCount:
-          type: integer
-          description: Number of published products in this category
         googleProductCategoryId:
           type: integer
           format: int64
@@ -1007,12 +1001,6 @@ components:
           format: int64
           description: ID of the parent category
           nullable: true
-        productCount:
-          type: integer
-          description: Number of products in this category
-        publishedProductCount:
-          type: integer
-          description: Number of published products in this category
         googleProductCategoryId:
           type: integer
           format: int64
@@ -1081,12 +1069,6 @@ components:
         sortOrder:
           type: integer
           description: sort order
-        productCount:
-          type: integer
-          description: Number of products in this section
-        publishedProductCount:
-          type: integer
-          description: Number of published products in this sections
 
     ListSectionResponse:
       type: object
@@ -1127,12 +1109,6 @@ components:
         sortOrder:
           type: integer
           description: sort order
-        productCount:
-          type: integer
-          description: Number of products in this section
-        publishedProductCount:
-          type: integer
-          description: Number of published products in this sections
 
     GetSectionResponse:
       type: object

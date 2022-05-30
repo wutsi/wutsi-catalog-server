@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.test.context.jdbc.Sql
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AddToSectionControllerTest : AbstractSecuredController() {
@@ -24,8 +22,6 @@ class AddToSectionControllerTest : AbstractSecuredController() {
         rest.postForEntity(url, null, Any::class.java)
 
         val section = dao.findById(100).get()
-        assertEquals(2, section.productCount)
-        assertTrue(section.updateCounters)
     }
 
     @Test
@@ -35,7 +31,5 @@ class AddToSectionControllerTest : AbstractSecuredController() {
         rest.postForEntity(url, null, Any::class.java)
 
         val section = dao.findById(100).get()
-        assertEquals(2, section.productCount)
-        assertTrue(section.updateCounters)
     }
 }

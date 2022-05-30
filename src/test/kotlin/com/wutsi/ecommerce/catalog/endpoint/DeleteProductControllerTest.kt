@@ -45,12 +45,6 @@ class DeleteProductControllerTest : AbstractSecuredController() {
         assertTrue(product.isDeleted)
         assertNotNull(product.deleted)
 
-        assertTrue(categoryDao.findById(100).get().updateCounters)
-        assertTrue(categoryDao.findById(101).get().updateCounters)
-
-        assertTrue(sectionDao.findById(100).get().updateCounters)
-        assertTrue(sectionDao.findById(200).get().updateCounters)
-
         verify(eventStream).publish(EventURN.PRODUCT_DELETED.urn, ProductEventPayload(id = 100L, accountId = 1L))
     }
 

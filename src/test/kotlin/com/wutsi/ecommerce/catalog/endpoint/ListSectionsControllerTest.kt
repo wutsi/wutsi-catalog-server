@@ -27,10 +27,8 @@ class ListSectionsControllerTest : AbstractSecuredController() {
 
         assertEquals("Deals", sections[0].title)
         assertEquals(1, sections[0].sortOrder)
-        assertEquals(5, sections[0].productCount)
 
         assertEquals("Electronic", sections[1].title)
         assertEquals(2, sections[1].sortOrder)
-        assertEquals(10, sections[1].productCount)
     }
 }

@@ -22,7 +22,6 @@ import org.springframework.test.context.jdbc.Sql
 import org.springframework.web.client.HttpClientErrorException
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/PublishProductController.sql"])
@@ -50,12 +49,6 @@ class PublishProductControllerTest : AbstractSecuredController() {
         val product = dao.findById(100).get()
         assertEquals(ProductStatus.PUBLISHED, product.status)
         assertNotNull(product.published)
-
-        assertTrue(categoryDao.findById(100).get().updateCounters)
-        assertTrue(categoryDao.findById(101).get().updateCounters)
-
-        assertTrue(sectionDao.findById(100).get().updateCounters)
-        assertTrue(sectionDao.findById(200).get().updateCounters)
 
         verify(eventStream).publish(EventURN.PRODUCT_PUBLISHED.urn, ProductEventPayload(100, accountId = 1))
     }

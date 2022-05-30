@@ -18,9 +18,6 @@ class DeleteProductDelegate : AbstractProductDelegate() {
         product.deleted = OffsetDateTime.now()
         dao.save(product)
 
-        // Update counters
-        updateCounters(product)
-
         publish(EventURN.PRODUCT_DELETED, product)
     }
 }

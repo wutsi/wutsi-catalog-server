@@ -35,7 +35,6 @@ class AddToSectionDelegate(
 
         if (!product.isDeleted && !section.products.contains(product)) {
             section.products.add(product)
-            section.updateCounters = true
             dao.save(section)
         }
     }

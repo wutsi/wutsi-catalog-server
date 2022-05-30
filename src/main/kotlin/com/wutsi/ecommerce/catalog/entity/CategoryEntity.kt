@@ -20,8 +20,5 @@ data class CategoryEntity(
     @Column(name = "parent_fk")
     val parentId: Long? = null,
 
-    var productCount: Int = 0,
-    var publishedProductCount: Int = 0,
-    var updateCounters: Boolean = true,
     val googleProductCategoryId: Long? = null
 )

@@ -1,0 +1,3 @@
+ALTER TABLE T_SECTION DROP COLUMN update_counters;
+ALTER TABLE T_SECTION DROP COLUMN published_product_count;
+ALTER TABLE T_SECTION DROP COLUMN product_count;

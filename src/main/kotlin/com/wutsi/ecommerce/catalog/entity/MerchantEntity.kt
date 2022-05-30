@@ -17,6 +17,4 @@ data class MerchantEntity(
     val accountId: Long = -1,
     var cityId: Long? = null,
     var isEnabled: Boolean = false,
-    val productCount: Int = 0,
-    val publishedProductCount: Int = 0,
 )

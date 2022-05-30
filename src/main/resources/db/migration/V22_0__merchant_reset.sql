@@ -13,5 +13,5 @@ CREATE TABLE T_MERCHANT(
     PRIMARY KEY (id)
 );
 
-INSERT INTO T_MERCHANT(account_id, is_enabled)
-    SELECT DISTINCT account_id, true FROM T_PRODUCT;
+INSERT INTO T_MERCHANT(account_id, is_enabled, tenant_id)
+    SELECT DISTINCT account_id, true, tenant_id FROM T_PRODUCT;

@@ -9,9 +9,11 @@ abstract class AbstractScoreImporter(
     ds: DataSource,
     storage: StorageService,
 ) : AbstractMetricImporter(ds, storage) {
+    protected abstract fun table(): String
+
     override fun sql(type: MetricType): String =
         """
-            UPDATE T_PRODUCT
+            UPDATE ${table()}
                 SET score=conversion +
                     CASE total_views
                         WHEN 0 THEN 0

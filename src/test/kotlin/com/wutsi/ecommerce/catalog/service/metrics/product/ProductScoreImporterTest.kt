@@ -1,4 +1,4 @@
-package com.wutsi.ecommerce.catalog.service.metrics
+package com.wutsi.ecommerce.catalog.service.metrics.product
 
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
@@ -16,8 +16,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(value = ["/db/clean.sql", "/db/ScoreImporter.sql"])
-internal class ScoreImporterTest {
+@Sql(value = ["/db/clean.sql", "/db/ProductScoreImporter.sql"])
+internal class ProductScoreImporterTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -33,7 +33,7 @@ internal class ScoreImporterTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: ScoreImporter
+    private lateinit var service: ProductScoreImporter
 
     @Autowired
     private lateinit var dao: ProductRepository

@@ -6,8 +6,8 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.metrics.MetricImporter
-import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporter
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporter
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductScoreImporter
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,10 +23,10 @@ import java.time.ZoneId
 @Sql(value = ["/db/clean.sql"])
 internal class MetricImporterJobTest {
     @MockBean
-    private lateinit var metricImporter: MetricImporter
+    private lateinit var productMetricImporter: ProductMetricImporter
 
     @MockBean
-    private lateinit var scoreImporter: ScoreImporter
+    private lateinit var scoreImporter: ProductScoreImporter
 
     @MockBean
     private lateinit var clock: Clock
@@ -42,19 +42,19 @@ internal class MetricImporterJobTest {
         doReturn(now).whenever(clock).instant()
         doReturn(ZoneId.of("UTC")).whenever(clock).zone
 
-        doReturn(100L).whenever(metricImporter).import(any(), any())
+        doReturn(100L).whenever(productMetricImporter).import(any(), any())
     }
 
     @Test
     fun run() {
         job.run()
 
-        verify(metricImporter, times(5)).import(any(), any())
-        verify(metricImporter).import(date, MetricType.SHARE)
-        verify(metricImporter).import(date, MetricType.CHAT)
-        verify(metricImporter).import(date, MetricType.VIEW)
-        verify(metricImporter).import(date, MetricType.ORDER)
-        verify(metricImporter).import(date, MetricType.SALE)
+        verify(productMetricImporter, times(5)).import(any(), any())
+        verify(productMetricImporter).import(date, MetricType.SHARE)
+        verify(productMetricImporter).import(date, MetricType.CHAT)
+        verify(productMetricImporter).import(date, MetricType.VIEW)
+        verify(productMetricImporter).import(date, MetricType.ORDER)
+        verify(productMetricImporter).import(date, MetricType.SALE)
 
         verify(scoreImporter).import(date, MetricType.VIEW)
     }

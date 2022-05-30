@@ -1,4 +1,4 @@
-package com.wutsi.ecommerce.catalog.service.metrics
+package com.wutsi.ecommerce.catalog.service.metrics.product
 
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
@@ -12,11 +12,11 @@ import org.springframework.test.context.jdbc.Sql
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import kotlin.test.assertEquals
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class ConversionImporterTest {
+@Sql(value = ["/db/clean.sql", "/db/ProductConversionImporter.sql"])
+internal class ProductConversionImporterOverallTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -32,7 +32,7 @@ internal class ConversionImporterTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: ConversionImporter
+    private lateinit var service: ProductConversionImporterOverall
 
     @Autowired
     private lateinit var dao: ProductRepository
@@ -45,7 +45,6 @@ internal class ConversionImporterTest {
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/ConversionImporter.sql"])
     fun cvr() {
         store()
 
@@ -57,7 +56,7 @@ internal class ConversionImporterTest {
     }
 
     @Test
-    @Sql(value = ["/db/clean.sql", "/db/ConversionImporter.sql"])
+    @Sql(value = ["/db/clean.sql", "/db/ProductConversionImporter.sql"])
     fun fileNotFound() {
         service.import(date, MetricType.ORDER)
 
@@ -73,9 +72,7 @@ internal class ConversionImporterTest {
     }
 
     private fun store() {
-        val path = "aggregates/daily/" +
-            date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
-            "/order.csv"
+        val path = "aggregates/overall/order.csv"
         storage.store(
             path,
             ByteArrayInputStream(CSV.trimIndent().toByteArray()),

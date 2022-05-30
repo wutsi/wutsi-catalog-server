@@ -8,17 +8,17 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.metrics.ConversionImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductConversionImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ScoreImporterOverall
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 internal class MetricImporterJobOverallTest {
-    private lateinit var metricImporter: MetricImporterOverall
+    private lateinit var metricImporter: ProductMetricImporterOverall
     private lateinit var scoreImporter: ScoreImporterOverall
-    private lateinit var conversionImporter: ConversionImporterOverall
+    private lateinit var conversionImporter: ProductConversionImporterOverall
 
     private val date = LocalDate.now()
 

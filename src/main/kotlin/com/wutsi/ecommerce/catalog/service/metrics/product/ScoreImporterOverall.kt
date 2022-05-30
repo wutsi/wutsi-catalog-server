@@ -1,4 +1,4 @@
-package com.wutsi.ecommerce.catalog.service.metrics
+package com.wutsi.ecommerce.catalog.service.metrics.product
 
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.platform.core.storage.StorageService
@@ -8,10 +8,10 @@ import java.time.LocalDate
 import javax.sql.DataSource
 
 @Service
-class ConversionImporterOverall(
+class ScoreImporterOverall(
     ds: DataSource,
     storage: StorageService,
-) : AbstractConversionImporter(ds, storage) {
+) : AbstractProductScoreImporter(ds, storage) {
     override fun toURL(date: LocalDate, type: MetricType): URL =
         storage.toURL(
             "aggregates/overall/" + type.name.lowercase() + ".csv"

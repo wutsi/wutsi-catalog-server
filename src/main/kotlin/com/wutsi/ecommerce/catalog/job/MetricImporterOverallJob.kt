@@ -1,9 +1,9 @@
 package com.wutsi.ecommerce.catalog.job
 
 import com.wutsi.analytics.tracking.entity.MetricType
-import com.wutsi.ecommerce.catalog.service.metrics.ConversionImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.MetricImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.ScoreImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductConversionImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ScoreImporterOverall
 import com.wutsi.platform.core.cron.AbstractCronJob
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -15,9 +15,9 @@ import java.time.LocalDate
  */
 @Service
 class MetricImporterOverallJob(
-    private val importer: MetricImporterOverall,
+    private val importer: ProductMetricImporterOverall,
     private val score: ScoreImporterOverall,
-    private val conversion: ConversionImporterOverall,
+    private val conversion: ProductConversionImporterOverall,
     @Value("\${wutsi.application.jobs.metric-importer-overall.enabled}") private val enabled: Boolean
 ) : AbstractCronJob() {
     override fun getJobName(): String = "metric-importer-overall"

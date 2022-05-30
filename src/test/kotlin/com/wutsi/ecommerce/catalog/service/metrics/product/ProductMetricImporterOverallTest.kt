@@ -1,4 +1,4 @@
-package com.wutsi.ecommerce.catalog.service.metrics
+package com.wutsi.ecommerce.catalog.service.metrics.product
 
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.dao.ProductRepository
@@ -13,11 +13,10 @@ import org.springframework.test.context.jdbc.Sql
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(value = ["/db/clean.sql", "/db/MetricImporter.sql"])
-internal class MetricImporterTest {
+@Sql(value = ["/db/clean.sql", "/db/ProductMetricImporter.sql"])
+internal class ProductMetricImporterOverallTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -33,7 +32,7 @@ internal class MetricImporterTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: MetricImporter
+    private lateinit var service: ProductMetricImporterOverall
 
     @Autowired
     private lateinit var dao: ProductRepository
@@ -51,8 +50,8 @@ internal class MetricImporterTest {
 
         service.import(date, MetricType.VIEW)
 
-        assertTotalViews(100, 1000 + 31)
-        assertTotalViews(101, 100 + 11)
+        assertTotalViews(100, 31)
+        assertTotalViews(101, 11)
     }
 
     @Test
@@ -61,8 +60,8 @@ internal class MetricImporterTest {
 
         service.import(date, MetricType.SHARE)
 
-        assertTotalShares(100, 100 + 31)
-        assertTotalShares(101, 10 + 11)
+        assertTotalShares(100, 31)
+        assertTotalShares(101, 11)
     }
 
     @Test
@@ -71,8 +70,8 @@ internal class MetricImporterTest {
 
         service.import(date, MetricType.CHAT)
 
-        assertTotalChats(100, 10 + 31)
-        assertTotalChats(101, 1 + 11)
+        assertTotalChats(100, 31)
+        assertTotalChats(101, 11)
     }
 
     @Test
@@ -81,11 +80,17 @@ internal class MetricImporterTest {
 
         service.import(date, MetricType.SALE)
 
-        assertTotalSales(100, 50000 + 31)
-        assertTotalSales(101, 15000 + 11)
+        assertTotalSales(100, 31)
+        assertTotalSales(101, 11)
+    }
+
+    private fun store(type: MetricType) {
+        val path = "aggregates/overall/" + type.name.lowercase() + ".csv"
+        storage.store(path, ByteArrayInputStream(CSV.trimIndent().toByteArray()), "application/csv")
     }
 
     @Test
+    @Sql(value = ["/db/clean.sql", "/db/ProductMetricImporter.sql"])
     fun fileNotFound() {
         service.import(date, MetricType.VIEW)
 
@@ -115,12 +120,5 @@ internal class MetricImporterTest {
         val product = dao.findById(productId)
 
         assertEquals(expected, product.get().totalSales)
-    }
-
-    private fun store(type: MetricType) {
-        val path = "aggregates/daily/" +
-            date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
-            "/" + type.name.lowercase() + ".csv"
-        storage.store(path, ByteArrayInputStream(CSV.trimIndent().toByteArray()), "application/csv")
     }
 }

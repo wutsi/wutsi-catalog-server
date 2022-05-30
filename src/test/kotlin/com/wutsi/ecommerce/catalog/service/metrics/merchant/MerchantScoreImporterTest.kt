@@ -16,8 +16,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(value = ["/db/clean.sql", "/db/MerchantConversionImporter.sql"])
-internal class MerchantConversionImporterTest {
+@Sql(value = ["/db/clean.sql", "/db/MerchantScoreImporter.sql"])
+internal class MerchantScoreImporterTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -34,7 +34,7 @@ internal class MerchantConversionImporterTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: MerchantConversionImporter
+    private lateinit var service: MerchantScoreImporter
 
     @Autowired
     private lateinit var dao: MerchantRepository
@@ -53,15 +53,15 @@ internal class MerchantConversionImporterTest {
         val result = service.import(date, MetricType.VIEW)
 
         assertEquals(2, result)
-        assertConversion(1, .01)
-        assertConversion(2, 0.11)
-        assertConversion(3, 0.03)
+        assertScore(1, 0.111)
+        assertScore(2, 0.16)
+        assertScore(3, 0.003)
     }
 
-    private fun assertConversion(merchantId: Long, expected: Double) {
+    private fun assertScore(merchantId: Long, expected: Double) {
         val merchant = dao.findByAccountId(merchantId)
 
-        assertEquals(expected, merchant.get().conversion)
+        assertEquals(expected, merchant.get().score)
     }
 
     private fun store(type: MetricType) {

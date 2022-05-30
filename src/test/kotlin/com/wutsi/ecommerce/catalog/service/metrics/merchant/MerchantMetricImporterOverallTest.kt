@@ -40,7 +40,6 @@ internal class MerchantMetricImporterOverallTest {
 
     private val date = LocalDate.of(2020, 4, 14)
 
-
     @BeforeEach
     fun setUp() {
         File(storageDirectory).deleteRecursively()
@@ -140,5 +139,4 @@ internal class MerchantMetricImporterOverallTest {
         val path = "aggregates/overall/" + type.name.lowercase() + ".csv"
         storage.store(path, ByteArrayInputStream(CSV.trimIndent().toByteArray()), "application/csv")
     }
-
 }

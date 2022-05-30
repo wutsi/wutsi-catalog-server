@@ -13,17 +13,16 @@ import org.springframework.test.context.jdbc.Sql
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/MerchantConversionImporter.sql"])
-internal class MerchantConversionImporterTest {
+internal class MerchantConversionImporterOverallTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
             "1586837219285","1","1","100","31"
             "1586837219485","1","2","101","10"
-            "1586837219485","1","2","101","1"
+            "1586837219485","1","3","101","1"
         """
     }
 
@@ -34,7 +33,7 @@ internal class MerchantConversionImporterTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: MerchantConversionImporter
+    private lateinit var service: MerchantConversionImporterOverall
 
     @Autowired
     private lateinit var dao: MerchantRepository
@@ -52,10 +51,10 @@ internal class MerchantConversionImporterTest {
 
         val result = service.import(date, MetricType.VIEW)
 
-        assertEquals(2, result)
+        assertEquals(3, result)
         assertConversion(1, .01)
         assertConversion(2, 0.11)
-        assertConversion(3, 0.03)
+        assertConversion(3, 1.0)
     }
 
     private fun assertConversion(merchantId: Long, expected: Double) {
@@ -65,9 +64,7 @@ internal class MerchantConversionImporterTest {
     }
 
     private fun store(type: MetricType) {
-        val path = "aggregates/daily/" +
-            date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) +
-            "/" + type.name.lowercase() + ".csv"
+        val path = "aggregates/overall/" + type.name.lowercase() + ".csv"
         storage.store(path, ByteArrayInputStream(CSV.trimIndent().toByteArray()), "application/csv")
     }
 }

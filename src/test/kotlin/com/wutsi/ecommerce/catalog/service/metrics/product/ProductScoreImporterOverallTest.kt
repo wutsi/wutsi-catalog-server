@@ -16,7 +16,7 @@ import java.time.LocalDate
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = ["/db/clean.sql", "/db/ProductScoreImporter.sql"])
-internal class ScoreImporterOverallTest {
+internal class ProductScoreImporterOverallTest {
     companion object {
         const val CSV: String = """
             "time","tenantid","merchantid","productid","value"
@@ -32,7 +32,7 @@ internal class ScoreImporterOverallTest {
     private lateinit var storage: StorageService
 
     @Autowired
-    private lateinit var service: ScoreImporterOverall
+    private lateinit var service: ProductScoreImporterOverall
 
     @Autowired
     private lateinit var dao: ProductRepository

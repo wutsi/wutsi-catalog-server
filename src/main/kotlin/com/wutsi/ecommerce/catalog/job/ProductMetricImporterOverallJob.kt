@@ -3,7 +3,7 @@ package com.wutsi.ecommerce.catalog.job
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.service.metrics.product.ProductConversionImporterOverall
 import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.product.ScoreImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductScoreImporterOverall
 import com.wutsi.platform.core.cron.AbstractCronJob
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -13,7 +13,7 @@ import java.time.LocalDate
 @Service
 class ProductMetricImporterOverallJob(
     private val importer: ProductMetricImporterOverall,
-    private val score: ScoreImporterOverall,
+    private val score: ProductScoreImporterOverall,
     private val conversion: ProductConversionImporterOverall,
     @Value("\${wutsi.application.jobs.product-metric-importer-overall.enabled}") private val enabled: Boolean
 ) : AbstractCronJob() {

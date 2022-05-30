@@ -10,14 +10,14 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.analytics.tracking.entity.MetricType
 import com.wutsi.ecommerce.catalog.service.metrics.product.ProductConversionImporterOverall
 import com.wutsi.ecommerce.catalog.service.metrics.product.ProductMetricImporterOverall
-import com.wutsi.ecommerce.catalog.service.metrics.product.ScoreImporterOverall
+import com.wutsi.ecommerce.catalog.service.metrics.product.ProductScoreImporterOverall
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 internal class MetricImporterJobOverallTest {
     private lateinit var metricImporter: ProductMetricImporterOverall
-    private lateinit var scoreImporter: ScoreImporterOverall
+    private lateinit var scoreImporter: ProductScoreImporterOverall
     private lateinit var conversionImporter: ProductConversionImporterOverall
 
     private val date = LocalDate.now()

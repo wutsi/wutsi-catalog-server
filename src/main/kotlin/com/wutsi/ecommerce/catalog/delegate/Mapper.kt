@@ -137,4 +137,3 @@ fun MerchantEntity.toMetrics() = Metrics(
     conversion = this.conversion,
     score = this.score
 )
-

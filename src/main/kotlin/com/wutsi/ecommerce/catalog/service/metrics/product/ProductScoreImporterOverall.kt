@@ -8,7 +8,7 @@ import java.time.LocalDate
 import javax.sql.DataSource
 
 @Service
-class ScoreImporterOverall(
+class ProductScoreImporterOverall(
     ds: DataSource,
     storage: StorageService,
 ) : AbstractProductScoreImporter(ds, storage) {

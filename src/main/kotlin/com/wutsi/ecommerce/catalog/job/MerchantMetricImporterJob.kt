@@ -21,8 +21,6 @@ class MerchantMetricImporterJob(
 ) : AbstractCronJob() {
     override fun getJobName(): String = "merchant-metric-importer"
 
-    override fun getToken(): String? = null
-
     override fun doRun(): Long {
         val date = LocalDate.now(clock).minusDays(1) // Yesterday
         logger.add("date", date)

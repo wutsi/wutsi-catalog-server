@@ -19,8 +19,6 @@ class MerchantMetricImporterOverallJob(
 ) : AbstractCronJob() {
     override fun getJobName(): String = "merchant-metric-importer-overall"
 
-    override fun getToken(): String? = null
-
     override fun doRun(): Long {
         val date = LocalDate.now()
         return importer.import(date, MetricType.CHAT) +

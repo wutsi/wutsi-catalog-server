@@ -15,6 +15,7 @@ wutsi:
   platform:
     security:
       type: jwt
+      api-key: ${API_KEY}
     stream:
       type: rabbitmq
       rabbitmq:

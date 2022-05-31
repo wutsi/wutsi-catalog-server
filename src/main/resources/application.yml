@@ -69,7 +69,7 @@ wutsi:
       merchant-metric-importer:
         cron: "0 0 4 * * *"   # Every day at 4AM
       merchant-metric-importer-overall:
-        enabled: true          # IMPORTANT: This process is very resource intensive. So enable it only when needed!!!!
+        enabled: false          # IMPORTANT: This process is very resource intensive. So enable it only when needed!!!!
         cron: "0 20 5 * * *"   # Every day at 2:50PM
 
   platform:

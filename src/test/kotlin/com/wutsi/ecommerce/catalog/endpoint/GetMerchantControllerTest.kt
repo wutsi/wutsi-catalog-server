@@ -27,6 +27,15 @@ class GetMerchantControllerTest : AbstractSecuredController() {
         val merchant = response.body!!.merchant
         assertEquals(1000, merchant.accountId)
         assertEquals(555, merchant.cityId)
+
+        val metrics = merchant.overallMetrics
+        assertEquals(1000, metrics.totalViews)
+        assertEquals(1, metrics.totalShares)
+        assertEquals(10, metrics.totalChats)
+        assertEquals(100, metrics.totalOrders)
+        assertEquals(10000, metrics.totalSales)
+        assertEquals(0.5, metrics.score)
+        assertEquals(0.1, metrics.conversion)
     }
 
     @Test

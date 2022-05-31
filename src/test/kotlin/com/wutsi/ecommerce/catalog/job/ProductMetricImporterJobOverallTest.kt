@@ -15,7 +15,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-internal class MetricImporterJobOverallTest {
+internal class ProductMetricImporterJobOverallTest {
     private lateinit var metricImporter: ProductMetricImporterOverall
     private lateinit var scoreImporter: ProductScoreImporterOverall
     private lateinit var conversionImporter: ProductConversionImporterOverall

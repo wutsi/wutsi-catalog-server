@@ -15,7 +15,7 @@ class MerchantMetricImporterOverallJob(
     private val importer: MerchantMetricImporterOverall,
     private val score: MerchantScoreImporterOverall,
     private val conversion: MerchantConversionImporterOverall,
-    @Value("\${wutsi.application.jobs.product-metric-importer-overall.enabled}") private val enabled: Boolean
+    @Value("\${wutsi.application.jobs.merchant-metric-importer-overall.enabled}") private val enabled: Boolean
 ) : AbstractCronJob() {
     override fun getJobName(): String = "merchant-metric-importer-overall"
 

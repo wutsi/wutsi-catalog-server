@@ -23,12 +23,34 @@ class ListSectionsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val sections = response.body!!.sections
-        assertEquals(2, sections.size)
+        assertEquals(3, sections.size)
 
         assertEquals("Deals", sections[0].title)
         assertEquals(1, sections[0].sortOrder)
 
         assertEquals("Electronic", sections[1].title)
         assertEquals(2, sections[1].sortOrder)
+
+        assertEquals("New Stuff", sections[2].title)
+        assertEquals(3, sections[2].sortOrder)
+    }
+
+    @Test
+    fun withPublishedProducts() {
+        // WHEN
+        val response =
+            rest.getForEntity(
+                "http://localhost:$port/v1/sections?account-id=$USER_ID&with-published-products=true",
+                ListSectionResponse::class.java
+            )
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val sections = response.body!!.sections
+        assertEquals(1, sections.size)
+
+        assertEquals("Deals", sections[0].title)
+        assertEquals(1, sections[0].sortOrder)
     }
 }

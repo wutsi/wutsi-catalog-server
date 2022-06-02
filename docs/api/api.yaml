@@ -79,6 +79,13 @@ paths:
           schema:
             type: integer
             format: int64
+        - in: query
+          name: with-published-products
+          description: Return only section with published products?
+          required: false
+          schema:
+            type: boolean
+            nullable: true
       responses:
         200:
           description: Success
@@ -1169,10 +1176,6 @@ components:
             type: integer
             format: int64
           description: List of merchant account IDs
-        withPublishedProducts:
-          type: boolean
-          description: if TRUE, only merchant having published products will be returned
-          nullable: true
         limit:
           type: integer
           default: 30

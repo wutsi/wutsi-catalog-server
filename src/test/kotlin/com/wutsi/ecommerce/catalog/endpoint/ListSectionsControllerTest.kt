@@ -48,9 +48,9 @@ class ListSectionsControllerTest : AbstractSecuredController() {
         assertEquals(200, response.statusCodeValue)
 
         val sections = response.body!!.sections
-        assertEquals(1, sections.size)
+        assertEquals(2, sections.size)
 
         assertEquals("Deals", sections[0].title)
-        assertEquals(1, sections[0].sortOrder)
+        assertEquals("Electronic", sections[1].title)
     }
 }

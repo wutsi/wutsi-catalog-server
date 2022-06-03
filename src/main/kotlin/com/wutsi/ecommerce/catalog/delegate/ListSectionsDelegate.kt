@@ -47,7 +47,7 @@ class ListSectionsDelegate(
 
         criteria.add("S.accountId=:account_id")
         if (withPublishedProducts == true)
-            criteria.add("EXISTS (SELECT P FROM ProductEntity P WHERE P.isDeleted=true AND P.status=:status AND P MEMBER OF S.products)")
+            criteria.add("EXISTS (SELECT P FROM ProductEntity P WHERE P.isDeleted=:is_deleted AND P.status=:status AND P MEMBER OF S.products)")
 
         return criteria.joinToString(separator = " AND ")
     }

@@ -225,7 +225,6 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         assertEquals(0, products.size)
     }
 
-
     @Test
     fun `empty status`() {
         // WHEN

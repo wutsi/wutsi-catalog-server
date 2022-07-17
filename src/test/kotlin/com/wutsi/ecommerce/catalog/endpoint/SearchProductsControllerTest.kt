@@ -224,4 +224,21 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         val products = response.body!!.products
         assertEquals(0, products.size)
     }
+
+
+    @Test
+    fun `empty status`() {
+        // WHEN
+        val request = SearchProductRequest(
+            status = "",
+            limit = 1
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(1, products.size)
+    }
 }

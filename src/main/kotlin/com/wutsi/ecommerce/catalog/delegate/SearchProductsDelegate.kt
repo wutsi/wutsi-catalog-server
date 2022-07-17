@@ -81,7 +81,7 @@ class SearchProductsDelegate(
         if (request.sectionId != null)
             criteria.add("s.id=:section_id")
 
-        if (request.status != null)
+        if (!request.status.isNullOrEmpty())
             criteria.add("P.status=:status")
 
         // Ensure that the merchant is enabled!!
@@ -123,7 +123,7 @@ class SearchProductsDelegate(
         if (request.sectionId != null)
             query.setParameter("section_id", request.sectionId)
 
-        if (request.status != null)
+        if (!request.status.isNullOrEmpty())
             query.setParameter("status", ProductStatus.valueOf(request.status.uppercase()))
     }
 }

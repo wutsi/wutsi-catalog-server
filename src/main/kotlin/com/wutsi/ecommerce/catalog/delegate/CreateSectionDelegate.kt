@@ -21,7 +21,7 @@ class CreateSectionDelegate(
         val section = dao.save(
             SectionEntity(
                 accountId = accountId,
-                tenantId = securityManager.tenantId(),
+                tenantId = securityManager.tenantId()!!,
                 title = request.title,
                 sortOrder = sortOrder + 1,
             )

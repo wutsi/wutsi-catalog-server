@@ -24,7 +24,7 @@ class CreateReservationDelegate(
 ) : AbstractProductDelegate() {
     @Transactional
     fun invoke(request: CreateReservationRequest): CreateReservationResponse {
-        val tenantId = securityManager.tenantId()
+        val tenantId = securityManager.tenantId()!!
         val reservation = reservationDao.save(
             ReservationEntity(
                 orderId = request.orderId,

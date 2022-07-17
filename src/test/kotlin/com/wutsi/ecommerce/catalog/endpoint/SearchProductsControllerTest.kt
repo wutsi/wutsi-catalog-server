@@ -1,9 +1,16 @@
 package com.wutsi.ecommerce.catalog.endpoint
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.ecommerce.catalog.dto.SearchProductRequest
 import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductSort
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
+import com.wutsi.platform.tenant.dto.GetTenantResponse
+import com.wutsi.platform.tenant.dto.Tenant
+import com.wutsi.platform.tenant.dto.Toggle
+import com.wutsi.platform.tenant.entity.ToggleName
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -41,6 +48,34 @@ class SearchProductsControllerTest : AbstractSecuredController() {
         val products = response.body!!.products
         assertEquals(2, products.size)
         assertTrue(products.map { it.id }.containsAll(listOf(100, 101)))
+    }
+
+    @Test
+    fun `search account products - digital product enabled`() {
+        // GIVEN
+        val tenant = Tenant(
+            id = 1,
+            name = "test",
+            toggles = listOf(
+                Toggle(
+                    name = ToggleName.STORE_DIGITAL_PRODUCT.name
+                )
+            )
+        )
+        doReturn(GetTenantResponse(tenant)).whenever(tenantApi).getTenant(any())
+
+        // WHEN
+        val request = SearchProductRequest(
+            accountId = 1
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(3, products.size)
+        assertTrue(products.map { it.id }.containsAll(listOf(100, 101, 110)))
     }
 
     @Test
@@ -207,7 +242,7 @@ class SearchProductsControllerTest : AbstractSecuredController() {
 
         val products = response.body!!.products
         assertEquals(6, products.size)
-        assertEquals(listOf(100L, 101L, 102L, 200L, 201L, 300L), products.map { it.id })
+        assertEquals(listOf(101L, 102L, 100L, 200L, 201L, 300L), products.map { it.id })
     }
 
     @Test
@@ -227,6 +262,22 @@ class SearchProductsControllerTest : AbstractSecuredController() {
 
     @Test
     fun `empty status`() {
+        // WHEN
+        val request = SearchProductRequest(
+            status = "",
+            limit = 1
+        )
+        val response = rest.postForEntity(url, request, SearchProductResponse::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val products = response.body!!.products
+        assertEquals(1, products.size)
+    }
+
+    @Test
+    fun `digital products not supported`() {
         // WHEN
         val request = SearchProductRequest(
             status = "",

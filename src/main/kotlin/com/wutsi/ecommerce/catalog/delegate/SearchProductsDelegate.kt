@@ -5,8 +5,12 @@ import com.wutsi.ecommerce.catalog.dto.SearchProductResponse
 import com.wutsi.ecommerce.catalog.entity.ProductEntity
 import com.wutsi.ecommerce.catalog.entity.ProductSort
 import com.wutsi.ecommerce.catalog.entity.ProductStatus
+import com.wutsi.ecommerce.catalog.entity.ProductType
 import com.wutsi.ecommerce.catalog.service.SecurityManager
 import com.wutsi.platform.core.logging.KVLogger
+import com.wutsi.platform.tenant.WutsiTenantApi
+import com.wutsi.platform.tenant.dto.Tenant
+import com.wutsi.platform.tenant.entity.ToggleName
 import org.springframework.stereotype.Service
 import javax.persistence.EntityManager
 import javax.persistence.Query
@@ -14,6 +18,7 @@ import javax.persistence.Query
 @Service
 class SearchProductsDelegate(
     private val securityManager: SecurityManager,
+    private val tenantApi: WutsiTenantApi,
     private val em: EntityManager,
     private val logger: KVLogger
 ) {
@@ -38,11 +43,29 @@ class SearchProductsDelegate(
     fun search(request: SearchProductRequest, tenantId: Long?): List<ProductEntity> {
         val query = em.createQuery(sql(request, tenantId))
         parameters(request, query, tenantId)
-        return query
+        val products = query
             .setFirstResult(request.offset)
             .setMaxResults(request.limit)
             .resultList as List<ProductEntity>
+
+        return filterOutUnsupportedProducts(products)
     }
+
+    protected fun filterOutUnsupportedProducts(products: List<ProductEntity>): List<ProductEntity> {
+        if (products.isEmpty())
+            return emptyList()
+
+        val tenant = tenantApi.getTenant(products[0].tenantId).tenant
+
+        var result = products
+        if (!supportsDigitalProducts(tenant))
+            result = products.filter { it.type != ProductType.NUMERIC }
+
+        return result
+    }
+
+    private fun supportsDigitalProducts(tenant: Tenant): Boolean =
+        tenant.toggles.find { it.name == ToggleName.STORE_DIGITAL_PRODUCT.name } != null
 
     private fun sql(request: SearchProductRequest, tenantId: Long?): String {
         val select = select(request)

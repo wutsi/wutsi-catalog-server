@@ -61,8 +61,8 @@ class SecurityManager(
             )
     }
 
-    fun tenantId(): Long =
-        tracingContext.tenantId()!!.toLong()
+    fun tenantId(): Long? =
+        tracingContext.tenantId()?.toLong()
 
     fun accountId(): Long =
         principal().id.toLong()

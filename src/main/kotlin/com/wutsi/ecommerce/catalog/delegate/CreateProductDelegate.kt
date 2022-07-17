@@ -16,9 +16,8 @@ class CreateProductDelegate(
 ) : AbstractProductDelegate() {
     @Transactional
     fun invoke(request: CreateProductRequest): CreateProductResponse {
-        val tenantId = securityManager.tenantId()
+        val tenantId = securityManager.tenantId()!!
         val tenant = tenantApi.getTenant(tenantId).tenant
-
         val product = dao.save(
             ProductEntity(
                 tenantId = tenantId,
